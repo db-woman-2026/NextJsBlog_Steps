@@ -15,12 +15,13 @@ export default function EditPost() {
     async function loadPost() {
       try {
         const response = await fetch(`/api/post/${id}`);
+        const result = await response.json();
 
         if (!response.ok) {
-          throw new Error("Failed to fetch post data");
+          throw new Error(result.message || "Failed to fetch post data");
         }
 
-        const post = await response.json();
+        const post = result.data;
         setTitle(post.title);
         setContent(post.content);
       } catch (err) {
@@ -45,9 +46,10 @@ export default function EditPost() {
         },
         body: JSON.stringify({ title, content }),
       });
+      const result = await response.json();
 
       if (!response.ok) {
-        throw new Error("Failed to update post");
+        throw new Error(result.message || "Failed to update post");
       }
 
       router.replace("/");
