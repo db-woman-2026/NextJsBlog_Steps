@@ -1,10 +1,10 @@
-# Basic 8. Contact mockup form 만들기
+# Step 8. Contact mockup form 만들기
 
 ## 이 단계의 목표
 
-`basic-8` 브랜치는 Contact 페이지를 실제 form 구조로 바꾸는 단계입니다.
+`step-8` 브랜치는 Contact 페이지를 실제 form 구조로 바꾸는 단계입니다.
 
-`basic-7`까지 게시글 읽기, 작성, 수정 흐름을 완성했습니다. 이번 단계에서는 핵심 CRUD와 별개인 Contact 페이지를 mockup form으로 구현합니다.
+`step-7`까지 게시글 읽기, 작성, 수정 흐름을 완성했습니다. 이번 단계에서는 핵심 CRUD와 별개인 Contact 페이지를 mockup form으로 구현합니다.
 
 이 단계에서 배우는 내용은 다음과 같습니다.
 
@@ -105,7 +105,7 @@ const [message, setMessage] = useState("");
 
 `value`는 화면에 표시할 값을 정하고, `onChange`는 사용자가 입력할 때 상태를 갱신합니다.
 
-이 패턴은 `basic-6`의 게시글 작성 form, `basic-7`의 게시글 수정 form과 같습니다.
+이 패턴은 `step-6`의 게시글 작성 form, `step-7`의 게시글 수정 form과 같습니다.
 
 ## submit 처리
 
@@ -219,4 +219,4 @@ npm run build
 
 ## 이 단계에서 아직 하지 않는 것
 
-이 단계에서는 실제 메일을 보내지 않습니다. 다음 단계에서는 새 기능을 추가하기보다 README와 불필요한 기본 파일을 정리해 basic 커리큘럼을 마무리합니다.
+이 단계에서는 실제 메일을 보내지 않습니다. 다음 단계에서는 새 기능을 추가하기보다 README와 불필요한 기본 파일을 정리해 step 커리큘럼을 마무리합니다.
