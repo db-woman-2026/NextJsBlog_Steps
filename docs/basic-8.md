@@ -1,233 +1,214 @@
-# Basic 8. 게시글 상세 화면 만들기
+# Basic 8. Contact mockup form 만들기
 
 ## 이 단계의 목표
 
-`basic-8` 브랜치는 게시글 상세 화면을 추가하는 단계입니다.
+`basic-8` 브랜치는 Contact 페이지를 실제 form 구조로 바꾸는 단계입니다.
 
-이 단계에서 만드는 주소는 다음과 같습니다.
-
-```txt
-/detail/[id]
-```
-
-홈 화면의 게시글 목록은 이미 다음 링크를 가지고 있습니다.
-
-```jsx
-<Link href={`/detail/${post._id}`}>{post.title}</Link>
-```
-
-이제 그 링크가 실제 상세 화면으로 이동합니다.
+`basic-7`까지 게시글 읽기, 작성, 수정 흐름을 완성했습니다. 이번 단계에서는 핵심 CRUD와 별개인 Contact 페이지를 mockup form으로 구현합니다.
 
 이 단계에서 배우는 내용은 다음과 같습니다.
 
-- 서버 컴포넌트에서 `params`를 받아 동적 라우트 id를 읽는다.
-- 서버 컴포넌트에서 데이터 함수를 직접 호출한다.
-- 게시글이 없을 때 `notFound()`를 사용한다.
-- 본문의 줄바꿈을 유지하기 위해 `pre`와 `white-space: pre-wrap`을 사용한다.
-- 상세 화면에서 수정 화면으로 이동하는 링크를 만든다.
+- 페이지 컴포넌트와 form 컴포넌트를 분리한다.
+- 클라이언트 상호작용이 필요한 컴포넌트에만 `"use client"`를 붙인다.
+- `useState`로 여러 input 값을 관리한다.
+- `event.preventDefault()`로 기본 form 제출을 막는다.
+- 실제 메일 전송 대신 `alert()`로 mockup 동작을 만든다.
+- 작성 form에서 배운 controlled input 패턴을 다른 form에 다시 적용한다.
 
-## 왜 상세 화면은 서버 컴포넌트인가
+## 왜 Contact는 mockup인가
 
-홈 화면과 작성/수정 화면은 클라이언트 컴포넌트였습니다. `useState`, `useEffect`, form 이벤트가 필요했기 때문입니다.
+실제 메일 전송 기능을 만들려면 추가로 결정해야 할 것이 많습니다.
 
-상세 화면은 사용자가 입력하는 form이 없습니다. URL의 id로 게시글 하나를 조회하고 HTML을 보여주면 됩니다.
+- 어떤 메일 서비스를 사용할 것인가
+- API key를 어디에 저장할 것인가
+- 스팸 방지는 어떻게 할 것인가
+- 서버 검증은 어떻게 할 것인가
+- 성공/실패 메일 로그는 어디에 남길 것인가
 
-그래서 `"use client"`를 붙이지 않고 서버 컴포넌트로 둡니다.
+이 프로젝트의 목표는 Next.js 기본 라우팅, API Route, MongoDB CRUD 흐름을 배우는 것입니다. Contact 메일 전송까지 실제로 구현하면 학습 범위가 커집니다.
 
-서버 컴포넌트에서는 MongoDB를 사용하는 데이터 함수를 직접 호출할 수 있습니다.
+그래서 Contact는 mockup으로 둡니다.
 
-```js
-const post = await getPostById(id);
-```
+mockup은 실제 기능을 완성하지 않고, 사용자가 보게 될 화면과 기본 상호작용만 흉내 내는 구현입니다.
 
-클라이언트 컴포넌트에서는 MongoDB 함수를 직접 import하지 않아야 합니다. 하지만 서버 컴포넌트에서는 가능합니다.
+## 파일 구조
 
-## 파일 위치
-
-상세 페이지 파일은 다음 위치에 만듭니다.
-
-```txt
-app/detail/[id]/page.js
-```
-
-예를 들어 다음 주소로 접속하면
+이 단계에서 Contact 관련 파일은 다음과 같습니다.
 
 ```txt
-/detail/abc123
+app/contact/page.js
+app/contact/ContactForm.js
 ```
 
-`id` 값은 `"abc123"`입니다.
+`page.js`는 페이지 구조만 담당합니다.
 
-## 상세 페이지 전체 코드
+`ContactForm.js`는 입력 상태와 submit 이벤트를 담당합니다.
+
+이렇게 나누면 페이지 컴포넌트는 단순해지고, 클라이언트 상호작용이 필요한 부분만 `"use client"`로 만들 수 있습니다.
+
+## Contact 페이지
+
+`app/contact/page.js`는 서버 컴포넌트로 둡니다.
 
 ```jsx
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { getPostById } from "@/lib/posts";
-import styles from "./page.module.css";
+import ContactForm from "./ContactForm";
 
-export default async function BlogDetail({ params }) {
-  const { id } = await params;
-  const post = await getPostById(id);
-
-  if (!post) {
-    notFound();
-  }
-
+export default function ContactPage() {
   return (
-    <main className={styles.container}>
-      <article>
-        <h1>{post.title}</h1>
-        <pre className={styles.content}>{post.content}</pre>
-      </article>
-      <Link href={`/post/${id}`}>Edit</Link>
+    <main>
+      <h1>Contact Us</h1>
+      <ContactForm />
     </main>
   );
 }
 ```
 
-## params 읽기
+이 파일은 상태나 이벤트를 직접 사용하지 않습니다. 그래서 `"use client"`가 필요하지 않습니다.
 
-App Router의 동적 라우트에서는 컴포넌트 인자로 `params`를 받을 수 있습니다.
+## ContactForm 컴포넌트
 
-```js
-export default async function BlogDetail({ params }) {
-  const { id } = await params;
-}
-```
-
-최신 Next.js에서는 `params`를 비동기 값처럼 다루므로 `await params`를 사용합니다.
-
-이 `id`가 URL의 `[id]` 자리에 들어온 값입니다.
-
-## getPostById 호출
-
-id를 얻은 뒤 데이터 함수를 호출합니다.
+`ContactForm.js`는 입력 상태와 submit 이벤트를 사용하므로 클라이언트 컴포넌트입니다.
 
 ```js
-const post = await getPostById(id);
+"use client";
+
+import { useState } from "react";
 ```
 
-`getPostById`는 `lib/posts.js`에 있습니다.
-
-이 함수는 다음 일을 합니다.
-
-1. id가 MongoDB ObjectId로 변환 가능한지 확인한다.
-2. 가능하면 `new ObjectId(id)`로 변환한다.
-3. `posts` 컬렉션에서 `_id`가 일치하는 문서를 찾는다.
-4. 찾으면 게시글 객체를 반환한다.
-5. 없으면 `null`을 반환한다.
-
-## notFound 사용
-
-게시글이 없으면 상세 화면을 정상적으로 그릴 수 없습니다.
+이 컴포넌트는 세 가지 상태를 가집니다.
 
 ```js
-if (!post) {
-  notFound();
-}
+const [name, setName] = useState("");
+const [email, setEmail] = useState("");
+const [message, setMessage] = useState("");
 ```
 
-`notFound()`는 Next.js의 404 페이지 흐름으로 이동시킵니다.
+| 상태 | 역할 |
+| --- | --- |
+| `name` | 이름 입력값 |
+| `email` | 이메일 입력값 |
+| `message` | 문의 내용 입력값 |
 
-API Route에서는 게시글이 없을 때 JSON과 상태 코드 404를 반환했습니다.
+## controlled input 복습
 
-```js
-return NextResponse.json({ error: "Post not found" }, { status: 404 });
-```
-
-페이지 컴포넌트에서는 JSON이 아니라 화면 흐름이 필요하므로 `notFound()`를 사용합니다.
-
-## 본문 줄바꿈 유지
-
-게시글 본문에는 사용자가 textarea에서 입력한 줄바꿈이 들어갈 수 있습니다.
-
-일반 `<p>` 태그는 줄바꿈을 그대로 보여주지 않습니다.
-
-그래서 상세 화면에서는 `<pre>`를 사용합니다.
+각 input은 React 상태와 연결되어 있습니다.
 
 ```jsx
-<pre className={styles.content}>{post.content}</pre>
+<input
+  type="text"
+  id="name"
+  value={name}
+  onChange={(event) => setName(event.target.value)}
+  required
+/>
 ```
 
-하지만 `<pre>`는 긴 줄이 화면 밖으로 넘칠 수 있습니다. 그래서 CSS에서 다음 규칙을 추가합니다.
+`value`는 화면에 표시할 값을 정하고, `onChange`는 사용자가 입력할 때 상태를 갱신합니다.
 
-```css
-.content {
-  white-space: pre-wrap;
+이 패턴은 `basic-6`의 게시글 작성 form, `basic-7`의 게시글 수정 form과 같습니다.
+
+## submit 처리
+
+Contact form은 실제 API를 호출하지 않습니다. 대신 `alert()`로 입력값을 확인합니다.
+
+```js
+function handleSubmit(event) {
+  event.preventDefault();
+
+  alert(
+    `메일 전송 mockup입니다.\n\n이름: ${name}\n이메일: ${email}\n내용: ${message}`,
+  );
 }
 ```
 
-`pre-wrap`은 줄바꿈은 유지하되, 긴 줄은 화면 너비에 맞게 감싸도록 합니다.
+`event.preventDefault()`는 작성 form에서 배웠던 것과 같은 이유로 사용합니다. 브라우저의 기본 form 제출과 새로고침을 막고, JavaScript로 submit 동작을 직접 처리합니다.
 
-## 상세 화면에서 수정 화면으로 이동
+## template literal과 줄바꿈
 
-상세 화면 아래에는 수정 링크가 있습니다.
+alert 메시지는 백틱을 사용하는 template literal로 작성했습니다.
+
+```js
+`메일 전송 mockup입니다.\n\n이름: ${name}\n이메일: ${email}\n내용: ${message}`
+```
+
+`${name}`처럼 값을 문자열 안에 넣을 수 있습니다.
+
+`\n`은 줄바꿈입니다. `\n\n`은 빈 줄 하나를 만드는 효과가 있습니다.
+
+## input type
+
+이름은 일반 텍스트입니다.
 
 ```jsx
-<Link href={`/post/${id}`}>Edit</Link>
+<input type="text" id="name" />
 ```
 
-`basic-7`에서 만든 수정 화면 주소가 `/post/[id]`였기 때문에, 같은 id를 사용해 수정 화면으로 이동합니다.
+이메일은 email 타입입니다.
 
-흐름은 다음과 같습니다.
-
-```txt
-홈 목록
--> /detail/[id]
--> 상세 화면
--> Edit 링크
--> /post/[id]
--> 수정 화면
+```jsx
+<input type="email" id="email" />
 ```
 
-## CSS Module
+브라우저는 `type="email"` 입력값이 이메일 형식인지 기본적으로 검사해줍니다. 다만 이것은 클라이언트 편의 기능일 뿐, 실제 서비스에서는 서버에서도 검증해야 합니다.
 
-상세 페이지 전용 스타일은 `app/detail/[id]/page.module.css`에 둡니다.
+## required 속성
 
-```css
-.container {
-  display: grid;
-  gap: 1rem;
-}
+각 입력에는 `required`가 있습니다.
 
-.content {
-  white-space: pre-wrap;
-}
+```jsx
+required
 ```
 
-상세 화면의 스타일은 작성/수정 form 스타일과 다르므로 별도 CSS Module을 사용합니다.
+이 속성이 있으면 빈 값으로 submit하려고 할 때 브라우저가 기본 경고를 보여줍니다.
+
+## 작성 form과 Contact form 비교
+
+작성 form과 Contact form은 둘 다 controlled input을 사용합니다.
+
+공통점은 다음과 같습니다.
+
+- `"use client"`가 필요하다.
+- `useState`로 입력값을 관리한다.
+- `form onSubmit`을 사용한다.
+- `event.preventDefault()`를 호출한다.
+- `label`과 `input`을 `htmlFor`/`id`로 연결한다.
+
+차이점은 다음과 같습니다.
+
+| 화면 | submit 동작 |
+| --- | --- |
+| 게시글 작성 | `POST /api/post` 요청을 보냄 |
+| Contact | `alert()`로 mockup 메시지만 보여줌 |
 
 ## 직접 실습 순서
 
-1. `app/detail/[id]` 폴더를 만든다.
-2. `app/detail/[id]/page.js` 파일을 만든다.
-3. `Link`, `notFound`, `getPostById`, CSS Module을 import한다.
-4. `BlogDetail` 컴포넌트를 async 함수로 만든다.
-5. `const { id } = await params;`로 URL id를 읽는다.
-6. `getPostById(id)`로 게시글을 조회한다.
-7. 게시글이 없으면 `notFound()`를 호출한다.
-8. 게시글 제목과 본문을 렌더링한다.
-9. 상세에서 수정 화면으로 가는 `Edit` 링크를 만든다.
-10. `page.module.css`에서 본문 줄바꿈 스타일을 작성한다.
+1. `app/contact/ContactForm.js` 파일을 만든다.
+2. 파일 맨 위에 `"use client";`를 추가한다.
+3. `useState`를 import한다.
+4. `name`, `email`, `message` 상태를 만든다.
+5. `handleSubmit` 함수를 만든다.
+6. `event.preventDefault()`를 호출한다.
+7. `alert()`로 mockup 메시지를 보여준다.
+8. form 안에 name/email/message 입력을 만든다.
+9. `app/contact/page.js`에서 `ContactForm`을 import해 렌더링한다.
 
 ## 실행 확인
 
-MongoDB와 개발 서버를 실행합니다.
+개발 서버를 실행합니다.
 
 ```bash
 npm run dev
 ```
 
-브라우저에서 홈 화면을 엽니다.
+브라우저에서 다음 주소를 엽니다.
 
 ```txt
-http://localhost:3000/
+http://localhost:3000/contact
 ```
 
-게시글 제목을 클릭했을 때 `/detail/[id]` 상세 화면으로 이동하면 성공입니다.
+이름, 이메일, 내용을 입력하고 `Submit` 버튼을 누릅니다.
 
-상세 화면에서 `Edit` 링크를 누르면 `/post/[id]` 수정 화면으로 이동해야 합니다.
+입력값이 alert 창에 보이면 성공입니다.
 
 ## 검증 명령
 
@@ -236,46 +217,6 @@ npm run lint
 npm run build
 ```
 
-빌드 출력에 다음 route가 보이면 상세 동적 라우트가 추가된 것입니다.
-
-```txt
-/detail/[id]
-```
-
-## 자주 발생하는 실수
-
-### 상세 페이지에 "use client"를 붙이는 경우
-
-이 상세 페이지는 서버 컴포넌트입니다. MongoDB 데이터 함수를 직접 호출하려면 `"use client"`를 붙이지 않습니다.
-
-### params를 await하지 않는 경우
-
-이 프로젝트의 Next.js 버전에서는 다음처럼 작성합니다.
-
-```js
-const { id } = await params;
-```
-
-### getPostById import 경로를 틀리는 경우
-
-이 프로젝트는 `jsconfig.json`에서 `@/*` alias를 사용합니다.
-
-```js
-import { getPostById } from "@/lib/posts";
-```
-
-### 본문을 p 태그로 출력해 줄바꿈이 사라지는 경우
-
-textarea에서 입력한 줄바꿈을 보여주려면 `pre`와 `white-space: pre-wrap` 조합을 사용합니다.
-
-### Edit 링크 주소를 잘못 만드는 경우
-
-수정 화면은 `/post/[id]`입니다. 상세 화면은 `/detail/[id]`입니다.
-
-```jsx
-<Link href={`/post/${id}`}>Edit</Link>
-```
-
 ## 이 단계에서 아직 하지 않는 것
 
-블로그의 핵심 CRUD 흐름은 대부분 연결됐습니다. 마지막 단계에서는 Contact 페이지를 mockup form으로 바꾸고, README를 단계별 실습 저장소에 맞게 정리합니다.
+이 단계에서는 실제 메일을 보내지 않습니다. 다음 단계에서는 새 기능을 추가하기보다 README와 불필요한 기본 파일을 정리해 basic 커리큘럼을 마무리합니다.
