@@ -6,6 +6,13 @@ import styles from "./page.module.css";
 
 const PAGE_SIZE = 5;
 const DEFAULT_SORT = "created-desc";
+const CATEGORY_FILTERS = [
+  { value: "all", label: "All categories" },
+  { value: "general", label: "General" },
+  { value: "notice", label: "Notice" },
+  { value: "daily", label: "Daily" },
+  { value: "tech", label: "Tech" },
+];
 
 function formatDate(dateValue) {
   if (!dateValue) {
@@ -37,7 +44,7 @@ async function fetchPosts(url) {
   return result.data;
 }
 
-function buildPostsUrl({ keyword, page, sort }) {
+function buildPostsUrl({ keyword, page, sort, category }) {
   const params = new URLSearchParams({
     page: String(page),
     limit: String(PAGE_SIZE),
@@ -46,6 +53,10 @@ function buildPostsUrl({ keyword, page, sort }) {
 
   if (keyword) {
     params.set("keyword", keyword);
+  }
+
+  if (category && category !== "all") {
+    params.set("category", category);
   }
 
   return `/api/post?${params.toString()}`;
@@ -61,18 +72,25 @@ export default function Home() {
   const [searchMessage, setSearchMessage] = useState("");
   const [serverKeyword, setServerKeyword] = useState("");
   const [sortOrder, setSortOrder] = useState(DEFAULT_SORT);
+  const [categoryFilter, setCategoryFilter] = useState("all");
 
   async function loadPosts({
     page = 1,
     searchKeyword = serverKeyword,
     sortValue = sortOrder,
+    categoryValue = categoryFilter,
   } = {}) {
     setError("");
     setIsLoading(true);
 
     try {
       const data = await fetchPosts(
-        buildPostsUrl({ keyword: searchKeyword, page, sort: sortValue }),
+        buildPostsUrl({
+          keyword: searchKeyword,
+          page,
+          sort: sortValue,
+          category: categoryValue,
+        }),
       );
       setAllPosts(data.posts);
       setPosts(data.posts);
@@ -88,7 +106,12 @@ export default function Home() {
     async function loadInitialPosts() {
       try {
         const data = await fetchPosts(
-          buildPostsUrl({ keyword: "", page: 1, sort: DEFAULT_SORT }),
+          buildPostsUrl({
+            keyword: "",
+            page: 1,
+            sort: DEFAULT_SORT,
+            category: "all",
+          }),
         );
         setAllPosts(data.posts);
         setPosts(data.posts);
@@ -141,8 +164,9 @@ export default function Home() {
   async function handleShowAll() {
     setKeyword("");
     setServerKeyword("");
+    setCategoryFilter("all");
     setSearchMessage("");
-    await loadPosts({ page: 1, searchKeyword: "" });
+    await loadPosts({ page: 1, searchKeyword: "", categoryValue: "all" });
   }
 
   async function handlePageChange(nextPage) {
@@ -161,6 +185,22 @@ export default function Home() {
     });
   }
 
+  async function handleCategoryChange(event) {
+    const nextCategory = event.target.value;
+
+    setCategoryFilter(nextCategory);
+    setSearchMessage(
+      nextCategory === "all"
+        ? "Showing all categories."
+        : `Showing ${nextCategory} posts.`,
+    );
+    await loadPosts({
+      page: 1,
+      searchKeyword: serverKeyword,
+      categoryValue: nextCategory,
+    });
+  }
+
   return (
     <main>
       <form onSubmit={(event) => event.preventDefault()}>
@@ -172,6 +212,20 @@ export default function Home() {
           onChange={(event) => setKeyword(event.target.value)}
           disabled={isLoading}
         />
+
+        <label htmlFor="categoryFilter">Category:</label>
+        <select
+          id="categoryFilter"
+          value={categoryFilter}
+          onChange={handleCategoryChange}
+          disabled={isLoading}
+        >
+          {CATEGORY_FILTERS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
 
         <label htmlFor="sortOrder">Sort posts:</label>
         <select
@@ -207,6 +261,7 @@ export default function Home() {
             {posts.map((post) => (
               <article key={post._id} className={styles.article}>
                 <Link href={`/detail/${post._id}`}>{post.title}</Link>
+                <p>Category: {post.category || "general"}</p>
                 <p>Created: {formatDate(post.createdAt)}</p>
                 {post.updatedAt && (
                   <p>Updated: {formatDate(post.updatedAt)}</p>
