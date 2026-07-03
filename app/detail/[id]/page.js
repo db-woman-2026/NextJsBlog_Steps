@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPostById } from "@/lib/posts";
+import DeletePostButton from "./DeletePostButton";
 import styles from "./page.module.css";
 
 function formatDate(dateValue) {
@@ -28,6 +29,7 @@ export default async function BlogDetail({ params }) {
         <pre className={styles.content}>{post.content}</pre>
       </article>
       <Link href={`/post/${id}`}>Edit</Link>
+      <DeletePostButton id={id} />
     </main>
   );
 }
