@@ -26,9 +26,10 @@ export default function NewPost() {
           image: "https://picsum.photos/100",
         }),
       });
+      const result = await response.json();
 
       if (!response.ok) {
-        throw new Error("Failed to create post");
+        throw new Error(result.message || "Failed to create post");
       }
 
       router.push("/");
