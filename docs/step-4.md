@@ -1,8 +1,8 @@
-# Basic 4. API Route로 게시글 JSON 응답 만들기
+# Step 4. API Route로 게시글 JSON 응답 만들기
 
 ## 이 단계의 목표
 
-`basic-4` 브랜치는 `basic-3`에서 만든 데이터 함수를 HTTP API로 연결하는 단계입니다.
+`step-4` 브랜치는 `step-3`에서 만든 데이터 함수를 HTTP API로 연결하는 단계입니다.
 
 이 단계가 끝나면 다음 API가 생깁니다.
 
