@@ -13,11 +13,11 @@
 | `basic-2` | `simpledotcss`, 전역 스타일, About 이미지, 이미지 도메인 설정 |
 | `basic-3` | MongoDB 연결, 환경 변수 예시, 게시글 데이터 함수 |
 | `basic-4` | 게시글 목록/작성/단건조회/수정 API Route |
-| `basic-5` | 홈 화면에서 게시글 목록 API 호출 |
+| `basic-5` | 홈 화면 게시글 목록과 `/detail/[id]` 상세 읽기 화면 |
 | `basic-6` | 새 게시글 작성 form과 POST 요청 |
-| `basic-7` | 게시글 수정 form과 PUT 요청 |
-| `basic-8` | 게시글 상세 화면과 상세에서 수정으로 이동 |
-| `basic-9` | Contact mockup form, README 정리, 최종 기본 기능 |
+| `basic-7` | 상세 화면에서 진입하는 게시글 수정 form과 PUT 요청 |
+| `basic-8` | Contact mockup form |
+| `basic-9` | README 정리, 불필요한 기본 파일 제거, 최종 기본 기능 |
 
 각 단계 설명은 `/docs/basic-N.md`에 있습니다.
 
