@@ -8,6 +8,7 @@ export default function EditPost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { id } = useParams();
   const router = useRouter();
 
@@ -37,6 +38,7 @@ export default function EditPost() {
   async function handleSubmit(event) {
     event.preventDefault();
     setError("");
+    setIsSubmitting(true);
 
     try {
       const response = await fetch(`/api/post/${id}`, {
@@ -52,10 +54,12 @@ export default function EditPost() {
         throw new Error(result.message || "Failed to update post");
       }
 
-      router.replace("/");
+      router.replace(`/detail/${result.data.postId}`);
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to update post");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -70,6 +74,7 @@ export default function EditPost() {
           id="title"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
+          disabled={isSubmitting}
           required
         />
 
@@ -78,10 +83,13 @@ export default function EditPost() {
           id="content"
           value={content}
           onChange={(event) => setContent(event.target.value)}
+          disabled={isSubmitting}
           required
         />
 
-        <button type="submit">Update Post</button>
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Updating..." : "Update Post"}
+        </button>
       </form>
     </main>
   );
