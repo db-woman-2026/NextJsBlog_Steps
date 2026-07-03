@@ -1,9 +1,12 @@
 import { apiError, apiSuccess } from "@/lib/apiResponse";
 import { createPost, listPosts } from "@/lib/posts";
 
-export async function GET() {
+export async function GET(request) {
   try {
-    const posts = await listPosts();
+    const { searchParams } = new URL(request.url);
+    const keyword = searchParams.get("keyword") || "";
+    const posts = await listPosts(keyword);
+
     return apiSuccess(posts, "Posts fetched successfully");
   } catch (error) {
     console.error("Error fetching posts:", error);
