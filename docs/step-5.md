@@ -87,13 +87,13 @@ useEffect(() => {
   async function loadPosts() {
     try {
       const response = await fetch("/api/post", { cache: "no-store" });
+      const result = await response.json();
 
       if (!response.ok) {
-        throw new Error("Failed to fetch posts");
+        throw new Error(result.message || "Failed to fetch posts");
       }
 
-      const data = await response.json();
-      setPosts(data);
+      setPosts(result.data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch posts");
     } finally {
@@ -109,17 +109,22 @@ useEffect(() => {
 
 `cache: "no-store"`는 매번 최신 데이터를 요청하겠다는 의미입니다. 게시글 작성/수정 후 목록이 오래된 데이터로 보이는 문제를 줄이기 위해 사용합니다.
 
+`step-4`에서 API 응답 형식을 `{ success, message, data }`로 통일했기 때문에, 목록 배열은 응답 객체 자체가 아니라 `result.data`에 들어 있습니다.
+
 ## response.ok 확인
 
 `fetch`는 서버가 400이나 500 응답을 보내도 JavaScript 오류를 자동으로 던지지 않습니다. 그래서 직접 확인합니다.
 
 ```js
+const result = await response.json();
+
 if (!response.ok) {
-  throw new Error("Failed to fetch posts");
+  throw new Error(result.message || "Failed to fetch posts");
 }
 ```
 
 `response.ok`는 상태 코드가 200번대일 때 `true`입니다.
+오류 응답도 `{ success, message, data }` 형식이므로, 화면에는 `result.message`를 보여줄 수 있습니다.
 
 ## 조건부 렌더링
 
@@ -234,7 +239,7 @@ if (!post) {
 API Route에서는 게시글이 없을 때 JSON과 상태 코드 404를 반환했습니다.
 
 ```js
-return NextResponse.json({ error: "Post not found" }, { status: 404 });
+return apiError("Post not found", 404);
 ```
 
 페이지 컴포넌트에서는 JSON이 아니라 화면 흐름이 필요하므로 `notFound()`를 사용합니다.
@@ -307,7 +312,7 @@ CSS Module을 사용하면 클래스 이름이 해당 컴포넌트 범위 안에
 4. `useEffect` 안에 `loadPosts` async 함수를 만든다.
 5. `fetch("/api/post", { cache: "no-store" })`로 API를 호출한다.
 6. `response.ok`를 확인한다.
-7. `response.json()` 결과를 `posts`에 저장한다.
+7. `response.json()` 결과에서 `data`를 꺼내 `posts`에 저장한다.
 8. 오류가 나면 `error`에 메시지를 저장한다.
 9. `finally`에서 `isLoading`을 `false`로 바꾼다.
 10. 상태에 맞게 로딩/오류/빈 목록/목록 화면을 렌더링한다.

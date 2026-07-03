@@ -125,12 +125,13 @@ useEffect(() => {
   async function loadPost() {
     try {
       const response = await fetch(`/api/post/${id}`);
+      const result = await response.json();
 
       if (!response.ok) {
-        throw new Error("Failed to fetch post data");
+        throw new Error(result.message || "Failed to fetch post data");
       }
 
-      const post = await response.json();
+      const post = result.data;
       setTitle(post.title);
       setContent(post.content);
     } catch (err) {
@@ -147,6 +148,8 @@ useEffect(() => {
 `[id]`는 effect의 dependency입니다. id가 준비되거나 바뀌면 effect가 실행됩니다.
 
 `if (id)` 조건은 id가 있을 때만 API를 호출하기 위한 방어 코드입니다.
+
+`GET /api/post/[id]` 응답은 `{ success, message, data }` 형식이므로, form에 채울 게시글은 `result.data`에서 꺼냅니다.
 
 ## form에 기존 값 채우기
 
@@ -191,6 +194,16 @@ POST /api/post       -> 새 글 생성
 PUT /api/post/[id]   -> 기존 글 수정
 ```
 
+수정 실패를 감지할 때도 응답 body의 `message`를 사용합니다.
+
+```js
+const result = await response.json();
+
+if (!response.ok) {
+  throw new Error(result.message || "Failed to update post");
+}
+```
+
 ## router.replace 사용
 
 수정 성공 후에는 홈으로 이동합니다.
@@ -225,7 +238,7 @@ import styles from "../page.module.css";
 5. 작성 화면과 같은 `title`, `content`, `error` 상태를 만든다.
 6. `const { id } = useParams();`로 URL id를 읽는다.
 7. `useEffect`에서 `GET /api/post/${id}`를 호출한다.
-8. 응답의 `title`, `content`를 상태에 저장한다.
+8. 응답의 `data.title`, `data.content`를 상태에 저장한다.
 9. submit 시 `PUT /api/post/${id}` 요청을 보낸다.
 10. 성공하면 `router.replace("/")`와 `router.refresh()`를 호출한다.
 11. 작성 화면과 같은 form JSX를 만든다.

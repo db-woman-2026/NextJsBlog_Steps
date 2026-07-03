@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { apiError, apiSuccess } from "@/lib/apiResponse";
 import { getPostById, updatePost } from "@/lib/posts";
 
 export async function GET(_request, { params }) {
@@ -7,16 +7,13 @@ export async function GET(_request, { params }) {
     const post = await getPostById(id);
 
     if (!post) {
-      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+      return apiError("Post not found", 404);
     }
 
-    return NextResponse.json(post);
+    return apiSuccess(post, "Post fetched successfully");
   } catch (error) {
     console.error("Error fetching post:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
-    );
+    return apiError("Internal Server Error", 500);
   }
 }
 
@@ -26,24 +23,18 @@ export async function PUT(request, { params }) {
     const postData = await request.json();
 
     if (!postData.title || !postData.content) {
-      return NextResponse.json(
-        { error: "Title and content are required" },
-        { status: 400 },
-      );
+      return apiError("Title and content are required", 400);
     }
 
     const result = await updatePost(id, postData);
 
     if (!result || result.matchedCount === 0) {
-      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+      return apiError("Post not found", 404);
     }
 
-    return NextResponse.json({ message: "Post updated successfully" });
+    return apiSuccess({ postId: id }, "Post updated successfully");
   } catch (error) {
     console.error("Error updating post:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
-    );
+    return apiError("Internal Server Error", 500);
   }
 }

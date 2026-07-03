@@ -177,13 +177,17 @@ API Route에서는 이 body를 다음처럼 읽습니다.
 const postData = await request.json();
 ```
 
+API 응답은 `step-4`에서 정한 `{ success, message, data }` 형식으로 돌아옵니다. 작성 성공 시 생성된 id는 `data.postId`에 들어 있지만, 이 화면은 성공 후 바로 홈으로 이동하므로 id를 화면에 직접 쓰지는 않습니다.
+
 ## response.ok 확인
 
 작성 실패를 감지하기 위해 응답 상태를 확인합니다.
 
 ```js
+const result = await response.json();
+
 if (!response.ok) {
-  throw new Error("Failed to create post");
+  throw new Error(result.message || "Failed to create post");
 }
 ```
 
