@@ -12,7 +12,7 @@
 | `step-1` | App Router 기본 페이지, Header, Footer, nav 구성 |
 | `step-2` | `simpledotcss`, 전역 스타일, About 이미지, 이미지 도메인 설정 |
 | `step-3` | MongoDB 연결, 환경 변수 예시, 게시글 데이터 함수 |
-| `step-4` | 게시글 목록/작성/단건조회/수정 API Route |
+| `step-4` | 게시글 목록/작성/단건조회/수정 API Route와 통일된 응답 형식 |
 | `step-5` | 홈 화면 게시글 목록과 `/detail/[id]` 상세 읽기 화면 |
 | `step-6` | 새 게시글 작성 form과 POST 요청 |
 | `step-7` | 상세 화면에서 진입하는 게시글 수정 form과 PUT 요청 |
@@ -71,6 +71,35 @@ npm run dev
 | `/api/post` | 게시글 목록/작성 API |
 | `/api/post/[id]` | 게시글 단건 조회/수정 API |
 
+## API Response Format
+
+모든 API 응답은 같은 최상위 필드를 사용합니다.
+
+```json
+{
+  "success": true,
+  "message": "Posts fetched successfully",
+  "data": []
+}
+```
+
+오류도 같은 형식으로 반환합니다.
+
+```json
+{
+  "success": false,
+  "message": "Post not found",
+  "data": null
+}
+```
+
+| Method | 주소 | 요청 데이터 | 성공 시 `data` |
+| --- | --- | --- | --- |
+| `GET` | `/api/post` | 없음 | 게시글 배열 |
+| `POST` | `/api/post` | `{ title, content, image? }` | `{ postId }` |
+| `GET` | `/api/post/[id]` | URL의 `id` | 게시글 하나 |
+| `PUT` | `/api/post/[id]` | URL의 `id`, `{ title, content }` | `{ postId }` |
+
 ## Useful Commands
 
 ```bash
@@ -84,6 +113,7 @@ npm run build
 
 - 페이지 라우트는 `app` 폴더의 `page.js` 파일로 만듭니다.
 - API 라우트는 `app/api` 폴더의 `route.js` 파일로 만듭니다.
+- API 응답은 `lib/apiResponse.js`의 `apiSuccess`, `apiError`로 통일합니다.
 - MongoDB 연결은 `lib/mongodb.js`에 있습니다.
 - 게시글 데이터 함수는 `lib/posts.js`에 있습니다.
 - 클라이언트 컴포넌트에서 MongoDB를 직접 import하지 않습니다.

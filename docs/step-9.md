@@ -11,6 +11,7 @@
 - README를 단계별 브랜치 전략에 맞게 정리한다.
 - 사용하지 않는 `create-next-app` 기본 이미지 자산을 제거한다.
 - 최종 라우트 목록과 실행 방법을 문서화한다.
+- API별 요청과 응답 형식이 `step-4`부터 끝까지 유지되는지 확인한다.
 - step 전체 흐름을 검증한다.
 
 ## 최종 단계에서 기능을 더 넣지 않는 이유
@@ -61,7 +62,7 @@ main     -> Next.js 기본 프로젝트
 step-1  -> 라우팅과 레이아웃 껍데기
 step-2  -> 스타일과 이미지 설정
 step-3  -> MongoDB 데이터 계층
-step-4  -> API Route
+step-4  -> API Route와 응답 형식 통일
 step-5  -> 목록과 상세 읽기
 step-6  -> 작성
 step-7  -> 수정
@@ -105,12 +106,34 @@ app/favicon.ico
 
 API 라우트는 다음과 같습니다.
 
-| Method | 주소 | 역할 |
-| --- | --- | --- |
-| `GET` | `/api/post` | 게시글 목록 조회 |
-| `POST` | `/api/post` | 게시글 작성 |
-| `GET` | `/api/post/[id]` | 게시글 단건 조회 |
-| `PUT` | `/api/post/[id]` | 게시글 수정 |
+| Method | 주소 | 요청 데이터 | 성공 시 `data` |
+| --- | --- | --- | --- |
+| `GET` | `/api/post` | 없음 | 게시글 배열 |
+| `POST` | `/api/post` | `{ title, content, image? }` | `{ postId }` |
+| `GET` | `/api/post/[id]` | URL의 `id` | 게시글 하나 |
+| `PUT` | `/api/post/[id]` | URL의 `id`, `{ title, content }` | `{ postId }` |
+
+모든 API 응답은 `step-4`에서 만든 공통 형식을 사용합니다.
+
+```json
+{
+  "success": true,
+  "message": "Posts fetched successfully",
+  "data": []
+}
+```
+
+오류 응답도 같은 최상위 필드를 유지합니다.
+
+```json
+{
+  "success": false,
+  "message": "Post not found",
+  "data": null
+}
+```
+
+따라서 화면 코드는 `response.json()` 결과에서 항상 `message`와 `data`를 같은 방식으로 읽습니다. 홈 목록은 `data` 배열을 사용하고, 수정 화면의 단건 조회는 `data.title`, `data.content`를 form에 채웁니다.
 
 ## 최종 기능 확인
 
@@ -124,6 +147,7 @@ API 라우트는 다음과 같습니다.
 6. 작성 후 홈으로 이동하고, 새 글을 눌러 상세 화면에서 확인한다.
 7. `/about`에서 소개 이미지가 보이는지 확인한다.
 8. `/contact`에서 mockup form alert가 동작하는지 확인한다.
+9. `/api/post`, `/api/post/[id]`의 성공/오류 응답이 모두 `{ success, message, data }` 형식인지 확인한다.
 
 ## 검증 명령
 
@@ -174,7 +198,6 @@ main -> step-1 -> step-2 -> ... -> step-9
 - 관리자 페이지
 - 실제 Contact 메일 전송
 - 로딩 UI 개선
-- API 응답 형식 통일
 - 테스트 코드 추가
 
 이 저장소의 step 브랜치는 여기서 끝납니다. 이후 확장 기능은 `advanced-N`처럼 별도의 브랜치 흐름으로 나누는 편이 관리하기 쉽습니다.
