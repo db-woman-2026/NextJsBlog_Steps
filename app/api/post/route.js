@@ -1,16 +1,13 @@
-import { NextResponse } from "next/server";
+import { apiError, apiSuccess } from "@/lib/apiResponse";
 import { createPost, listPosts } from "@/lib/posts";
 
 export async function GET() {
   try {
     const posts = await listPosts();
-    return NextResponse.json(posts);
+    return apiSuccess(posts, "Posts fetched successfully");
   } catch (error) {
     console.error("Error fetching posts:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
-    );
+    return apiError("Internal Server Error", 500);
   }
 }
 
@@ -19,26 +16,18 @@ export async function POST(request) {
     const postData = await request.json();
 
     if (!postData.title || !postData.content) {
-      return NextResponse.json(
-        { error: "Title and content are required" },
-        { status: 400 },
-      );
+      return apiError("Title and content are required", 400);
     }
 
     const result = await createPost(postData);
 
-    return NextResponse.json(
-      {
-        message: "Post created successfully",
-        postId: result.insertedId,
-      },
+    return apiSuccess(
+      { postId: result.insertedId },
+      "Post created successfully",
       { status: 201 },
     );
   } catch (error) {
     console.error("Error creating post:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
-    );
+    return apiError("Internal Server Error", 500);
   }
 }

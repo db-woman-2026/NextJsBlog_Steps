@@ -13,13 +13,13 @@ export default function Home() {
     async function loadPosts() {
       try {
         const response = await fetch("/api/post", { cache: "no-store" });
+        const result = await response.json();
 
         if (!response.ok) {
-          throw new Error("Failed to fetch posts");
+          throw new Error(result.message || "Failed to fetch posts");
         }
 
-        const data = await response.json();
-        setPosts(data);
+        setPosts(result.data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch posts");
       } finally {
