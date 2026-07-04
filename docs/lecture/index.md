@@ -1,6 +1,6 @@
 # Lecture Index
 
-이 폴더는 `step-14` 브랜치에서 사용할 수 있는 실습형 강의 자료입니다.
+이 폴더는 `step-15` 브랜치에서 사용할 수 있는 실습형 강의 자료입니다.
 각 문서는 학생이 이전 단계 실습 결과에서 현재 단계로 넘어오며 직접 입력할 기능 코드를 작업 단위로 나누고, 설명 바로 아래에 프로젝트 내부 파일 링크와 실제 diff를 제공합니다.
 
 강의 실습은 이 `docs/lecture/` 문서를 기준으로 진행합니다.
@@ -23,6 +23,7 @@
 | `step-12` | [lecture/step-12.md](./step-12.md) | 홈 목록과 상세 화면에 작성일과 수정일을 표시합니다. |
 | `step-13` | [lecture/step-13.md](./step-13.md) | MongoDB 삭제 함수, DELETE /api/post/[id], 상세 화면 삭제 버튼으로 삭제 흐름을 완성합니다. |
 | `step-14` | [lecture/step-14.md](./step-14.md) | 브라우저가 이미 가진 목록 배열을 기준으로 클라이언트 필터 검색을 추가합니다. |
+| `step-15` | [lecture/step-15.md](./step-15.md) | keyword query string을 API로 보내 MongoDB에서 직접 검색하는 서버 검색을 추가합니다. |
 
 ## 실습 방식
 
