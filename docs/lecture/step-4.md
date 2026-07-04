@@ -1,9 +1,5 @@
 # Step 4. API Route와 통일된 JSON 응답 만들기
 
-이 문서는 이전 단계 실습 결과에서 시작해 `step-4` 수준의 기능을 완성하는 실습 자료입니다.
-원본 개요는 [docs/overview/step-4.md](../overview/step-4.md)에 보존되어 있습니다.
-아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
-
 ## 이번 스텝 주요 기능 Overview
 
 게시글 목록/작성/단건조회/수정 API Route를 만들고 { success, message, data } 응답 형식을 통일합니다.
@@ -11,16 +7,6 @@
 - `lib/posts.js`의 데이터 함수를 HTTP API로 노출합니다.
 - 목록/작성 API인 `/api/post`와 단건 조회/수정 API인 `/api/post/[id]`를 만듭니다.
 - 모든 성공/실패 응답을 `{ success, message, data }` 구조로 통일합니다.
-
-## 시작 기준
-
-이미 `step-3` 실습을 끝낸 코드에서 이어서 진행합니다.
-단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
-
-```bash
-git switch practice-step-3
-git switch -c practice-step-4
-```
 
 ## 작업 1. 공통 API 응답 helper 추가
 
