@@ -10,7 +10,7 @@
 
 ## 작업 1. 데이터 계층에 category 필드 반영
 
-새 글, 샘플 글, 수정 글 모두 같은 category 규칙을 가져야 합니다. 누락된 값은 `general`로 저장해 화면과 필터가 안정적으로 동작하게 합니다.
+새 글, 샘플 글, 수정 글 모두 같은 category 규칙을 가져야 합니다. 이전 단계에서 만든 기존 게시글에는 아직 category가 없을 수 있으므로, 목록을 조회할 때 누락된 값을 `general`로 보정해 화면과 필터가 안정적으로 동작하게 합니다.
 
 ### 직접 수정할 파일
 
@@ -22,7 +22,7 @@
 
 ~~~diff
 diff --git a/lib/posts.js b/lib/posts.js
-index 2013802..0859268 100644
+index 2013802..f62257a 100644
 --- a/lib/posts.js
 +++ b/lib/posts.js
 @@ -3,6 +3,13 @@ import getMongoClient from "./mongodb";
@@ -47,7 +47,28 @@ index 2013802..0859268 100644
    }));
  }
 
-@@ -28,19 +36,23 @@ export async function seedPostsIfEmpty() {
+@@ -19,6 +27,19 @@ async function getPostsCollection() {
+   return client.db(dbName).collection(collectionName);
+ }
+ 
++async function ensurePostCategories(collection) {
++  await collection.updateMany(
++    {
++      $or: [
++        { category: { $exists: false } },
++        { category: null },
++        { category: "" },
++      ],
++    },
++    { $set: { category: "general" } },
++  );
++}
++
+ export async function seedPostsIfEmpty() {
+   const collection = await getPostsCollection();
+   const count = await collection.countDocuments();
+
+@@ -28,19 +49,23 @@ export async function seedPostsIfEmpty() {
    }
  }
 
@@ -80,7 +101,7 @@ index 2013802..0859268 100644
  }
 
  function buildPostSort(sort) {
-@@ -62,11 +74,12 @@ export async function listPosts({
+@@ -62,11 +87,14 @@ export async function listPosts({
    page = 1,
    limit = 5,
    sort = "created-desc",
@@ -90,11 +111,13 @@ index 2013802..0859268 100644
 
    const collection = await getPostsCollection();
 -  const query = buildPostQuery(keyword);
++  await ensurePostCategories(collection);
++
 +  const query = buildPostQuery(keyword, category);
    const currentPage = Math.max(Number(page) || 1, 1);
    const pageSize = Math.min(Math.max(Number(limit) || 5, 1), 20);
    const skip = (currentPage - 1) * pageSize;
-@@ -99,6 +112,7 @@ export async function createPost(postData) {
+@@ -99,6 +127,7 @@ export async function createPost(postData) {
      title: postData.title,
      content: postData.content,
      image: postData.image || "https://picsum.photos/100",
@@ -102,7 +125,7 @@ index 2013802..0859268 100644
      createdAt: new Date(),
    });
 
-@@ -135,6 +149,7 @@ export async function updatePost(id, postData) {
+@@ -135,6 +164,7 @@ export async function updatePost(id, postData) {
        $set: {
          title: postData.title,
          content: postData.content,
@@ -115,6 +138,7 @@ index 2013802..0859268 100644
 ### 설명/확인 포인트
 
 - 샘플 데이터에도 category가 들어가야 필터를 바로 테스트할 수 있습니다.
+- 이전 단계에서 이미 만든 게시글은 category가 없을 수 있으므로 목록 조회 전에 `general`로 보정합니다.
 - 검색 조건과 카테고리 조건은 동시에 적용됩니다.
 
 ## 작업 2. API 요청/응답에 category 연결
