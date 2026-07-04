@@ -2,17 +2,15 @@
 
 이 문서는 `step-21`에서 시작해 `step-22`를 완성하는 실습 자료입니다.
 원본 개요는 [docs/overview/step-22.md](../overview/step-22.md)에 보존되어 있습니다.
-실제 완성 코드는 [step-22 브랜치](https://github.com/db-woman-2026/NextJsBlog_Steps/tree/step-22) 기준입니다.
+아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
 
-## 이번 단계 목표
+## 이번 스텝 주요 기능 Overview
 
 게시글 작성/수정 form과 Contact form에 같은 Tailwind 입력/버튼 패턴을 적용합니다.
 
-이번 단계에서 집중할 내용은 다음과 같습니다.
-
-- 작성, 수정, Contact form에 같은 입력 스타일을 적용합니다.
-- 반복 className을 상수로 분리합니다.
-- focus, disabled, error 상태를 Tailwind class로 표현합니다.
+- 게시글 작성/수정 form에 같은 Tailwind 입력 패턴을 적용합니다.
+- Contact mockup form도 같은 카드/label/input/button 구조로 정리합니다.
+- 기존 post CSS module을 제거하고 오류 메시지를 alert 형태로 표시합니다.
 
 ## 시작 기준
 
@@ -20,789 +18,555 @@
 
 ```bash
 git switch step-21
-# 실습용 브랜치를 직접 만들 경우
 git switch -c practice-step-22
 ```
 
-수업 저장소의 정답 브랜치를 바로 확인하려면 다음 명령을 사용할 수 있습니다.
+정답 브랜치는 확인용으로만 사용합니다.
 
 ```bash
 git switch step-22
 ```
 
-## 수정 파일
+## 작업 1. 게시글 작성 form Tailwind UI 적용
 
-| 상태 | 파일 | 확인 링크 |
-| --- | --- | --- |
-| 수정 | `README.md` | [README.md](https://github.com/db-woman-2026/NextJsBlog_Steps/blob/step-22/README.md) |
-| 수정 | `app/contact/ContactForm.js` | [app/contact/ContactForm.js](https://github.com/db-woman-2026/NextJsBlog_Steps/blob/step-22/app/contact/ContactForm.js) |
-| 수정 | `app/contact/page.js` | [app/contact/page.js](https://github.com/db-woman-2026/NextJsBlog_Steps/blob/step-22/app/contact/page.js) |
-| 수정 | `app/post/[id]/page.js` | [app/post/[id]/page.js](https://github.com/db-woman-2026/NextJsBlog_Steps/blob/step-22/app/post/%5Bid%5D/page.js) |
-| 수정 | `app/post/page.js` | [app/post/page.js](https://github.com/db-woman-2026/NextJsBlog_Steps/blob/step-22/app/post/page.js) |
-| 삭제 | `app/post/page.module.css` | [app/post/page.module.css](https://github.com/db-woman-2026/NextJsBlog_Steps/blob/step-21/app/post/page.module.css) |
+작성 화면에 제목 영역과 form 카드 UI를 적용합니다. 반복되는 label/input/button class는 상수로 분리해 같은 패턴을 재사용합니다.
 
-문서 파일은 이 강의 자료에서 별도로 관리하므로 위 표에는 기능 구현에 필요한 코드와 설정 파일만 넣었습니다.
+### 수정할 파일
 
-## 코드 작성
+- 수정: [app/post/page.js](../../app/post/page.js)
+- 삭제: `app/post/page.module.css`
 
-아래 순서대로 파일을 만들거나 수정합니다. 각 코드 블록은 해당 단계 브랜치의 실제 파일 내용을 기준으로 합니다.
-
-### 1. README.md
-
-기존 `README.md` 파일을 열고 아래 최종 코드와 같게 수정합니다.
-
-저장소 첫 화면에서 프로젝트 목적, 실행 방법, 단계 흐름을 설명하는 문서입니다.
-
-````markdown
-# NextJsBlog_Steps
-
-초급 개발자 교육용 Next.js 블로그 프로젝트를 단계별 브랜치로 나눈 저장소입니다.
-
-`main`은 `create-next-app` 직후의 기본 프로젝트 상태입니다. `step-1`부터는 이전 단계 위에 코드를 누적해서 실습합니다. `step-9`는 기본 블로그 기능의 마무리이고, `step-10`부터는 기능 확장 단계입니다.
-
-## Branch Flow
-
-| 브랜치 | 내용 |
-| --- | --- |
-| `main` | Next.js 기본 프로젝트 생성 상태 |
-| `step-1` | App Router 기본 페이지, Header, Footer, nav 구성 |
-| `step-2` | `simpledotcss`, 전역 스타일, About 이미지, 이미지 도메인 설정 |
-| `step-3` | MongoDB 연결, 환경 변수 예시, 게시글 데이터 함수 |
-| `step-4` | 게시글 목록/작성/단건조회/수정 API Route와 통일된 응답 형식 |
-| `step-5` | 홈 화면 게시글 목록과 `/detail/[id]` 상세 읽기 화면 |
-| `step-6` | 새 게시글 작성 form과 POST 요청 |
-| `step-7` | 상세 화면에서 진입하는 게시글 수정 form과 PUT 요청 |
-| `step-8` | Contact mockup form |
-| `step-9` | README 정리, 불필요한 기본 파일 제거, 최종 기본 기능 |
-| `step-10` | 입력값 검증 강화와 서버 오류 메시지 표시 |
-| `step-11` | 제출 중 상태와 작성/수정 후 상세 페이지 이동 |
-| `step-12` | 작성일과 수정일 표시 |
-| `step-13` | 삭제 기능 |
-| `step-14` | 클라이언트 필터 검색 |
-| `step-15` | 서버 검색 |
-| `step-16` | 페이지네이션 |
-| `step-17` | 정렬 기능 |
-| `step-18` | Not Found와 Error UI 개선 |
-| `step-19` | 카테고리 |
-| `step-20` | `simpledotcss` 제거, Tailwind CSS v4 설치, 공통 layout/nav/footer 정리 |
-| `step-21` | 홈 목록, 상세 읽기 화면, About 페이지의 기본 카드 UI |
-| `step-22` | 게시글 작성/수정 form과 Contact form의 Tailwind UI |
-
-전체 단계 개요는 `/docs/overview/index.md`에 있고, 실습형 강의 자료는 `/docs/lecture/index.md`와 `/docs/lecture/step-N.md`에 있습니다.
-
-## Stack
-
-- Next.js 16
-- React 19
-- MongoDB Node.js Driver 7
-- ESLint 9 flat config
-- Tailwind CSS v4
-
-## Getting Started
-
-의존성을 설치합니다.
-
-```bash
-npm install
-```
-
-환경 변수 예시 파일을 복사합니다.
-
-```bash
-cp .env.example .env.local
-```
-
-로컬 MongoDB를 사용한다면 `.env.local`을 다음처럼 둡니다.
-
-```txt
-MONGODB_URI=mongodb://localhost:27017/blog
-MONGODB_DB=blog
-```
-
-개발 서버를 실행합니다.
-
-```bash
-npm run dev
-```
-
-브라우저에서 [http://localhost:3000](http://localhost:3000)을 엽니다.
-
-## Routes
-
-| 주소 | 역할 |
-| --- | --- |
-| `/` | 게시글 목록 |
-| `/detail/[id]` | 게시글 상세 |
-| `/post` | 게시글 작성 |
-| `/post/[id]` | 게시글 수정 |
-| `/about` | 소개 페이지 |
-| `/contact` | Contact mockup form |
-| `/api/post` | 게시글 목록/작성 API |
-| `/api/post/[id]` | 게시글 단건 조회/수정/삭제 API |
-
-## API Response Format
-
-모든 API 응답은 같은 최상위 필드를 사용합니다.
-
-```json
-{
-  "success": true,
-  "message": "Posts fetched successfully",
-  "data": []
-}
-```
-
-오류도 같은 형식으로 반환합니다.
-
-```json
-{
-  "success": false,
-  "message": "Post not found",
-  "data": null
-}
-```
-
-| Method | 주소 | 요청 데이터 | 성공 시 `data` |
-| --- | --- | --- | --- |
-| `GET` | `/api/post` | query string: `keyword`, `page`, `limit`, `sort`, `category` | `{ posts, pagination }` |
-| `POST` | `/api/post` | `{ title, content, image?, category? }` | `{ postId }` |
-| `GET` | `/api/post/[id]` | URL의 `id` | 게시글 하나 |
-| `PUT` | `/api/post/[id]` | URL의 `id`, `{ title, content, category? }` | `{ postId }` |
-| `DELETE` | `/api/post/[id]` | URL의 `id` | `{ postId }` |
-
-## Useful Commands
-
-```bash
-npm run lint
-npm run build
-```
-
-`lint`는 코드 규칙을 확인하고, `build`는 실제 배포용 빌드가 가능한지 확인합니다.
-
-## Notes For Beginners
-
-- 페이지 라우트는 `app` 폴더의 `page.js` 파일로 만듭니다.
-- API 라우트는 `app/api` 폴더의 `route.js` 파일로 만듭니다.
-- API 응답은 `lib/apiResponse.js`의 `apiSuccess`, `apiError`로 통일합니다.
-- MongoDB 연결은 `lib/mongodb.js`에 있습니다.
-- 게시글 데이터 함수는 `lib/posts.js`에 있습니다.
-- 클라이언트 컴포넌트에서 MongoDB를 직접 import하지 않습니다.
-- 첫 `/api/post` 요청은 `posts` 컬렉션이 비어 있으면 샘플 게시글 10개를 넣습니다.
-- Contact form은 실제 메일을 보내지 않는 mockup입니다.
-````
-
-### 2. app/contact/ContactForm.js
-
-기존 `app/contact/ContactForm.js` 파일을 열고 아래 최종 코드와 같게 수정합니다.
-
-사용자 입력 상태와 submit 이벤트가 필요한 클라이언트 컴포넌트입니다.
-
-```jsx
-"use client";
-
-import { useState } from "react";
-
-const fieldClassName = "grid gap-1.5";
-const labelClassName = "text-sm font-medium text-zinc-700";
-const inputClassName =
-  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200";
-const textareaClassName = `${inputClassName} min-h-40 resize-y`;
-const primaryButtonClassName =
-  "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700";
-
-export default function ContactForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-
-  function handleSubmit(event) {
-    event.preventDefault();
-
-    alert(
-      `메일 전송 mockup입니다.\n\n이름: ${name}\n이메일: ${email}\n내용: ${message}`,
-    );
-  }
-
-  return (
-    <form
-      className="grid max-w-2xl gap-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
-      onSubmit={handleSubmit}
-    >
-      <div className={fieldClassName}>
-        <label className={labelClassName} htmlFor="name">
-          Name
-        </label>
-        <input
-          className={inputClassName}
-          type="text"
-          id="name"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          required
-        />
-      </div>
-
-      <div className={fieldClassName}>
-        <label className={labelClassName} htmlFor="email">
-          Email
-        </label>
-        <input
-          className={inputClassName}
-          type="email"
-          id="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          required
-        />
-      </div>
-
-      <div className={fieldClassName}>
-        <label className={labelClassName} htmlFor="message">
-          Message
-        </label>
-        <textarea
-          className={textareaClassName}
-          id="message"
-          value={message}
-          onChange={(event) => setMessage(event.target.value)}
-          required
-        />
-      </div>
-
-      <button className={primaryButtonClassName} type="submit">
-        Submit
-      </button>
-    </form>
-  );
-}
-```
-
-### 3. app/contact/page.js
-
-기존 `app/contact/page.js` 파일을 열고 아래 최종 코드와 같게 수정합니다.
-
-이 단계의 결과와 맞도록 파일 내용을 정리합니다.
-
-```jsx
-import ContactForm from "./ContactForm";
-
-export default function ContactPage() {
-  return (
-    <main className="space-y-6">
-      <section className="space-y-2">
-        <p className="text-sm font-semibold uppercase text-zinc-500">
-          Contact
-        </p>
-        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
-          Contact Us
-        </h1>
-        <p className="max-w-2xl text-sm leading-6 text-zinc-600">
-          controlled input과 submit 이벤트를 연습하는 mockup form입니다.
-        </p>
-      </section>
-      <ContactForm />
-    </main>
-  );
-}
-```
-
-### 4. app/post/[id]/page.js
-
-기존 `app/post/[id]/page.js` 파일을 열고 아래 최종 코드와 같게 수정합니다.
-
-게시글 작성 또는 수정 화면입니다. form 상태와 API 요청 흐름을 집중해서 봅니다.
-
-```jsx
-"use client";
-
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-
-const CATEGORY_OPTIONS = [
-  { value: "general", label: "General" },
-  { value: "notice", label: "Notice" },
-  { value: "daily", label: "Daily" },
-  { value: "tech", label: "Tech" },
-];
-const fieldClassName = "grid gap-1.5";
-const labelClassName = "text-sm font-medium text-zinc-700";
-const inputClassName =
-  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 disabled:bg-zinc-100";
-const textareaClassName = `${inputClassName} min-h-48 resize-y`;
-const primaryButtonClassName =
-  "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50";
-const errorClassName =
-  "rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700";
-
-export default function EditPost() {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [category, setCategory] = useState("general");
-  const [error, setError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { id } = useParams();
-  const router = useRouter();
-
-  useEffect(() => {
-    async function loadPost() {
-      try {
-        const response = await fetch(`/api/post/${id}`);
-        const result = await response.json();
-
-        if (!response.ok) {
-          throw new Error(result.message || "Failed to fetch post data");
-        }
-
-        const post = result.data;
-        setTitle(post.title);
-        setContent(post.content);
-        setCategory(post.category || "general");
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to fetch post");
-      }
-    }
-
-    if (id) {
-      loadPost();
-    }
-  }, [id]);
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setError("");
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch(`/api/post/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, content, category }),
-      });
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || "Failed to update post");
-      }
-
-      router.replace(`/detail/${result.data.postId}`);
-      router.refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to update post");
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
-  return (
-    <main className="space-y-6">
-      <section className="space-y-2">
-        <p className="text-sm font-semibold uppercase text-zinc-500">Edit</p>
-        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
-          Edit Post
-        </h1>
-        <p className="max-w-2xl text-sm leading-6 text-zinc-600">
-          기존 게시글을 불러온 뒤 제목, 본문, 카테고리를 수정합니다.
-        </p>
-      </section>
-      {error && (
-        <p className={errorClassName} role="alert">
-          {error}
-        </p>
-      )}
-      <form
-        className="grid max-w-2xl gap-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
-        onSubmit={handleSubmit}
-      >
-        <div className={fieldClassName}>
-          <label className={labelClassName} htmlFor="title">
-            Title
-          </label>
-          <input
-            className={inputClassName}
-            type="text"
-            id="title"
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-            disabled={isSubmitting}
-            required
-          />
-        </div>
-
-        <div className={fieldClassName}>
-          <label className={labelClassName} htmlFor="content">
-            Content
-          </label>
-          <textarea
-            className={textareaClassName}
-            id="content"
-            value={content}
-            onChange={(event) => setContent(event.target.value)}
-            disabled={isSubmitting}
-            required
-          />
-        </div>
-
-        <div className={fieldClassName}>
-          <label className={labelClassName} htmlFor="category">
-            Category
-          </label>
-          <select
-            className={inputClassName}
-            id="category"
-            value={category}
-            onChange={(event) => setCategory(event.target.value)}
-            disabled={isSubmitting}
-          >
-            {CATEGORY_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <button
-          className={primaryButtonClassName}
-          type="submit"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "Updating..." : "Update Post"}
-        </button>
-      </form>
-    </main>
-  );
-}
-```
-
-### 5. app/post/page.js
-
-기존 `app/post/page.js` 파일을 열고 아래 최종 코드와 같게 수정합니다.
-
-게시글 작성 또는 수정 화면입니다. form 상태와 API 요청 흐름을 집중해서 봅니다.
-
-```jsx
-"use client";
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-
-const CATEGORY_OPTIONS = [
-  { value: "general", label: "General" },
-  { value: "notice", label: "Notice" },
-  { value: "daily", label: "Daily" },
-  { value: "tech", label: "Tech" },
-];
-const fieldClassName = "grid gap-1.5";
-const labelClassName = "text-sm font-medium text-zinc-700";
-const inputClassName =
-  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 disabled:bg-zinc-100";
-const textareaClassName = `${inputClassName} min-h-48 resize-y`;
-const primaryButtonClassName =
-  "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50";
-const errorClassName =
-  "rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700";
-
-export default function NewPost() {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [category, setCategory] = useState("general");
-  const [error, setError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setError("");
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch("/api/post", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          content,
-          category,
-          image: "https://picsum.photos/100",
-        }),
-      });
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || "Failed to create post");
-      }
-
-      router.push(`/detail/${result.data.postId}`);
-      router.refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create post");
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
-  return (
-    <main className="space-y-6">
-      <section className="space-y-2">
-        <p className="text-sm font-semibold uppercase text-zinc-500">Write</p>
-        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
-          Create New Post
-        </h1>
-        <p className="max-w-2xl text-sm leading-6 text-zinc-600">
-          제목, 본문, 카테고리를 입력해 새 게시글을 작성합니다.
-        </p>
-      </section>
-      {error && (
-        <p className={errorClassName} role="alert">
-          {error}
-        </p>
-      )}
-      <form
-        className="grid max-w-2xl gap-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
-        onSubmit={handleSubmit}
-      >
-        <div className={fieldClassName}>
-          <label className={labelClassName} htmlFor="title">
-            Title
-          </label>
-          <input
-            className={inputClassName}
-            type="text"
-            id="title"
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-            disabled={isSubmitting}
-            required
-          />
-        </div>
-
-        <div className={fieldClassName}>
-          <label className={labelClassName} htmlFor="content">
-            Content
-          </label>
-          <textarea
-            className={textareaClassName}
-            id="content"
-            value={content}
-            onChange={(event) => setContent(event.target.value)}
-            disabled={isSubmitting}
-            required
-          />
-        </div>
-
-        <div className={fieldClassName}>
-          <label className={labelClassName} htmlFor="category">
-            Category
-          </label>
-          <select
-            className={inputClassName}
-            id="category"
-            value={category}
-            onChange={(event) => setCategory(event.target.value)}
-            disabled={isSubmitting}
-          >
-            {CATEGORY_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <button
-          className={primaryButtonClassName}
-          type="submit"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? "Creating..." : "Create Post"}
-        </button>
-      </form>
-    </main>
-  );
-}
-```
-
-### 6. app/post/page.module.css
-
-이 단계에서는 `app/post/page.module.css` 파일을 삭제합니다.
-
-게시글 작성 또는 수정 화면입니다. form 상태와 API 요청 흐름을 집중해서 봅니다.
+### 먼저 실행하거나 삭제할 명령
 
 ```bash
 rm app/post/page.module.css
 ```
 
-삭제 전 파일은 [step-21의 app/post/page.module.css](https://github.com/db-woman-2026/NextJsBlog_Steps/blob/step-21/app/post/page.module.css)에서 확인할 수 있습니다.
+### 이전 단계와 달라지는 코드
+
+아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+
+~~~diff
+diff --git a/app/post/page.js b/app/post/page.js
+index 952f1b7..9863577 100644
+--- a/app/post/page.js
++++ b/app/post/page.js
+@@ -2,7 +2,6 @@
+
+ import { useState } from "react";
+ import { useRouter } from "next/navigation";
+-import styles from "./page.module.css";
+
+ const CATEGORY_OPTIONS = [
+   { value: "general", label: "General" },
+@@ -10,6 +9,15 @@ const CATEGORY_OPTIONS = [
+   { value: "daily", label: "Daily" },
+   { value: "tech", label: "Tech" },
+ ];
++const fieldClassName = "grid gap-1.5";
++const labelClassName = "text-sm font-medium text-zinc-700";
++const inputClassName =
++  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 disabled:bg-zinc-100";
++const textareaClassName = `${inputClassName} min-h-48 resize-y`;
++const primaryButtonClassName =
++  "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50";
++const errorClassName =
++  "rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700";
+
+ export default function NewPost() {
+   const [title, setTitle] = useState("");
+@@ -53,44 +61,78 @@ export default function NewPost() {
+   }
+
+   return (
+-    <main className={styles.container}>
+-      <h1>Create New Post</h1>
+-      {error && <p role="alert">{error}</p>}
+-      <form onSubmit={handleSubmit}>
+-        <label htmlFor="title">Title:</label>
+-        <input
+-          type="text"
+-          id="title"
+-          value={title}
+-          onChange={(event) => setTitle(event.target.value)}
+-          disabled={isSubmitting}
+-          required
+-        />
++    <main className="space-y-6">
++      <section className="space-y-2">
++        <p className="text-sm font-semibold uppercase text-zinc-500">Write</p>
++        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
++          Create New Post
++        </h1>
++        <p className="max-w-2xl text-sm leading-6 text-zinc-600">
++          제목, 본문, 카테고리를 입력해 새 게시글을 작성합니다.
++        </p>
++      </section>
++      {error && (
++        <p className={errorClassName} role="alert">
++          {error}
++        </p>
++      )}
++      <form
++        className="grid max-w-2xl gap-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
++        onSubmit={handleSubmit}
++      >
++        <div className={fieldClassName}>
++          <label className={labelClassName} htmlFor="title">
++            Title
++          </label>
++          <input
++            className={inputClassName}
++            type="text"
++            id="title"
++            value={title}
++            onChange={(event) => setTitle(event.target.value)}
++            disabled={isSubmitting}
++            required
++          />
++        </div>
+
+-        <label htmlFor="content">Content:</label>
+-        <textarea
+-          id="content"
+-          value={content}
+-          onChange={(event) => setContent(event.target.value)}
+-          disabled={isSubmitting}
+-          required
+-        />
++        <div className={fieldClassName}>
++          <label className={labelClassName} htmlFor="content">
++            Content
++          </label>
++          <textarea
++            className={textareaClassName}
++            id="content"
++            value={content}
++            onChange={(event) => setContent(event.target.value)}
++            disabled={isSubmitting}
++            required
++          />
++        </div>
+
+-        <label htmlFor="category">Category:</label>
+-        <select
+-          id="category"
+-          value={category}
+-          onChange={(event) => setCategory(event.target.value)}
++        <div className={fieldClassName}>
++          <label className={labelClassName} htmlFor="category">
++            Category
++          </label>
++          <select
++            className={inputClassName}
++            id="category"
++            value={category}
++            onChange={(event) => setCategory(event.target.value)}
++            disabled={isSubmitting}
++          >
++            {CATEGORY_OPTIONS.map((option) => (
++              <option key={option.value} value={option.value}>
++                {option.label}
++              </option>
++            ))}
++          </select>
++        </div>
++
++        <button
++          className={primaryButtonClassName}
++          type="submit"
+           disabled={isSubmitting}
+         >
+-          {CATEGORY_OPTIONS.map((option) => (
+-            <option key={option.value} value={option.value}>
+-              {option.label}
+-            </option>
+-          ))}
+-        </select>
+-
+-        <button type="submit" disabled={isSubmitting}>
+           {isSubmitting ? "Creating..." : "Create Post"}
+         </button>
+       </form>
+diff --git a/app/post/page.module.css b/app/post/page.module.css
+deleted file mode 100644
+index 8a6b6ea..0000000
+--- a/app/post/page.module.css
++++ /dev/null
+@@ -1,4 +0,0 @@
+-.container {
+-  display: grid;
+-  gap: 1rem;
+-}
+~~~
+
+### 설명/확인 포인트
+
+- `fieldClassName`, `labelClassName`, `inputClassName` 같은 상수는 긴 class 문자열 반복을 줄입니다.
+- 오류 메시지는 `role="alert"`를 유지하면서 빨간 alert 스타일을 적용합니다.
+
+## 작업 2. 게시글 수정 form Tailwind UI 적용
+
+수정 화면도 작성 화면과 같은 입력 패턴을 사용합니다. 로딩/오류/제출 중 상태가 스타일과 함께 일관되게 보여야 합니다.
+
+### 수정할 파일
+
+- 수정: [app/post/[id]/page.js](../../app/post/%5Bid%5D/page.js)
+
+### 이전 단계와 달라지는 코드
+
+아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+
+~~~diff
+diff --git a/app/post/[id]/page.js b/app/post/[id]/page.js
+index 9fa480c..79589b4 100644
+--- a/app/post/[id]/page.js
++++ b/app/post/[id]/page.js
+@@ -2,7 +2,6 @@
+
+ import { useEffect, useState } from "react";
+ import { useParams, useRouter } from "next/navigation";
+-import styles from "../page.module.css";
+
+ const CATEGORY_OPTIONS = [
+   { value: "general", label: "General" },
+@@ -10,6 +9,15 @@ const CATEGORY_OPTIONS = [
+   { value: "daily", label: "Daily" },
+   { value: "tech", label: "Tech" },
+ ];
++const fieldClassName = "grid gap-1.5";
++const labelClassName = "text-sm font-medium text-zinc-700";
++const inputClassName =
++  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 disabled:bg-zinc-100";
++const textareaClassName = `${inputClassName} min-h-48 resize-y`;
++const primaryButtonClassName =
++  "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50";
++const errorClassName =
++  "rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700";
+
+ export default function EditPost() {
+   const [title, setTitle] = useState("");
+@@ -73,44 +81,78 @@ export default function EditPost() {
+   }
+
+   return (
+-    <main className={styles.container}>
+-      <h1>Edit Post</h1>
+-      {error && <p role="alert">{error}</p>}
+-      <form onSubmit={handleSubmit}>
+-        <label htmlFor="title">Title:</label>
+-        <input
+-          type="text"
+-          id="title"
+-          value={title}
+-          onChange={(event) => setTitle(event.target.value)}
+-          disabled={isSubmitting}
+-          required
+-        />
++    <main className="space-y-6">
++      <section className="space-y-2">
++        <p className="text-sm font-semibold uppercase text-zinc-500">Edit</p>
++        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
++          Edit Post
++        </h1>
++        <p className="max-w-2xl text-sm leading-6 text-zinc-600">
++          기존 게시글을 불러온 뒤 제목, 본문, 카테고리를 수정합니다.
++        </p>
++      </section>
++      {error && (
++        <p className={errorClassName} role="alert">
++          {error}
++        </p>
++      )}
++      <form
++        className="grid max-w-2xl gap-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
++        onSubmit={handleSubmit}
++      >
++        <div className={fieldClassName}>
++          <label className={labelClassName} htmlFor="title">
++            Title
++          </label>
++          <input
++            className={inputClassName}
++            type="text"
++            id="title"
++            value={title}
++            onChange={(event) => setTitle(event.target.value)}
++            disabled={isSubmitting}
++            required
++          />
++        </div>
+
+-        <label htmlFor="content">Content:</label>
+-        <textarea
+-          id="content"
+-          value={content}
+-          onChange={(event) => setContent(event.target.value)}
+-          disabled={isSubmitting}
+-          required
+-        />
++        <div className={fieldClassName}>
++          <label className={labelClassName} htmlFor="content">
++            Content
++          </label>
++          <textarea
++            className={textareaClassName}
++            id="content"
++            value={content}
++            onChange={(event) => setContent(event.target.value)}
++            disabled={isSubmitting}
++            required
++          />
++        </div>
+
+-        <label htmlFor="category">Category:</label>
+-        <select
+-          id="category"
+-          value={category}
+-          onChange={(event) => setCategory(event.target.value)}
++        <div className={fieldClassName}>
++          <label className={labelClassName} htmlFor="category">
++            Category
++          </label>
++          <select
++            className={inputClassName}
++            id="category"
++            value={category}
++            onChange={(event) => setCategory(event.target.value)}
++            disabled={isSubmitting}
++          >
++            {CATEGORY_OPTIONS.map((option) => (
++              <option key={option.value} value={option.value}>
++                {option.label}
++              </option>
++            ))}
++          </select>
++        </div>
++
++        <button
++          className={primaryButtonClassName}
++          type="submit"
+           disabled={isSubmitting}
+         >
+-          {CATEGORY_OPTIONS.map((option) => (
+-            <option key={option.value} value={option.value}>
+-              {option.label}
+-            </option>
+-          ))}
+-        </select>
+-
+-        <button type="submit" disabled={isSubmitting}>
+           {isSubmitting ? "Updating..." : "Update Post"}
+         </button>
+       </form>
+~~~
+
+### 설명/확인 포인트
+
+- 작성 화면과 수정 화면의 class 상수 이름과 구조를 맞추면 비교 학습이 쉽습니다.
+- disabled 상태는 입력칸과 버튼 모두에서 시각적으로 드러나야 합니다.
+
+## 작업 3. Contact form Tailwind UI 적용
+
+Contact form도 실제 기능은 mockup이지만 사용자가 입력하는 화면이므로 같은 UI 패턴을 적용합니다. 페이지 자체에는 제목/설명을 두고 form은 카드로 묶습니다.
+
+### 수정할 파일
+
+- 수정: [app/contact/page.js](../../app/contact/page.js)
+- 수정: [app/contact/ContactForm.js](../../app/contact/ContactForm.js)
+
+### 이전 단계와 달라지는 코드
+
+아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+
+~~~diff
+diff --git a/app/contact/ContactForm.js b/app/contact/ContactForm.js
+index 8bf074b..fa9a472 100644
+--- a/app/contact/ContactForm.js
++++ b/app/contact/ContactForm.js
+@@ -2,6 +2,14 @@
+
+ import { useState } from "react";
+
++const fieldClassName = "grid gap-1.5";
++const labelClassName = "text-sm font-medium text-zinc-700";
++const inputClassName =
++  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200";
++const textareaClassName = `${inputClassName} min-h-40 resize-y`;
++const primaryButtonClassName =
++  "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700";
++
+ export default function ContactForm() {
+   const [name, setName] = useState("");
+   const [email, setEmail] = useState("");
+@@ -16,34 +24,54 @@ export default function ContactForm() {
+   }
+
+   return (
+-    <form onSubmit={handleSubmit}>
+-      <label htmlFor="name">Name:</label>
+-      <input
+-        type="text"
+-        id="name"
+-        value={name}
+-        onChange={(event) => setName(event.target.value)}
+-        required
+-      />
+-
+-      <label htmlFor="email">Email:</label>
+-      <input
+-        type="email"
+-        id="email"
+-        value={email}
+-        onChange={(event) => setEmail(event.target.value)}
+-        required
+-      />
+-
+-      <label htmlFor="message">Message:</label>
+-      <textarea
+-        id="message"
+-        value={message}
+-        onChange={(event) => setMessage(event.target.value)}
+-        required
+-      />
+-
+-      <button type="submit">Submit</button>
++    <form
++      className="grid max-w-2xl gap-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
++      onSubmit={handleSubmit}
++    >
++      <div className={fieldClassName}>
++        <label className={labelClassName} htmlFor="name">
++          Name
++        </label>
++        <input
++          className={inputClassName}
++          type="text"
++          id="name"
++          value={name}
++          onChange={(event) => setName(event.target.value)}
++          required
++        />
++      </div>
++
++      <div className={fieldClassName}>
++        <label className={labelClassName} htmlFor="email">
++          Email
++        </label>
++        <input
++          className={inputClassName}
++          type="email"
++          id="email"
++          value={email}
++          onChange={(event) => setEmail(event.target.value)}
++          required
++        />
++      </div>
++
++      <div className={fieldClassName}>
++        <label className={labelClassName} htmlFor="message">
++          Message
++        </label>
++        <textarea
++          className={textareaClassName}
++          id="message"
++          value={message}
++          onChange={(event) => setMessage(event.target.value)}
++          required
++        />
++      </div>
++
++      <button className={primaryButtonClassName} type="submit">
++        Submit
++      </button>
+     </form>
+   );
+ }
+diff --git a/app/contact/page.js b/app/contact/page.js
+index c14ed86..549c4e7 100644
+--- a/app/contact/page.js
++++ b/app/contact/page.js
+@@ -2,8 +2,18 @@ import ContactForm from "./ContactForm";
+
+ export default function ContactPage() {
+   return (
+-    <main>
+-      <h1>Contact Us</h1>
++    <main className="space-y-6">
++      <section className="space-y-2">
++        <p className="text-sm font-semibold uppercase text-zinc-500">
++          Contact
++        </p>
++        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
++          Contact Us
++        </h1>
++        <p className="max-w-2xl text-sm leading-6 text-zinc-600">
++          controlled input과 submit 이벤트를 연습하는 mockup form입니다.
++        </p>
++      </section>
+       <ContactForm />
+     </main>
+   );
+~~~
+
+### 설명/확인 포인트
+
+- ContactForm의 controlled input 흐름은 유지하고 class만 Tailwind 기준으로 바꿉니다.
+- 성공 메시지는 녹색 alert 패턴으로 표시합니다.
+
+## 작업 4. README 단계 목록 갱신
+
+form UI 정리 단계가 추가됐으므로 README의 Branch Flow를 갱신합니다.
+
+### 수정할 파일
+
+- 수정: [README.md](../../README.md)
+
+### 이전 단계와 달라지는 코드
+
+아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+
+~~~diff
+diff --git a/README.md b/README.md
+index f5f5c43..2c4aec0 100644
+--- a/README.md
++++ b/README.md
+@@ -30,6 +30,7 @@
+ | `step-19` | 카테고리 |
+ | `step-20` | `simpledotcss` 제거, Tailwind CSS v4 설치, 공통 layout/nav/footer 정리 |
+ | `step-21` | 홈 목록, 상세 읽기 화면, About 페이지의 기본 카드 UI |
++| `step-22` | 게시글 작성/수정 form과 Contact form의 Tailwind UI |
+
+ 전체 단계 개요는 `/docs/overview/index.md`에 있고, 실습형 강의 자료는 `/docs/lecture/index.md`와 `/docs/lecture/step-N.md`에 있습니다.
+
+~~~
+
+### 설명/확인 포인트
+
+- 강의 흐름 문서도 코드 단계와 같은 순서를 유지합니다.
 
 ## 실행 확인
 
-기본 확인 명령은 다음과 같습니다.
+기본 정적 검사는 다음 명령으로 확인합니다.
 
 ```bash
 npm run lint
 npm run build
+```
+
+브라우저 확인이 필요하면 개발 서버를 켠 뒤 해당 화면을 확인합니다.
+
+```bash
 npm run dev
 ```
 
-화면과 기능은 다음 순서로 확인합니다.
+체크할 내용은 다음과 같습니다.
 
-- 작성, 수정, Contact form의 input, textarea, button 스타일을 확인합니다.
-- 제출 중 disabled 상태와 오류 메시지 스타일을 확인합니다.
+- `/post`, `/post/[id]`, `/contact` form이 같은 입력 패턴으로 보인다.
+- 오류 메시지가 alert 스타일로 보이고 `role="alert"`가 유지된다.
 
-## 자주 확인할 부분
+## 다음 단계로 넘어가기 전
 
-- 파일 이름과 폴더 이름을 정확히 입력합니다. App Router에서는 `page.js`, `layout.js`, `route.js`, `not-found.js`, `error.js` 같은 파일명이 특별한 의미를 가집니다.
-- 클라이언트 상태나 이벤트를 쓰는 파일에는 필요한 경우에만 `"use client";`를 둡니다. 서버에서 실행되어야 하는 MongoDB 코드는 클라이언트 컴포넌트로 가져오지 않습니다.
-- API 응답은 가능한 한 `{ success, message, data }` 구조를 유지합니다. 화면 코드는 이 구조를 기준으로 `message`와 `data`를 읽습니다.
-- 실습 중 막히면 먼저 이 문서의 코드 블록과 브랜치 링크의 실제 파일을 비교합니다.
-
-## 개념 정리
-
-아래 내용은 기존 단계 개요를 강의 문서 안에서도 바로 볼 수 있도록 가져온 것입니다. 코드 작성 후 다시 읽으면 각 변경의 이유를 확인하기 쉽습니다.
-
-이전 단계에서는 홈 목록과 상세 읽기 화면을 카드형 UI로 바꿨습니다. 이번 단계에서는 사용자가 직접 입력하는 form 화면을 정리합니다.
-
-## 이번 단계에서 하는 일
-
-- 게시글 작성 페이지에 제목 영역과 form 카드 UI를 적용한다.
-- 게시글 수정 페이지에 같은 form UI 패턴을 적용한다.
-- Contact mockup form에도 같은 입력 패턴을 적용한다.
-- 오류 메시지를 눈에 띄는 alert 형태로 표시한다.
-- `app/post/page.module.css`를 제거한다.
-
-## form을 따로 분리해서 다루는 이유
-
-form은 단순한 텍스트 화면보다 고려할 요소가 많습니다.
-
-- label과 input의 관계
-- 입력칸의 focus 상태
-- disabled 상태
-- submit 버튼
-- 오류 메시지
-- textarea 높이
-
-그래서 읽기 화면과 같은 단계에서 한꺼번에 바꾸기보다, form만 따로 다루는 편이 학습하기 쉽습니다.
-
-## 반복되는 class를 상수로 두기
-
-작성 페이지와 수정 페이지에서는 같은 입력 스타일이 여러 번 반복됩니다. 이럴 때는 문자열 상수를 만들어 재사용할 수 있습니다.
-
-```js
-const fieldClassName = "grid gap-1.5";
-const labelClassName = "text-sm font-medium text-zinc-700";
-const inputClassName =
-  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 disabled:bg-zinc-100";
-```
-
-이 방식은 CSS 파일을 새로 만들지 않으면서도 긴 class 문자열을 여러 곳에 반복 작성하지 않게 해줍니다.
-
-## label과 input 묶기
-
-각 입력 필드는 label과 input을 하나의 `div`로 묶습니다.
-
-```jsx
-<div className={fieldClassName}>
-  <label className={labelClassName} htmlFor="title">
-    Title
-  </label>
-  <input
-    className={inputClassName}
-    type="text"
-    id="title"
-    value={title}
-    onChange={(event) => setTitle(event.target.value)}
-    disabled={isSubmitting}
-    required
-  />
-</div>
-```
-
-`htmlFor`와 `id`가 연결되어 있으므로 label을 클릭해도 input에 focus가 갑니다. 스타일을 바꿔도 접근성 기본 구조는 유지해야 합니다.
-
-## focus 상태
-
-입력칸 class에는 focus 관련 class가 들어 있습니다.
-
-```txt
-focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200
-```
-
-사용자가 입력칸을 클릭하면 border와 ring이 바뀌어 현재 입력 위치를 더 쉽게 알 수 있습니다.
-
-## disabled 상태
-
-게시글 작성/수정 중에는 input과 button이 disabled 됩니다.
-
-```txt
-disabled:bg-zinc-100
-disabled:cursor-not-allowed
-disabled:opacity-50
-```
-
-Tailwind의 `disabled:` 접두사는 HTML 요소가 `disabled` 상태일 때만 적용됩니다.
-
-## textarea 높이
-
-본문 입력칸은 일반 input보다 높아야 합니다.
-
-```js
-const textareaClassName = `${inputClassName} min-h-48 resize-y`;
-```
-
-`min-h-48`은 최소 높이를 확보하고, `resize-y`는 사용자가 세로 방향으로만 크기를 조절할 수 있게 합니다.
-
-## 오류 메시지
-
-오류 메시지는 빨간색 계열의 alert 패턴으로 표시합니다.
-
-```jsx
-{error && (
-  <p className={errorClassName} role="alert">
-    {error}
-  </p>
-)}
-```
-
-`role="alert"`는 화면 낭독기에도 오류 메시지임을 알려주는 역할을 합니다. 스타일을 입히더라도 기존 의미를 잃지 않는 것이 중요합니다.
-
-## Contact form
-
-Contact form은 실제 메일을 보내지는 않지만 controlled input과 submit 이벤트를 연습하기 좋은 예제입니다. 게시글 form과 같은 카드, label, input, button 패턴을 적용해 화면 전체의 일관성을 맞춥니다.
-
-## 이번 단계의 기준
-
-이번 단계의 완성 기준은 "사용자가 입력하는 화면들이 같은 form 패턴을 가진다"입니다.
-
-아직 삭제 버튼, not-found, error 화면은 따로 정리하지 않습니다. 다음 단계에서 남은 작은 UI 조각들을 정리해 Tailwind 전환을 마무리합니다.
-
-## 확인 방법
-
-```bash
-npm run lint
-npm run build
-```
-
-브라우저에서는 다음 주소를 확인합니다.
-
-```txt
-/post
-/post/[id]
-/contact
-```
-
-`/post/[id]`는 실제 게시글 ID가 필요하므로 홈 목록에서 상세 화면으로 들어간 뒤 Edit 링크를 클릭하면 됩니다.
-
-## 체크리스트
-
-1. 작성 페이지의 입력칸과 버튼이 카드 안에 정리되어 있다.
-2. 수정 페이지도 작성 페이지와 같은 form 패턴을 사용한다.
-3. Contact form도 같은 입력 패턴을 사용한다.
-4. 작성/수정 중 disabled 상태가 눈에 보인다.
-5. 오류 메시지는 `role="alert"`를 유지하면서 alert 스타일로 보인다.
-6. `app/post/page.module.css`를 import하는 코드가 남아 있지 않다.
-
-다음 단계에서는 삭제 버튼, Not Found, Error 화면과 문서 인덱스를 정리해 Tailwind 기본 UI 전환을 마무리합니다.
+- 이 문서의 각 작업 단위에서 설명을 먼저 읽고, 바로 아래 diff를 기준으로 파일을 수정합니다.
+- 새 파일은 diff에 나온 전체 내용을 입력하고, 기존 파일은 diff의 `+`/`-` 줄만 비교하면서 수정합니다.
+- 링크된 프로젝트 내부 파일을 열어 현재 단계의 완성본과 직접 비교할 수 있습니다.
