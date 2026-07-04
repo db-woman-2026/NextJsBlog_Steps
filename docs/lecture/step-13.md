@@ -1,9 +1,5 @@
 # Step 13. 게시글 삭제 기능 만들기
 
-이 문서는 이전 단계 실습 결과에서 시작해 `step-13` 수준의 기능을 완성하는 실습 자료입니다.
-원본 개요는 [docs/overview/step-13.md](../overview/step-13.md)에 보존되어 있습니다.
-아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
-
 ## 이번 스텝 주요 기능 Overview
 
 MongoDB 삭제 함수, DELETE /api/post/[id], 상세 화면 삭제 버튼으로 삭제 흐름을 완성합니다.
@@ -11,16 +7,6 @@ MongoDB 삭제 함수, DELETE /api/post/[id], 상세 화면 삭제 버튼으로 
 - MongoDB에서 id로 게시글을 삭제하는 함수를 추가합니다.
 - `DELETE /api/post/[id]` API를 추가합니다.
 - 상세 화면에 클라이언트 삭제 버튼을 붙여 삭제 후 홈으로 이동합니다.
-
-## 시작 기준
-
-이미 `step-12` 실습을 끝낸 코드에서 이어서 진행합니다.
-단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
-
-```bash
-git switch practice-step-12
-git switch -c practice-step-13
-```
 
 ## 작업 1. 데이터 계층에 삭제 함수 추가
 
