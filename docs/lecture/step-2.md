@@ -1,6 +1,6 @@
 # Step 2. simpledotcss와 이미지 설정으로 화면 정돈하기
 
-이 문서는 `step-1`에서 시작해 `step-2`를 완성하는 실습 자료입니다.
+이 문서는 이전 단계 실습 결과에서 시작해 `step-2` 수준의 기능을 완성하는 실습 자료입니다.
 원본 개요는 [docs/overview/step-2.md](../overview/step-2.md)에 보존되어 있습니다.
 아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
 
@@ -14,30 +14,30 @@ simpledotcss와 next/image를 적용해 기본 화면을 정돈하고 외부 이
 
 ## 시작 기준
 
-이전 단계인 `step-1` 브랜치까지 완료된 상태에서 시작합니다.
+이미 `step-1` 실습을 끝낸 코드에서 이어서 진행합니다.
+단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
 
 ```bash
-git switch step-1
+git switch practice-step-1
 git switch -c practice-step-2
-```
-
-정답 브랜치는 확인용으로만 사용합니다.
-
-```bash
-git switch step-2
 ```
 
 ## 작업 1. simpledotcss 설치와 전역 CSS 교체
 
-스타일링 자체보다 라우팅과 데이터 흐름에 집중하기 위해 작은 CSS 라이브러리를 도입합니다. npm 명령을 실행하면 `package.json`과 `package-lock.json`이 함께 바뀝니다.
+스타일링 자체보다 라우팅과 데이터 흐름에 집중하기 위해 작은 CSS 라이브러리를 도입합니다. npm 명령이 패키지 파일을 자동으로 바꾸므로, 학생은 명령 실행 뒤 전역 CSS만 직접 수정합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
+
+- 수정: [app/globals.css](../../app/globals.css)
+
+### 명령으로 자동 변경되는 파일
 
 - 수정: [package.json](../../package.json)
 - 수정: [package-lock.json](../../package-lock.json)
-- 수정: [app/globals.css](../../app/globals.css)
 
-### 먼저 실행하거나 삭제할 명령
+위 파일들은 명령 실행 결과를 확인만 합니다. 강의 중 직접 타이핑할 대상은 아닙니다.
+
+### 먼저 실행할 명령
 
 ```bash
 npm install simpledotcss@^2.3.7
@@ -94,25 +94,11 @@ index 7c249fa..a6f7b7a 100644
 +header nav a:visited {
 +  margin-bottom: 0;
  }
-diff --git a/package.json b/package.json
-index 634e7f6..dcfc7eb 100644
---- a/package.json
-+++ b/package.json
-@@ -11,7 +11,8 @@
-   "dependencies": {
-     "next": "16.2.10",
-     "react": "19.2.4",
--    "react-dom": "19.2.4"
-+    "react-dom": "19.2.4",
-+    "simpledotcss": "^2.3.7"
-   },
-   "devDependencies": {
-     "eslint": "^9",
 ~~~
 
 ### 설명/확인 포인트
 
-- `package-lock.json`은 npm이 자동 갱신하므로 직접 타이핑하지 않습니다.
+- `package.json`과 `package-lock.json`은 npm이 자동 갱신하므로 직접 타이핑하지 않습니다.
 - `@import "simpledotcss/simple.min.css";`가 전역 스타일의 출발점입니다.
 - Header와 nav의 여백만 프로젝트에 맞게 짧게 덮어씁니다.
 
@@ -120,7 +106,7 @@ index 634e7f6..dcfc7eb 100644
 
 소개 페이지에 외부 이미지를 넣어 `next/image` 사용법을 익힙니다. `Image`는 이미지 크기를 미리 알아야 하므로 `width`와 `height`를 함께 지정합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/about/page.js](../../app/about/page.js)
 
@@ -175,7 +161,7 @@ index 64b849a..c6e3f14 100644
 
 Next.js 이미지 최적화는 허용된 외부 도메인만 처리합니다. About 페이지의 이미지 출처가 `picsum.photos`이므로 설정 파일에 remote pattern을 추가합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [next.config.mjs](../../next.config.mjs)
 
