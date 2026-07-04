@@ -53,6 +53,7 @@ body {
 }
 
 body > header {
+  align-self: start;
   padding: 1rem;
 }
 
