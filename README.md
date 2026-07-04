@@ -28,6 +28,7 @@
 | `step-17` | 정렬 기능 |
 | `step-18` | Not Found와 Error UI 개선 |
 | `step-19` | 카테고리 |
+| `step-20` | `simpledotcss` 제거, Tailwind CSS v4 설치, 공통 layout/nav/footer 정리 |
 
 전체 단계 요약은 `/docs/index.md`에 있고, 각 단계 설명은 `/docs/step-N.md`에 있습니다.
 
@@ -37,7 +38,7 @@
 - React 19
 - MongoDB Node.js Driver 7
 - ESLint 9 flat config
-- simple.css
+- Tailwind CSS v4
 
 ## Getting Started
 
