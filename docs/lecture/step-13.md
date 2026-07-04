@@ -1,6 +1,6 @@
 # Step 13. 게시글 삭제 기능 만들기
 
-이 문서는 `step-12`에서 시작해 `step-13`를 완성하는 실습 자료입니다.
+이 문서는 이전 단계 실습 결과에서 시작해 `step-13` 수준의 기능을 완성하는 실습 자료입니다.
 원본 개요는 [docs/overview/step-13.md](../overview/step-13.md)에 보존되어 있습니다.
 아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
 
@@ -14,24 +14,19 @@ MongoDB 삭제 함수, DELETE /api/post/[id], 상세 화면 삭제 버튼으로 
 
 ## 시작 기준
 
-이전 단계인 `step-12` 브랜치까지 완료된 상태에서 시작합니다.
+이미 `step-12` 실습을 끝낸 코드에서 이어서 진행합니다.
+단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
 
 ```bash
-git switch step-12
+git switch practice-step-12
 git switch -c practice-step-13
-```
-
-정답 브랜치는 확인용으로만 사용합니다.
-
-```bash
-git switch step-13
 ```
 
 ## 작업 1. 데이터 계층에 삭제 함수 추가
 
 삭제 기능도 화면이나 API 안에 MongoDB 쿼리를 직접 쓰지 않고 `lib/posts.js`에 함수로 분리합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [lib/posts.js](../../lib/posts.js)
 
@@ -71,7 +66,7 @@ index c9aa495..d24f792 100644
 
 기존 단건 API 파일에 `DELETE` handler를 추가합니다. URL의 id를 읽어 삭제하고, 삭제 대상이 없으면 404를 반환합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/api/post/[id]/route.js](../../app/api/post/%5Bid%5D/route.js)
 
@@ -122,7 +117,7 @@ index f5f3b68..8a4a070 100644
 
 삭제 버튼은 클릭 이벤트와 상태가 필요하므로 별도 클라이언트 컴포넌트로 만듭니다. 상세 페이지는 서버 컴포넌트로 유지하고 버튼만 import합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 생성: [app/detail/[id]/DeletePostButton.js](../../app/detail/%5Bid%5D/DeletePostButton.js)
 - 수정: [app/detail/[id]/page.js](../../app/detail/%5Bid%5D/page.js)
