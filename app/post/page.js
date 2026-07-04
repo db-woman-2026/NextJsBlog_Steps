@@ -8,11 +8,13 @@ export default function NewPost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   async function handleSubmit(event) {
     event.preventDefault();
     setError("");
+    setIsSubmitting(true);
 
     try {
       const response = await fetch("/api/post", {
@@ -32,10 +34,12 @@ export default function NewPost() {
         throw new Error(result.message || "Failed to create post");
       }
 
-      router.push("/");
+      router.push(`/detail/${result.data.postId}`);
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create post");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -50,6 +54,7 @@ export default function NewPost() {
           id="title"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
+          disabled={isSubmitting}
           required
         />
 
@@ -58,10 +63,13 @@ export default function NewPost() {
           id="content"
           value={content}
           onChange={(event) => setContent(event.target.value)}
+          disabled={isSubmitting}
           required
         />
 
-        <button type="submit">Create Post</button>
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Creating..." : "Create Post"}
+        </button>
       </form>
     </main>
   );
