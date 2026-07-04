@@ -29,7 +29,7 @@
 | `step-18` | Not Found와 Error UI 개선 |
 | `step-19` | 카테고리 |
 
-전체 단계 요약은 `/docs/index.md`에 있고, 각 단계 설명은 `/docs/step-N.md`에 있습니다.
+전체 단계 개요는 `/docs/overview/index.md`에 있고, 실습형 강의 자료는 `/docs/lecture/index.md`와 `/docs/lecture/step-N.md`에 있습니다.
 
 ## Stack
 
