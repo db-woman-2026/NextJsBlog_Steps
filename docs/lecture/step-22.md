@@ -1,9 +1,5 @@
 # Step 22. 작성, 수정, Contact form UI 정리
 
-이 문서는 이전 단계 실습 결과에서 시작해 `step-22` 수준의 기능을 완성하는 실습 자료입니다.
-원본 개요는 [docs/overview/step-22.md](../overview/step-22.md)에 보존되어 있습니다.
-아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
-
 ## 이번 스텝 주요 기능 Overview
 
 게시글 작성/수정 form과 Contact form에 같은 Tailwind 입력/버튼 패턴을 적용합니다.
@@ -11,16 +7,6 @@
 - 게시글 작성/수정 form에 같은 Tailwind 입력 패턴을 적용합니다.
 - Contact mockup form도 같은 카드/label/input/button 구조로 정리합니다.
 - 기존 post CSS module을 제거하고 오류 메시지를 alert 형태로 표시합니다.
-
-## 시작 기준
-
-이미 `step-21` 실습을 끝낸 코드에서 이어서 진행합니다.
-단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
-
-```bash
-git switch practice-step-21
-git switch -c practice-step-22
-```
 
 ## 작업 1. 게시글 작성 form Tailwind UI 적용
 
