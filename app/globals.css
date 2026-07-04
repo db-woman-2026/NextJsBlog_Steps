@@ -3,3 +3,21 @@
 body {
   min-height: 100vh;
 }
+
+body > header {
+  padding: 1rem;
+}
+
+body > header > nav:only-child {
+  margin-block-start: 0;
+}
+
+header nav {
+  padding: 0;
+  line-height: 1;
+}
+
+header nav a,
+header nav a:visited {
+  margin-bottom: 0;
+}
