@@ -1,6 +1,6 @@
 # Lecture Index
 
-이 폴더는 `step-16` 브랜치에서 사용할 수 있는 실습형 강의 자료입니다.
+이 폴더는 `step-17` 브랜치에서 사용할 수 있는 실습형 강의 자료입니다.
 각 문서는 학생이 이전 단계 실습 결과에서 현재 단계로 넘어오며 직접 입력할 기능 코드를 작업 단위로 나누고, 설명 바로 아래에 프로젝트 내부 파일 링크와 실제 diff를 제공합니다.
 
 강의 실습은 이 `docs/lecture/` 문서를 기준으로 진행합니다.
@@ -25,6 +25,7 @@
 | `step-14` | [lecture/step-14.md](./step-14.md) | 브라우저가 이미 가진 목록 배열을 기준으로 클라이언트 필터 검색을 추가합니다. |
 | `step-15` | [lecture/step-15.md](./step-15.md) | keyword query string을 API로 보내 MongoDB에서 직접 검색하는 서버 검색을 추가합니다. |
 | `step-16` | [lecture/step-16.md](./step-16.md) | page와 limit query string, MongoDB skip/limit, Previous/Next 버튼으로 페이지네이션을 구현합니다. |
+| `step-17` | [lecture/step-17.md](./step-17.md) | sort query string과 정렬 select를 추가해 최신순, 오래된순, 제목순 정렬을 서버에서 처리합니다. |
 
 ## 실습 방식
 
