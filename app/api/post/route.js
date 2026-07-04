@@ -7,7 +7,8 @@ export async function GET(request) {
     const keyword = searchParams.get("keyword") || "";
     const page = searchParams.get("page") || "1";
     const limit = searchParams.get("limit") || "5";
-    const posts = await listPosts({ keyword, page, limit });
+    const sort = searchParams.get("sort") || "created-desc";
+    const posts = await listPosts({ keyword, page, limit, sort });
 
     return apiSuccess(posts, "Posts fetched successfully");
   } catch (error) {

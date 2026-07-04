@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 
 const PAGE_SIZE = 5;
+const DEFAULT_SORT = "created-desc";
 
 function formatDate(dateValue) {
   if (!dateValue) {
@@ -36,10 +37,11 @@ async function fetchPosts(url) {
   return result.data;
 }
 
-function buildPostsUrl({ keyword, page }) {
+function buildPostsUrl({ keyword, page, sort }) {
   const params = new URLSearchParams({
     page: String(page),
     limit: String(PAGE_SIZE),
+    sort,
   });
 
   if (keyword) {
@@ -58,14 +60,19 @@ export default function Home() {
   const [keyword, setKeyword] = useState("");
   const [searchMessage, setSearchMessage] = useState("");
   const [serverKeyword, setServerKeyword] = useState("");
+  const [sortOrder, setSortOrder] = useState(DEFAULT_SORT);
 
-  async function loadPosts({ page = 1, searchKeyword = serverKeyword } = {}) {
+  async function loadPosts({
+    page = 1,
+    searchKeyword = serverKeyword,
+    sortValue = sortOrder,
+  } = {}) {
     setError("");
     setIsLoading(true);
 
     try {
       const data = await fetchPosts(
-        buildPostsUrl({ keyword: searchKeyword, page }),
+        buildPostsUrl({ keyword: searchKeyword, page, sort: sortValue }),
       );
       setAllPosts(data.posts);
       setPosts(data.posts);
@@ -81,7 +88,7 @@ export default function Home() {
     async function loadInitialPosts() {
       try {
         const data = await fetchPosts(
-          buildPostsUrl({ keyword: "", page: 1 }),
+          buildPostsUrl({ keyword: "", page: 1, sort: DEFAULT_SORT }),
         );
         setAllPosts(data.posts);
         setPosts(data.posts);
@@ -142,6 +149,18 @@ export default function Home() {
     await loadPosts({ page: nextPage, searchKeyword: serverKeyword });
   }
 
+  async function handleSortChange(event) {
+    const nextSortOrder = event.target.value;
+
+    setSortOrder(nextSortOrder);
+    setSearchMessage("Sorted posts from the server.");
+    await loadPosts({
+      page: 1,
+      searchKeyword: serverKeyword,
+      sortValue: nextSortOrder,
+    });
+  }
+
   return (
     <main>
       <form onSubmit={(event) => event.preventDefault()}>
@@ -153,6 +172,19 @@ export default function Home() {
           onChange={(event) => setKeyword(event.target.value)}
           disabled={isLoading}
         />
+
+        <label htmlFor="sortOrder">Sort posts:</label>
+        <select
+          id="sortOrder"
+          value={sortOrder}
+          onChange={handleSortChange}
+          disabled={isLoading}
+        >
+          <option value="created-desc">Newest first</option>
+          <option value="created-asc">Oldest first</option>
+          <option value="title-asc">Title A-Z</option>
+          <option value="title-desc">Title Z-A</option>
+        </select>
 
         <button type="button" onClick={handleClientFilter} disabled={isLoading}>
           Client Filter
