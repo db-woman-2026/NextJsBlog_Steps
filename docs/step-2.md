@@ -51,6 +51,24 @@ npm install simpledotcss@^2.3.7
 body {
   min-height: 100vh;
 }
+
+body > header {
+  padding: 1rem;
+}
+
+body > header > nav:only-child {
+  margin-block-start: 0;
+}
+
+header nav {
+  padding: 0;
+  line-height: 1;
+}
+
+header nav a,
+header nav a:visited {
+  margin-bottom: 0;
+}
 ```
 
 첫 줄은 `node_modules` 안에 설치된 CSS 파일을 가져옵니다.
@@ -60,6 +78,8 @@ body {
 ```
 
 이 한 줄 때문에 직접 작성했던 `nav`, `footer`, `main` 스타일 대부분이 필요 없어집니다. 이후 form, input, button도 기본적으로 보기 좋은 형태로 표시됩니다.
+
+다만 `simpledotcss`는 `header`와 `nav`에도 기본 여백을 넣습니다. 이 프로젝트의 Header는 모든 페이지에서 같은 높이로 보여야 하므로, 전역 CSS에서 Header와 nav의 여백만 짧게 덮어씁니다.
 
 ## next/image를 사용하는 이유
 
