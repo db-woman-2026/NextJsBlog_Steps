@@ -14,12 +14,20 @@ export async function GET() {
 export async function POST(request) {
   try {
     const postData = await request.json();
+    const title =
+      typeof postData.title === "string" ? postData.title.trim() : "";
+    const content =
+      typeof postData.content === "string" ? postData.content.trim() : "";
 
-    if (!postData.title || !postData.content) {
+    if (!title || !content) {
       return apiError("Title and content are required", 400);
     }
 
-    const result = await createPost(postData);
+    const result = await createPost({
+      title,
+      content,
+      image: postData.image,
+    });
 
     return apiSuccess(
       { postId: result.insertedId },
