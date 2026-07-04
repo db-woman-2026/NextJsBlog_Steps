@@ -17,7 +17,7 @@ export default async function BlogDetail({ params }) {
         <h1>{post.title}</h1>
         <pre className={styles.content}>{post.content}</pre>
       </article>
-      <Link href="/">Back to list</Link>
+      <Link href={`/post/${id}`}>Edit</Link>
     </main>
   );
 }
