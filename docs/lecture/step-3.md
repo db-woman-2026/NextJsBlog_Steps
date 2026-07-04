@@ -77,6 +77,7 @@ index fae9af6..4c99480 100644
 ### 설명/확인 포인트
 
 - 실습자는 `cp .env.example .env.local` 후 자기 MongoDB 주소를 넣습니다.
+- 로컬 MongoDB를 쓴다면 개발 서버를 실행하기 전에 MongoDB 서버가 `localhost:27017`에서 실행 중이어야 합니다. 이미 쓰던 `blog` DB가 있으면 기존 데이터가 보일 수 있으므로, 깨끗하게 확인하려면 `.env.local`의 `MONGODB_DB` 값을 `blog_practice`처럼 새 이름으로 바꿉니다.
 - `.env*`는 무시하되 `!.env.example`만 예외로 둡니다.
 
 ## 작업 3. MongoDB 연결 helper 추가
@@ -246,7 +247,7 @@ npm run dev
 
 체크할 내용은 다음과 같습니다.
 
-- `.env.example`를 복사해 `.env.local`을 준비한다.
+- `.env.example`를 복사해 `.env.local`을 준비하고, MongoDB 서버 또는 Atlas 연결 문자열이 실제로 준비되어 있는지 확인한다.
 - `npm run lint`로 import/문법 오류가 없는지 확인한다.
 
 ## 다음 단계로 넘어가기 전
