@@ -23,6 +23,17 @@ function postMatchesKeyword(post, keyword) {
   );
 }
 
+async function fetchPosts(url) {
+  const response = await fetch(url, { cache: "no-store" });
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Failed to fetch posts");
+  }
+
+  return result.data;
+}
+
 export default function Home() {
   const [allPosts, setAllPosts] = useState([]);
   const [posts, setPosts] = useState([]);
@@ -34,15 +45,9 @@ export default function Home() {
   useEffect(() => {
     async function loadPosts() {
       try {
-        const response = await fetch("/api/post", { cache: "no-store" });
-        const result = await response.json();
-
-        if (!response.ok) {
-          throw new Error(result.message || "Failed to fetch posts");
-        }
-
-        setAllPosts(result.data);
-        setPosts(result.data);
+        const data = await fetchPosts("/api/post");
+        setAllPosts(data);
+        setPosts(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch posts");
       } finally {
@@ -72,11 +77,41 @@ export default function Home() {
     setSearchMessage(`Client filter result: ${filteredPosts.length} posts`);
   }
 
-  function handleShowAll() {
+  async function handleServerSearch() {
+    const searchKeyword = keyword.trim();
+    const url = searchKeyword
+      ? `/api/post?keyword=${encodeURIComponent(searchKeyword)}`
+      : "/api/post";
+
     setError("");
-    setKeyword("");
-    setPosts(allPosts);
-    setSearchMessage("");
+    setIsLoading(true);
+
+    try {
+      const data = await fetchPosts(url);
+      setPosts(data);
+      setSearchMessage(`Server search result: ${data.length} posts`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch posts");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleShowAll() {
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const data = await fetchPosts("/api/post");
+      setAllPosts(data);
+      setPosts(data);
+      setKeyword("");
+      setSearchMessage("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch posts");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -93,6 +128,9 @@ export default function Home() {
 
         <button type="button" onClick={handleClientFilter} disabled={isLoading}>
           Client Filter
+        </button>
+        <button type="button" onClick={handleServerSearch} disabled={isLoading}>
+          Server Search
         </button>
         <button type="button" onClick={handleShowAll} disabled={isLoading}>
           Show All
