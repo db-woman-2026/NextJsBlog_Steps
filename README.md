@@ -33,7 +33,7 @@
 | `step-22` | 게시글 작성/수정 form과 Contact form의 Tailwind UI |
 | `step-23` | 삭제 버튼, Not Found, Error 화면 정리와 Tailwind 전환 마무리 |
 
-전체 단계 요약은 `/docs/index.md`에 있고, 각 단계 설명은 `/docs/step-N.md`에 있습니다.
+전체 단계 개요는 `/docs/overview/index.md`에 있고, 실습형 강의 자료는 `/docs/lecture/index.md`와 `/docs/lecture/step-N.md`에 있습니다.
 
 ## Stack
 

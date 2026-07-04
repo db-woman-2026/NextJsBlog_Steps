@@ -11,7 +11,7 @@
 - 전역 Not Found 화면을 카드 UI로 정리한다.
 - 상세 페이지 전용 Not Found 화면을 카드 UI로 정리한다.
 - 전역 Error 화면을 카드 UI로 정리한다.
-- README와 `docs/index.md`에 Tailwind 전환 마지막 단계를 추가한다.
+- README와 `docs/overview/index.md`에 Tailwind 전환 마지막 단계를 추가한다.
 
 ## 왜 마지막 단계가 필요한가
 
@@ -125,6 +125,6 @@ Error 화면은 일반적인 사용 흐름에서 쉽게 발생하지 않을 수 
 3. 없는 주소의 404 화면이 카드 형태로 보인다.
 4. 없는 게시글의 404 화면이 카드 형태로 보인다.
 5. Error 화면이 카드 형태로 보인다.
-6. README와 `docs/index.md`에 `step-23`이 추가되어 있다.
+6. README와 `docs/overview/index.md`에 `step-23`이 추가되어 있다.
 
 이 단계까지 완료하면 `simpledotcss` 기반 화면에서 Tailwind CSS v4 기반의 기본 UI로 전환하는 흐름이 마무리됩니다.
