@@ -5,7 +5,9 @@ export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const keyword = searchParams.get("keyword") || "";
-    const posts = await listPosts(keyword);
+    const page = searchParams.get("page") || "1";
+    const limit = searchParams.get("limit") || "5";
+    const posts = await listPosts({ keyword, page, limit });
 
     return apiSuccess(posts, "Posts fetched successfully");
   } catch (error) {
