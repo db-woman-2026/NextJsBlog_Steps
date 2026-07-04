@@ -1,9 +1,5 @@
 # Step 6. 새 게시글 작성 form 만들기
 
-이 문서는 이전 단계 실습 결과에서 시작해 `step-6` 수준의 기능을 완성하는 실습 자료입니다.
-원본 개요는 [docs/overview/step-6.md](../overview/step-6.md)에 보존되어 있습니다.
-아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
-
 ## 이번 스텝 주요 기능 Overview
 
 새 게시글 작성 form을 만들고 POST /api/post 요청으로 MongoDB에 글을 저장합니다.
@@ -11,16 +7,6 @@
 - `/post` 페이지를 단순 껍데기에서 실제 작성 form으로 바꿉니다.
 - 클라이언트 상태로 title/content/error를 관리하고 `POST /api/post`로 전송합니다.
 - 작성 성공 후 홈 화면으로 이동해 새 글이 목록에 반영되는 흐름을 만듭니다.
-
-## 시작 기준
-
-이미 `step-5` 실습을 끝낸 코드에서 이어서 진행합니다.
-단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
-
-```bash
-git switch practice-step-5
-git switch -c practice-step-6
-```
 
 ## 작업 1. 작성 form 클라이언트 컴포넌트로 전환
 
