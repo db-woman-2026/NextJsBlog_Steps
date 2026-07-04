@@ -29,7 +29,7 @@
 | `step-18` | Not Found와 Error UI 개선 |
 | `step-19` | 카테고리 |
 
-각 단계 개요는 `/docs/overview/step-N.md`에 있고, 실습형 강의 자료는 `/docs/lecture/step-N.md`에 있습니다.
+전체 단계 개요는 `/docs/overview/index.md`에 있고, 실습형 강의 자료는 `/docs/lecture/index.md`와 `/docs/lecture/step-N.md`에 있습니다.
 
 ## Stack
 
@@ -79,7 +79,7 @@ npm run dev
 | `/about` | 소개 페이지 |
 | `/contact` | Contact mockup form |
 | `/api/post` | 게시글 목록/작성 API |
-| `/api/post/[id]` | 게시글 단건 조회/수정 API |
+| `/api/post/[id]` | 게시글 단건 조회/수정/삭제 API |
 
 ## API Response Format
 
@@ -105,10 +105,11 @@ npm run dev
 
 | Method | 주소 | 요청 데이터 | 성공 시 `data` |
 | --- | --- | --- | --- |
-| `GET` | `/api/post` | 없음 | 게시글 배열 |
-| `POST` | `/api/post` | `{ title, content, image? }` | `{ postId }` |
+| `GET` | `/api/post` | query string: `keyword`, `page`, `limit`, `sort`, `category` | `{ posts, pagination }` |
+| `POST` | `/api/post` | `{ title, content, image?, category? }` | `{ postId }` |
 | `GET` | `/api/post/[id]` | URL의 `id` | 게시글 하나 |
-| `PUT` | `/api/post/[id]` | URL의 `id`, `{ title, content }` | `{ postId }` |
+| `PUT` | `/api/post/[id]` | URL의 `id`, `{ title, content, category? }` | `{ postId }` |
+| `DELETE` | `/api/post/[id]` | URL의 `id` | `{ postId }` |
 
 ## Useful Commands
 
