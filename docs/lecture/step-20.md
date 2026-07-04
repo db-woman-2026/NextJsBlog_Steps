@@ -1,6 +1,6 @@
 # Step 20. Tailwind CSS v4 설치와 공통 layout 정리
 
-이 문서는 `step-19`에서 시작해 `step-20`를 완성하는 실습 자료입니다.
+이 문서는 이전 단계 실습 결과에서 시작해 `step-20` 수준의 기능을 완성하는 실습 자료입니다.
 원본 개요는 [docs/overview/step-20.md](../overview/step-20.md)에 보존되어 있습니다.
 아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
 
@@ -14,31 +14,31 @@ simpledotcss를 제거하고 Tailwind CSS v4를 설치한 뒤 공통 layout, nav
 
 ## 시작 기준
 
-이전 단계인 `step-19` 브랜치까지 완료된 상태에서 시작합니다.
+이미 `step-19` 실습을 끝낸 코드에서 이어서 진행합니다.
+단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
 
 ```bash
-git switch step-19
+git switch practice-step-19
 git switch -c practice-step-20
-```
-
-정답 브랜치는 확인용으로만 사용합니다.
-
-```bash
-git switch step-20
 ```
 
 ## 작업 1. Tailwind CSS v4 설치와 패키지 정리
 
-이 단계부터 화면 스타일링 방식을 simpledotcss에서 Tailwind utility class로 바꿉니다. 패키지 명령을 먼저 실행하고 lock 파일은 npm에 맡깁니다.
+이 단계부터 화면 스타일링 방식을 simpledotcss에서 Tailwind utility class로 바꿉니다. 패키지 명령을 먼저 실행하고, 학생은 PostCSS 설정 파일과 전역 CSS만 직접 작성합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
-- 수정: [package.json](../../package.json)
-- 수정: [package-lock.json](../../package-lock.json)
 - 생성: [postcss.config.mjs](../../postcss.config.mjs)
 - 수정: [app/globals.css](../../app/globals.css)
 
-### 먼저 실행하거나 삭제할 명령
+### 명령으로 자동 변경되는 파일
+
+- 수정: [package.json](../../package.json)
+- 수정: [package-lock.json](../../package-lock.json)
+
+위 파일들은 명령 실행 결과를 확인만 합니다. 강의 중 직접 타이핑할 대상은 아닙니다.
+
+### 먼저 실행할 명령
 
 ```bash
 npm uninstall simpledotcss
@@ -88,27 +88,6 @@ index 9582211..f1d8c73 100644
 -  min-height: 12rem;
 -}
 +@import "tailwindcss";
-diff --git a/package.json b/package.json
-index ac2c8f5..8fecf84 100644
---- a/package.json
-+++ b/package.json
-@@ -12,11 +12,13 @@
-     "mongodb": "^7.4.0",
-     "next": "16.2.10",
-     "react": "19.2.4",
--    "react-dom": "19.2.4",
--    "simpledotcss": "^2.3.7"
-+    "react-dom": "19.2.4"
-   },
-   "devDependencies": {
-+    "@tailwindcss/postcss": "^4.3.2",
-     "eslint": "^9",
--    "eslint-config-next": "16.2.10"
-+    "eslint-config-next": "16.2.10",
-+    "postcss": "^8.5.16",
-+    "tailwindcss": "^4.3.2"
-   }
- }
 diff --git a/postcss.config.mjs b/postcss.config.mjs
 new file mode 100644
 index 0000000..61e3684
@@ -128,13 +107,13 @@ index 0000000..61e3684
 
 - Tailwind v4에서는 이 프로젝트 기준으로 별도 `tailwind.config.js` 없이 시작합니다.
 - `postcss.config.mjs`는 Tailwind PostCSS 플러그인을 Next.js 빌드에 연결합니다.
-- `package-lock.json`은 npm 명령이 자동 갱신합니다.
+- `package.json`과 `package-lock.json`은 npm 명령이 자동 갱신하므로 직접 타이핑하지 않습니다.
 
 ## 작업 2. 공통 layout에 화면 폭과 배경 적용
 
 모든 페이지가 같은 최대 폭과 배경색 안에서 보이도록 `app/layout.js`의 body 구조를 정리합니다. Header, 본문, Footer를 세로 flex 구조로 배치합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/layout.js](../../app/layout.js)
 
@@ -177,7 +156,7 @@ index e041f0f..6f5244d 100644
 
 simpledotcss가 자동으로 꾸며주던 nav 스타일을 직접 utility class로 작성합니다. 메뉴 항목은 배열로 분리해 반복 렌더링합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/components/Header.js](../../app/components/Header.js)
 - 수정: [app/components/Footer.js](../../app/components/Footer.js)
@@ -256,46 +235,6 @@ index eb664b1..a744ef8 100644
 
 - Header의 `navigationItems`는 링크가 늘어날 때 JSX 반복을 줄입니다.
 - Footer는 얇은 border와 작은 텍스트로 공통 shell에 맞춥니다.
-
-## 작업 4. README의 스타일링 기준 갱신
-
-프로젝트 스택이 simpledotcss에서 Tailwind CSS v4로 바뀌었으므로 README도 같은 기준으로 수정합니다.
-
-### 수정할 파일
-
-- 수정: [README.md](../../README.md)
-
-### 이전 단계와 달라지는 코드
-
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
-
-~~~diff
-diff --git a/README.md b/README.md
-index a99ef9c..f78803b 100644
---- a/README.md
-+++ b/README.md
-@@ -28,6 +28,7 @@
- | `step-17` | 정렬 기능 |
- | `step-18` | Not Found와 Error UI 개선 |
- | `step-19` | 카테고리 |
-+| `step-20` | `simpledotcss` 제거, Tailwind CSS v4 설치, 공통 layout/nav/footer 정리 |
-
- 전체 단계 개요는 `/docs/overview/index.md`에 있고, 실습형 강의 자료는 `/docs/lecture/index.md`와 `/docs/lecture/step-N.md`에 있습니다.
-
-@@ -37,7 +38,7 @@
- - React 19
- - MongoDB Node.js Driver 7
- - ESLint 9 flat config
--- simple.css
-+- Tailwind CSS v4
-
- ## Getting Started
-
-~~~
-
-### 설명/확인 포인트
-
-- 문서의 Branch Flow에도 step-20을 추가합니다.
 
 ## 실행 확인
 

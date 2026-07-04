@@ -1,6 +1,6 @@
 # Step 21. 홈 목록과 상세 읽기 화면 UI 정리
 
-이 문서는 `step-20`에서 시작해 `step-21`를 완성하는 실습 자료입니다.
+이 문서는 이전 단계 실습 결과에서 시작해 `step-21` 수준의 기능을 완성하는 실습 자료입니다.
 원본 개요는 [docs/overview/step-21.md](../overview/step-21.md)에 보존되어 있습니다.
 아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
 
@@ -14,29 +14,24 @@
 
 ## 시작 기준
 
-이전 단계인 `step-20` 브랜치까지 완료된 상태에서 시작합니다.
+이미 `step-20` 실습을 끝낸 코드에서 이어서 진행합니다.
+단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
 
 ```bash
-git switch step-20
+git switch practice-step-20
 git switch -c practice-step-21
-```
-
-정답 브랜치는 확인용으로만 사용합니다.
-
-```bash
-git switch step-21
 ```
 
 ## 작업 1. 홈 목록을 카드형 Tailwind UI로 변경
 
 step-20에서 공통 shell을 바꿨으므로, 이제 사용자가 가장 먼저 보는 홈 목록을 Tailwind class로 정리합니다. 검색/정렬/카테고리 controls는 하나의 패널 안에 묶습니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/page.js](../../app/page.js)
 - 삭제: `app/page.module.css`
 
-### 먼저 실행하거나 삭제할 명령
+### 먼저 실행할 명령
 
 ```bash
 rm app/page.module.css
@@ -330,12 +325,12 @@ index 4418093..0000000
 
 게시글 하나를 읽는 화면은 제목, 카테고리, 날짜, 본문, 액션 버튼이 한 덩어리로 보여야 합니다. 기존 CSS module을 제거하고 Tailwind class만 사용합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/detail/[id]/page.js](../../app/detail/%5Bid%5D/page.js)
 - 삭제: `app/detail/[id]/page.module.css`
 
-### 먼저 실행하거나 삭제할 명령
+### 먼저 실행할 명령
 
 ```bash
 rm app/detail/[id]/page.module.css
@@ -426,7 +421,7 @@ index c52da0a..0000000
 
 소개 페이지는 텍스트와 이미지가 함께 보이는 정적 페이지입니다. 모바일에서는 1열, 큰 화면에서는 2열로 보이도록 Tailwind grid를 적용합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/about/page.js](../../app/about/page.js)
 
@@ -499,37 +494,6 @@ index c6e3f14..c05557c 100644
 
 - 이미지는 `rounded-lg`와 border로 카드처럼 보이게 합니다.
 - `lg:` 접두사는 큰 화면에서만 2열 레이아웃을 적용합니다.
-
-## 작업 4. README 단계 목록 갱신
-
-Tailwind UI 정리 단계가 추가됐으므로 README의 Branch Flow를 최신 상태로 맞춥니다.
-
-### 수정할 파일
-
-- 수정: [README.md](../../README.md)
-
-### 이전 단계와 달라지는 코드
-
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
-
-~~~diff
-diff --git a/README.md b/README.md
-index f78803b..f5f5c43 100644
---- a/README.md
-+++ b/README.md
-@@ -29,6 +29,7 @@
- | `step-18` | Not Found와 Error UI 개선 |
- | `step-19` | 카테고리 |
- | `step-20` | `simpledotcss` 제거, Tailwind CSS v4 설치, 공통 layout/nav/footer 정리 |
-+| `step-21` | 홈 목록, 상세 읽기 화면, About 페이지의 기본 카드 UI |
-
- 전체 단계 개요는 `/docs/overview/index.md`에 있고, 실습형 강의 자료는 `/docs/lecture/index.md`와 `/docs/lecture/step-N.md`에 있습니다.
-
-~~~
-
-### 설명/확인 포인트
-
-- 문서 변경은 강의자가 브랜치 흐름을 설명할 때 기준이 됩니다.
 
 ## 실행 확인
 
