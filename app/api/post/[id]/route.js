@@ -21,12 +21,16 @@ export async function PUT(request, { params }) {
   try {
     const { id } = await params;
     const postData = await request.json();
+    const title =
+      typeof postData.title === "string" ? postData.title.trim() : "";
+    const content =
+      typeof postData.content === "string" ? postData.content.trim() : "";
 
-    if (!postData.title || !postData.content) {
+    if (!title || !content) {
       return apiError("Title and content are required", 400);
     }
 
-    const result = await updatePost(id, postData);
+    const result = await updatePost(id, { title, content });
 
     if (!result || result.matchedCount === 0) {
       return apiError("Post not found", 404);
