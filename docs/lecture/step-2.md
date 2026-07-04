@@ -1,9 +1,5 @@
 # Step 2. simpledotcss와 이미지 설정으로 화면 정돈하기
 
-이 문서는 이전 단계 실습 결과에서 시작해 `step-2` 수준의 기능을 완성하는 실습 자료입니다.
-원본 개요는 [docs/overview/step-2.md](../overview/step-2.md)에 보존되어 있습니다.
-아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
-
 ## 이번 스텝 주요 기능 Overview
 
 simpledotcss와 next/image를 적용해 기본 화면을 정돈하고 외부 이미지 도메인 설정을 추가합니다.
@@ -11,16 +7,6 @@ simpledotcss와 next/image를 적용해 기본 화면을 정돈하고 외부 이
 - 직접 작성한 최소 CSS 대신 `simpledotcss`를 설치해 기본 HTML 태그 스타일을 정돈합니다.
 - About 페이지에 `next/image` 이미지를 추가합니다.
 - 외부 이미지인 `picsum.photos`를 사용할 수 있도록 `next.config.mjs`에 허용 도메인을 설정합니다.
-
-## 시작 기준
-
-이미 `step-1` 실습을 끝낸 코드에서 이어서 진행합니다.
-단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
-
-```bash
-git switch practice-step-1
-git switch -c practice-step-2
-```
 
 ## 작업 1. simpledotcss 설치와 전역 CSS 교체
 
