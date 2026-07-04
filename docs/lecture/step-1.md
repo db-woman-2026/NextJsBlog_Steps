@@ -1,6 +1,6 @@
 # Step 1. App Router와 기본 페이지 껍데기 만들기
 
-이 문서는 `main`에서 시작해 `step-1`를 완성하는 실습 자료입니다.
+이 문서는 이전 단계 실습 결과에서 시작해 `step-1` 수준의 기능을 완성하는 실습 자료입니다.
 원본 개요는 [docs/overview/step-1.md](../overview/step-1.md)에 보존되어 있습니다.
 아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
 
@@ -21,18 +21,12 @@ git switch main
 git switch -c practice-step-1
 ```
 
-정답 브랜치는 확인용으로만 사용합니다.
-
-```bash
-git switch step-1
-```
-
 ## 작업 1. 기본 화면과 전역 레이아웃 정리
 
 먼저 Next.js 기본 예제 화면을 제거하고, 블로그 프로젝트에서 계속 사용할 전역 레이아웃과 기본 스타일을 만듭니다. `layout.js`의 `{children}` 자리는 현재 URL에 맞는 페이지가 들어오는
 위치입니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [.gitignore](../../.gitignore)
 - 수정: [app/layout.js](../../app/layout.js)
@@ -40,7 +34,7 @@ git switch step-1
 - 수정: [app/globals.css](../../app/globals.css)
 - 삭제: `app/page.module.css`
 
-### 먼저 실행하거나 삭제할 명령
+### 먼저 실행할 명령
 
 ```bash
 rm app/page.module.css
@@ -268,7 +262,7 @@ index 290b6c3..63adb50 100644
 
 페이지마다 메뉴를 반복해서 작성하지 않도록 공통 컴포넌트를 만듭니다. 내부 이동은 새로고침 없는 페이지 전환을 위해 `next/link`의 `Link`를 사용합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 생성: [app/components/Header.js](../../app/components/Header.js)
 - 생성: [app/components/Footer.js](../../app/components/Footer.js)
@@ -328,7 +322,7 @@ index 0000000..eb664b1
 
 App Router에서는 폴더 안의 `page.js`가 실제 URL을 만듭니다. 아직 데이터 저장이나 form 동작은 만들지 않고, 각 주소가 열리는지 확인할 수 있는 화면 껍데기만 둡니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 생성: [app/about/page.js](../../app/about/page.js)
 - 생성: [app/post/page.js](../../app/post/page.js)
