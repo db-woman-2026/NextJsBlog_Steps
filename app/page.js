@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import styles from "./page.module.css";
 
 const PAGE_SIZE = 5;
 const DEFAULT_SORT = "created-desc";
+const inputClassName =
+  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 disabled:bg-zinc-100";
+const secondaryButtonClassName =
+  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50";
 const CATEGORY_FILTERS = [
   { value: "all", label: "All categories" },
   { value: "general", label: "General" },
@@ -202,88 +205,179 @@ export default function Home() {
   }
 
   return (
-    <main>
-      <form onSubmit={(event) => event.preventDefault()}>
-        <label htmlFor="keyword">Search posts:</label>
-        <input
-          type="search"
-          id="keyword"
-          value={keyword}
-          onChange={(event) => setKeyword(event.target.value)}
-          disabled={isLoading}
-        />
+    <main className="space-y-6">
+      <section className="space-y-2">
+        <p className="text-sm font-semibold uppercase text-zinc-500">
+          Next.js Blog
+        </p>
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
+          Blog Posts
+        </h1>
+        <p className="max-w-2xl text-sm leading-6 text-zinc-600">
+          MongoDB에 저장된 게시글을 검색, 정렬, 카테고리 필터와 함께
+          확인합니다.
+        </p>
+      </section>
 
-        <label htmlFor="categoryFilter">Category:</label>
-        <select
-          id="categoryFilter"
-          value={categoryFilter}
-          onChange={handleCategoryChange}
-          disabled={isLoading}
-        >
-          {CATEGORY_FILTERS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+      <form
+        className="grid gap-4 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-3"
+        onSubmit={(event) => event.preventDefault()}
+      >
+        <div className="grid gap-1.5">
+          <label
+            className="text-sm font-medium text-zinc-700"
+            htmlFor="keyword"
+          >
+            Search posts
+          </label>
+          <input
+            className={inputClassName}
+            type="search"
+            id="keyword"
+            value={keyword}
+            onChange={(event) => setKeyword(event.target.value)}
+            disabled={isLoading}
+          />
+        </div>
 
-        <label htmlFor="sortOrder">Sort posts:</label>
-        <select
-          id="sortOrder"
-          value={sortOrder}
-          onChange={handleSortChange}
-          disabled={isLoading}
-        >
-          <option value="created-desc">Newest first</option>
-          <option value="created-asc">Oldest first</option>
-          <option value="title-asc">Title A-Z</option>
-          <option value="title-desc">Title Z-A</option>
-        </select>
+        <div className="grid gap-1.5">
+          <label
+            className="text-sm font-medium text-zinc-700"
+            htmlFor="categoryFilter"
+          >
+            Category
+          </label>
+          <select
+            className={inputClassName}
+            id="categoryFilter"
+            value={categoryFilter}
+            onChange={handleCategoryChange}
+            disabled={isLoading}
+          >
+            {CATEGORY_FILTERS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <button type="button" onClick={handleClientFilter} disabled={isLoading}>
-          Client Filter
-        </button>
-        <button type="button" onClick={handleServerSearch} disabled={isLoading}>
-          Server Search
-        </button>
-        <button type="button" onClick={handleShowAll} disabled={isLoading}>
-          Show All
-        </button>
+        <div className="grid gap-1.5">
+          <label
+            className="text-sm font-medium text-zinc-700"
+            htmlFor="sortOrder"
+          >
+            Sort posts
+          </label>
+          <select
+            className={inputClassName}
+            id="sortOrder"
+            value={sortOrder}
+            onChange={handleSortChange}
+            disabled={isLoading}
+          >
+            <option value="created-desc">Newest first</option>
+            <option value="created-asc">Oldest first</option>
+            <option value="title-asc">Title A-Z</option>
+            <option value="title-desc">Title Z-A</option>
+          </select>
+        </div>
+
+        <div className="flex flex-wrap gap-2 sm:col-span-2 lg:col-span-3">
+          <button
+            className={secondaryButtonClassName}
+            type="button"
+            onClick={handleClientFilter}
+            disabled={isLoading}
+          >
+            Client Filter
+          </button>
+          <button
+            className={secondaryButtonClassName}
+            type="button"
+            onClick={handleServerSearch}
+            disabled={isLoading}
+          >
+            Server Search
+          </button>
+          <button
+            className={secondaryButtonClassName}
+            type="button"
+            onClick={handleShowAll}
+            disabled={isLoading}
+          >
+            Show All
+          </button>
+        </div>
       </form>
 
-      {searchMessage && <p>{searchMessage}</p>}
-      {isLoading && <p>Loading posts...</p>}
-      {error && <p role="alert">{error}</p>}
-      {!isLoading && !error && posts.length === 0 && <p>No posts found.</p>}
+      {searchMessage && (
+        <p className="rounded-md bg-zinc-100 px-3 py-2 text-sm text-zinc-600">
+          {searchMessage}
+        </p>
+      )}
+      {isLoading && <p className="text-sm text-zinc-600">Loading posts...</p>}
+      {error && (
+        <p
+          className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+          role="alert"
+        >
+          {error}
+        </p>
+      )}
+      {!isLoading && !error && posts.length === 0 && (
+        <p className="rounded-md border border-dashed border-zinc-300 bg-white px-4 py-8 text-center text-sm text-zinc-500">
+          No posts found.
+        </p>
+      )}
       {!isLoading && !error && (
         <>
-          <section className={styles.articleList} aria-label="Blog posts">
+          <section className="grid gap-4" aria-label="Blog posts">
             {posts.map((post) => (
-              <article key={post._id} className={styles.article}>
-                <Link href={`/detail/${post._id}`}>{post.title}</Link>
-                <p>Category: {post.category || "general"}</p>
-                <p>Created: {formatDate(post.createdAt)}</p>
+              <article
+                key={post._id}
+                className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm transition hover:border-zinc-300"
+              >
+                <Link
+                  className="text-xl font-semibold text-zinc-950 hover:text-zinc-700"
+                  href={`/detail/${post._id}`}
+                >
+                  {post.title}
+                </Link>
+                <div className="mt-3 flex flex-wrap gap-2 text-xs text-zinc-500">
+                  <span className="rounded-full bg-zinc-100 px-2.5 py-1 font-medium text-zinc-700">
+                    {post.category || "general"}
+                  </span>
+                  <span>Created: {formatDate(post.createdAt)}</span>
+                </div>
                 {post.updatedAt && (
-                  <p>Updated: {formatDate(post.updatedAt)}</p>
+                  <p className="mt-2 text-xs text-zinc-500">
+                    Updated: {formatDate(post.updatedAt)}
+                  </p>
                 )}
               </article>
             ))}
           </section>
 
           {pagination && (
-            <nav aria-label="Pagination">
+            <nav
+              className="flex flex-wrap items-center gap-3 rounded-lg border border-zinc-200 bg-white p-4 text-sm text-zinc-600"
+              aria-label="Pagination"
+            >
               <button
+                className={secondaryButtonClassName}
                 type="button"
                 onClick={() => handlePageChange(pagination.page - 1)}
                 disabled={isLoading || !pagination.hasPreviousPage}
               >
                 Previous
               </button>
-              <span>
+              <span className="font-medium text-zinc-700">
                 Page {pagination.page} of {pagination.totalPages} (
                 {pagination.totalPosts} posts)
               </span>
               <button
+                className={secondaryButtonClassName}
                 type="button"
                 onClick={() => handlePageChange(pagination.page + 1)}
                 disabled={isLoading || !pagination.hasNextPage}
