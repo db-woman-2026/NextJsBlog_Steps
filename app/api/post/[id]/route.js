@@ -30,7 +30,11 @@ export async function PUT(request, { params }) {
       return apiError("Title and content are required", 400);
     }
 
-    const result = await updatePost(id, { title, content });
+    const result = await updatePost(id, {
+      title,
+      content,
+      category: postData.category,
+    });
 
     if (!result || result.matchedCount === 0) {
       return apiError("Post not found", 404);

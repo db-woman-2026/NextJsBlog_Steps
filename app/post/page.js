@@ -4,9 +4,17 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
+const CATEGORY_OPTIONS = [
+  { value: "general", label: "General" },
+  { value: "notice", label: "Notice" },
+  { value: "daily", label: "Daily" },
+  { value: "tech", label: "Tech" },
+];
+
 export default function NewPost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [category, setCategory] = useState("general");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
@@ -25,6 +33,7 @@ export default function NewPost() {
         body: JSON.stringify({
           title,
           content,
+          category,
           image: "https://picsum.photos/100",
         }),
       });
@@ -66,6 +75,20 @@ export default function NewPost() {
           disabled={isSubmitting}
           required
         />
+
+        <label htmlFor="category">Category:</label>
+        <select
+          id="category"
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+          disabled={isSubmitting}
+        >
+          {CATEGORY_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
 
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Creating..." : "Create Post"}
