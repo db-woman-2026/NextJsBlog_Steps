@@ -1,5 +1,5 @@
 import { apiError, apiSuccess } from "@/lib/apiResponse";
-import { getPostById, updatePost } from "@/lib/posts";
+import { deletePost, getPostById, updatePost } from "@/lib/posts";
 
 export async function GET(_request, { params }) {
   try {
@@ -39,6 +39,22 @@ export async function PUT(request, { params }) {
     return apiSuccess({ postId: id }, "Post updated successfully");
   } catch (error) {
     console.error("Error updating post:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
+
+export async function DELETE(_request, { params }) {
+  try {
+    const { id } = await params;
+    const result = await deletePost(id);
+
+    if (!result || result.deletedCount === 0) {
+      return apiError("Post not found", 404);
+    }
+
+    return apiSuccess({ postId: id }, "Post deleted successfully");
+  } catch (error) {
+    console.error("Error deleting post:", error);
     return apiError("Internal Server Error", 500);
   }
 }
