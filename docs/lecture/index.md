@@ -1,6 +1,6 @@
 # Lecture Index
 
-이 폴더는 `step-7` 브랜치에서 사용할 수 있는 실습형 강의 자료입니다.
+이 폴더는 `step-8` 브랜치에서 사용할 수 있는 실습형 강의 자료입니다.
 각 문서는 학생이 이전 단계 실습 결과에서 현재 단계로 넘어오며 직접 입력할 기능 코드를 작업 단위로 나누고, 설명 바로 아래에 프로젝트 내부 파일 링크와 실제 diff를 제공합니다.
 
 강의 실습은 이 `docs/lecture/` 문서를 기준으로 진행합니다.
@@ -16,6 +16,7 @@
 | `step-5` | [lecture/step-5.md](./step-5.md) | 홈 목록에서 게시글을 불러오고 제목 클릭으로 상세 화면까지 이동하는 읽기 흐름을 완성합니다. |
 | `step-6` | [lecture/step-6.md](./step-6.md) | 새 게시글 작성 form을 만들고 POST /api/post 요청으로 MongoDB에 글을 저장합니다. |
 | `step-7` | [lecture/step-7.md](./step-7.md) | 상세 화면에서 수정 화면으로 이동하고 기존 글을 불러와 PUT /api/post/[id]로 수정합니다. |
+| `step-8` | [lecture/step-8.md](./step-8.md) | Contact 페이지를 mockup form으로 바꾸고 controlled input과 submit 이벤트를 복습합니다. |
 
 ## 실습 방식
 
