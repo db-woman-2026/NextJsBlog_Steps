@@ -31,6 +31,8 @@ npm uninstall simpledotcss
 npm install -D tailwindcss @tailwindcss/postcss postcss
 ```
 
+위 명령은 `package.json`, `package-lock.json`, `node_modules`를 함께 갱신합니다. 이전 단계의 `node_modules`가 남아 있거나 완성 브랜치를 바로 checkout해 확인하는 경우에는 lockfile 기준으로 의존성을 다시 맞춰야 하므로 `npm ci`를 실행합니다. `Cannot find module '@tailwindcss/postcss'` 오류가 나오면 Tailwind/PostCSS 의존성이 아직 설치되지 않은 상태입니다.
+
 ### 이전 단계와 달라지는 코드
 
 아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
