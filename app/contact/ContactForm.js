@@ -13,6 +13,10 @@ export default function ContactForm() {
     alert(
       `메일 전송 mockup입니다.\n\n이름: ${name}\n이메일: ${email}\n내용: ${message}`,
     );
+
+    setName("");
+    setEmail("");
+    setMessage("");
   }
 
   return (
