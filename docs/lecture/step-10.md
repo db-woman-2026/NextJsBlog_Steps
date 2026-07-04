@@ -1,6 +1,6 @@
 # Step 10. 입력값 검증 강화와 서버 오류 메시지 표시
 
-이 문서는 `step-9`에서 시작해 `step-10`를 완성하는 실습 자료입니다.
+이 문서는 이전 단계 실습 결과에서 시작해 `step-10` 수준의 기능을 완성하는 실습 자료입니다.
 원본 개요는 [docs/overview/step-10.md](../overview/step-10.md)에 보존되어 있습니다.
 아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
 
@@ -14,24 +14,19 @@
 
 ## 시작 기준
 
-이전 단계인 `step-9` 브랜치까지 완료된 상태에서 시작합니다.
+이미 `step-9` 실습을 끝낸 코드에서 이어서 진행합니다.
+단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
 
 ```bash
-git switch step-9
+git switch practice-step-9
 git switch -c practice-step-10
-```
-
-정답 브랜치는 확인용으로만 사용합니다.
-
-```bash
-git switch step-10
 ```
 
 ## 작업 1. 작성 API에 서버 검증 추가
 
 브라우저의 `required`는 편의 기능일 뿐 API 보호 장치가 아닙니다. `POST /api/post`에서 요청 body를 정리하고 빈 title/content를 400으로 거절합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/api/post/route.js](../../app/api/post/route.js)
 
@@ -78,7 +73,7 @@ index 98fabfd..346044d 100644
 
 작성과 수정은 같은 데이터 규칙을 가져야 합니다. `PUT /api/post/[id]`에도 동일하게 문자열 확인과 trim 처리를 넣습니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/api/post/[id]/route.js](../../app/api/post/%5Bid%5D/route.js)
 
