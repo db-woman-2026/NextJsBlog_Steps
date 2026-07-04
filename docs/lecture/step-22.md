@@ -1,6 +1,6 @@
 # Step 22. 작성, 수정, Contact form UI 정리
 
-이 문서는 `step-21`에서 시작해 `step-22`를 완성하는 실습 자료입니다.
+이 문서는 이전 단계 실습 결과에서 시작해 `step-22` 수준의 기능을 완성하는 실습 자료입니다.
 원본 개요는 [docs/overview/step-22.md](../overview/step-22.md)에 보존되어 있습니다.
 아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
 
@@ -14,29 +14,24 @@
 
 ## 시작 기준
 
-이전 단계인 `step-21` 브랜치까지 완료된 상태에서 시작합니다.
+이미 `step-21` 실습을 끝낸 코드에서 이어서 진행합니다.
+단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
 
 ```bash
-git switch step-21
+git switch practice-step-21
 git switch -c practice-step-22
-```
-
-정답 브랜치는 확인용으로만 사용합니다.
-
-```bash
-git switch step-22
 ```
 
 ## 작업 1. 게시글 작성 form Tailwind UI 적용
 
 작성 화면에 제목 영역과 form 카드 UI를 적용합니다. 반복되는 label/input/button class는 상수로 분리해 같은 패턴을 재사용합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/post/page.js](../../app/post/page.js)
 - 삭제: `app/post/page.module.css`
 
-### 먼저 실행하거나 삭제할 명령
+### 먼저 실행할 명령
 
 ```bash
 rm app/post/page.module.css
@@ -209,7 +204,7 @@ index 8a6b6ea..0000000
 
 수정 화면도 작성 화면과 같은 입력 패턴을 사용합니다. 로딩/오류/제출 중 상태가 스타일과 함께 일관되게 보여야 합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/post/[id]/page.js](../../app/post/%5Bid%5D/page.js)
 
@@ -370,7 +365,7 @@ index 9fa480c..79589b4 100644
 
 Contact form도 실제 기능은 mockup이지만 사용자가 입력하는 화면이므로 같은 UI 패턴을 적용합니다. 페이지 자체에는 제목/설명을 두고 form은 카드로 묶습니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/contact/page.js](../../app/contact/page.js)
 - 수정: [app/contact/ContactForm.js](../../app/contact/ContactForm.js)
@@ -513,37 +508,6 @@ index c14ed86..549c4e7 100644
 
 - ContactForm의 controlled input 흐름은 유지하고 class만 Tailwind 기준으로 바꿉니다.
 - 성공 메시지는 녹색 alert 패턴으로 표시합니다.
-
-## 작업 4. README 단계 목록 갱신
-
-form UI 정리 단계가 추가됐으므로 README의 Branch Flow를 갱신합니다.
-
-### 수정할 파일
-
-- 수정: [README.md](../../README.md)
-
-### 이전 단계와 달라지는 코드
-
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
-
-~~~diff
-diff --git a/README.md b/README.md
-index f5f5c43..2c4aec0 100644
---- a/README.md
-+++ b/README.md
-@@ -30,6 +30,7 @@
- | `step-19` | 카테고리 |
- | `step-20` | `simpledotcss` 제거, Tailwind CSS v4 설치, 공통 layout/nav/footer 정리 |
- | `step-21` | 홈 목록, 상세 읽기 화면, About 페이지의 기본 카드 UI |
-+| `step-22` | 게시글 작성/수정 form과 Contact form의 Tailwind UI |
-
- 전체 단계 개요는 `/docs/overview/index.md`에 있고, 실습형 강의 자료는 `/docs/lecture/index.md`와 `/docs/lecture/step-N.md`에 있습니다.
-
-~~~
-
-### 설명/확인 포인트
-
-- 강의 흐름 문서도 코드 단계와 같은 순서를 유지합니다.
 
 ## 실행 확인
 

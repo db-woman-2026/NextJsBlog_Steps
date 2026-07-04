@@ -1,6 +1,6 @@
 # Step 4. API Route와 통일된 JSON 응답 만들기
 
-이 문서는 `step-3`에서 시작해 `step-4`를 완성하는 실습 자료입니다.
+이 문서는 이전 단계 실습 결과에서 시작해 `step-4` 수준의 기능을 완성하는 실습 자료입니다.
 원본 개요는 [docs/overview/step-4.md](../overview/step-4.md)에 보존되어 있습니다.
 아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
 
@@ -14,24 +14,19 @@
 
 ## 시작 기준
 
-이전 단계인 `step-3` 브랜치까지 완료된 상태에서 시작합니다.
+이미 `step-3` 실습을 끝낸 코드에서 이어서 진행합니다.
+단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
 
 ```bash
-git switch step-3
+git switch practice-step-3
 git switch -c practice-step-4
-```
-
-정답 브랜치는 확인용으로만 사용합니다.
-
-```bash
-git switch step-4
 ```
 
 ## 작업 1. 공통 API 응답 helper 추가
 
 API마다 응답 모양이 달라지면 화면 코드가 복잡해집니다. 성공과 실패 응답을 만드는 helper를 먼저 두고 route handler에서 재사용합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 생성: [lib/apiResponse.js](../../lib/apiResponse.js)
 
@@ -80,7 +75,7 @@ index 0000000..bfcd9bd
 
 `app/api/post/route.js`는 `/api/post` 주소를 담당합니다. `GET`은 목록을 반환하고, `POST`는 요청 body를 받아 새 게시글을 저장합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 생성: [app/api/post/route.js](../../app/api/post/route.js)
 
@@ -139,7 +134,7 @@ index 0000000..98fabfd
 
 `[id]` 폴더는 동적 라우트입니다. `/api/post/abc123`처럼 들어온 URL 조각을 `params`에서 읽어 단건 조회와 수정을 처리합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 생성: [app/api/post/[id]/route.js](../../app/api/post/%5Bid%5D/route.js)
 

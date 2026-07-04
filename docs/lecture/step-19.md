@@ -1,6 +1,6 @@
 # Step 19. 게시글 카테고리 추가하기
 
-이 문서는 `step-18`에서 시작해 `step-19`를 완성하는 실습 자료입니다.
+이 문서는 이전 단계 실습 결과에서 시작해 `step-19` 수준의 기능을 완성하는 실습 자료입니다.
 원본 개요는 [docs/overview/step-19.md](../overview/step-19.md)에 보존되어 있습니다.
 아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
 
@@ -14,24 +14,19 @@
 
 ## 시작 기준
 
-이전 단계인 `step-18` 브랜치까지 완료된 상태에서 시작합니다.
+이미 `step-18` 실습을 끝낸 코드에서 이어서 진행합니다.
+단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
 
 ```bash
-git switch step-18
+git switch practice-step-18
 git switch -c practice-step-19
-```
-
-정답 브랜치는 확인용으로만 사용합니다.
-
-```bash
-git switch step-19
 ```
 
 ## 작업 1. 데이터 계층에 category 필드 반영
 
 새 글, 샘플 글, 수정 글 모두 같은 category 규칙을 가져야 합니다. 누락된 값은 `general`로 저장해 화면과 필터가 안정적으로 동작하게 합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [lib/posts.js](../../lib/posts.js)
 
@@ -140,7 +135,7 @@ index 2013802..0859268 100644
 
 작성, 수정, 목록 API가 category를 이해하도록 route handler를 수정합니다. 목록 API는 `category` query string을 받아 필터링합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/api/post/route.js](../../app/api/post/route.js)
 - 수정: [app/api/post/[id]/route.js](../../app/api/post/%5Bid%5D/route.js)
@@ -200,7 +195,7 @@ index 2c15606..2d8ac9d 100644
 
 홈 화면에서 카테고리 select를 추가하고 query string에 포함합니다. 게시글 카드에도 현재 글의 카테고리를 표시합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/page.js](../../app/page.js)
 
@@ -362,7 +357,7 @@ index 07af3cf..75cfa57 100644
 
 사용자가 글을 만들거나 수정할 때 category를 선택하고, 상세 화면에서 저장된 category를 확인할 수 있게 합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/post/page.js](../../app/post/page.js)
 - 수정: [app/post/[id]/page.js](../../app/post/%5Bid%5D/page.js)
@@ -503,62 +498,6 @@ index b6d7668..952f1b7 100644
 - 작성 화면은 category 초기값을 `general`로 둡니다.
 - 수정 화면은 기존 게시글의 category를 불러와 select 값으로 사용합니다.
 - 상세 화면은 제목 주변에 category를 표시합니다.
-
-## 작업 5. README 단계 설명 갱신
-
-기능이 추가됐으므로 README의 API와 브랜치 설명도 현재 단계 기준으로 맞춥니다.
-
-### 수정할 파일
-
-- 수정: [README.md](../../README.md)
-
-### 이전 단계와 달라지는 코드
-
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
-
-~~~diff
-diff --git a/README.md b/README.md
-index 4f2ff32..a99ef9c 100644
---- a/README.md
-+++ b/README.md
-@@ -29,7 +29,7 @@
- | `step-18` | Not Found와 Error UI 개선 |
- | `step-19` | 카테고리 |
-
--각 단계 개요는 `/docs/overview/step-N.md`에 있고, 실습형 강의 자료는 `/docs/lecture/step-N.md`에 있습니다.
-+전체 단계 개요는 `/docs/overview/index.md`에 있고, 실습형 강의 자료는 `/docs/lecture/index.md`와 `/docs/lecture/step-N.md`에 있습니다.
-
- ## Stack
-
-@@ -79,7 +79,7 @@ npm run dev
- | `/about` | 소개 페이지 |
- | `/contact` | Contact mockup form |
- | `/api/post` | 게시글 목록/작성 API |
--| `/api/post/[id]` | 게시글 단건 조회/수정 API |
-+| `/api/post/[id]` | 게시글 단건 조회/수정/삭제 API |
-
- ## API Response Format
-
-@@ -105,10 +105,11 @@ npm run dev
-
- | Method | 주소 | 요청 데이터 | 성공 시 `data` |
- | --- | --- | --- | --- |
--| `GET` | `/api/post` | 없음 | 게시글 배열 |
--| `POST` | `/api/post` | `{ title, content, image? }` | `{ postId }` |
-+| `GET` | `/api/post` | query string: `keyword`, `page`, `limit`, `sort`, `category` | `{ posts, pagination }` |
-+| `POST` | `/api/post` | `{ title, content, image?, category? }` | `{ postId }` |
- | `GET` | `/api/post/[id]` | URL의 `id` | 게시글 하나 |
--| `PUT` | `/api/post/[id]` | URL의 `id`, `{ title, content }` | `{ postId }` |
-+| `PUT` | `/api/post/[id]` | URL의 `id`, `{ title, content, category? }` | `{ postId }` |
-+| `DELETE` | `/api/post/[id]` | URL의 `id` | `{ postId }` |
-
- ## Useful Commands
-
-~~~
-
-### 설명/확인 포인트
-
-- 문서 변경은 기능 코드와 별개지만, 수강생이 전체 API 형식을 확인하는 기준입니다.
 
 ## 실행 확인
 
