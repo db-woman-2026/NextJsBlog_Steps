@@ -1,6 +1,6 @@
 # Step 5. 홈 게시글 목록과 상세 읽기 화면 연결하기
 
-이 문서는 `step-4`에서 시작해 `step-5`를 완성하는 실습 자료입니다.
+이 문서는 이전 단계 실습 결과에서 시작해 `step-5` 수준의 기능을 완성하는 실습 자료입니다.
 원본 개요는 [docs/overview/step-5.md](../overview/step-5.md)에 보존되어 있습니다.
 아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
 
@@ -14,24 +14,19 @@
 
 ## 시작 기준
 
-이전 단계인 `step-4` 브랜치까지 완료된 상태에서 시작합니다.
+이미 `step-4` 실습을 끝낸 코드에서 이어서 진행합니다.
+단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
 
 ```bash
-git switch step-4
+git switch practice-step-4
 git switch -c practice-step-5
-```
-
-정답 브랜치는 확인용으로만 사용합니다.
-
-```bash
-git switch step-5
 ```
 
 ## 작업 1. 홈 화면을 게시글 목록으로 변경
 
 기존 소개용 홈 화면을 실제 게시글 목록 화면으로 바꿉니다. 서버 컴포넌트인 `app/page.js`에서 `listPosts`를 호출해 MongoDB 데이터를 읽습니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/page.js](../../app/page.js)
 - 생성: [app/page.module.css](../../app/page.module.css)
@@ -132,7 +127,7 @@ index 0000000..4418093
 
 `app/detail/[id]/page.js`는 URL의 id를 받아 게시글 하나를 조회합니다. 목록에서 제목을 클릭하면 이 화면으로 이동합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 생성: [app/detail/[id]/page.js](../../app/detail/%5Bid%5D/page.js)
 - 생성: [app/detail/[id]/page.module.css](../../app/detail/%5Bid%5D/page.module.css)
