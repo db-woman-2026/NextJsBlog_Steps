@@ -1,7 +1,7 @@
 # Lecture Index
 
 이 폴더는 `step-23` 브랜치에서 사용할 수 있는 실습형 강의 자료입니다.
-각 문서는 이전 단계에서 현재 단계로 넘어오며 바뀌는 기능을 작업 단위로 나누고, 설명 바로 아래에 프로젝트 내부 파일 링크와 실제 diff를 제공합니다.
+각 문서는 학생이 이전 단계 실습 결과에서 현재 단계로 넘어오며 직접 입력할 기능 코드를 작업 단위로 나누고, 설명 바로 아래에 프로젝트 내부 파일 링크와 실제 diff를 제공합니다.
 
 원본 개요 문서는 `docs/overview/`에 보존되어 있습니다. 강의 실습은 이 `docs/lecture/` 문서를 기준으로 진행합니다.
 
@@ -17,7 +17,7 @@
 | `step-6` | [lecture/step-6.md](./step-6.md) | [overview/step-6.md](../overview/step-6.md) | 새 게시글 작성 form을 만들고 POST /api/post 요청으로 MongoDB에 글을 저장합니다. |
 | `step-7` | [lecture/step-7.md](./step-7.md) | [overview/step-7.md](../overview/step-7.md) | 상세 화면에서 수정 화면으로 이동하고 기존 글을 불러와 PUT /api/post/[id]로 수정합니다. |
 | `step-8` | [lecture/step-8.md](./step-8.md) | [overview/step-8.md](../overview/step-8.md) | Contact 페이지를 mockup form으로 바꾸고 controlled input과 submit 이벤트를 복습합니다. |
-| `step-9` | [lecture/step-9.md](./step-9.md) | [overview/step-9.md](../overview/step-9.md) | README, 불필요한 기본 자산, 최종 라우트/API 설명을 정리해 기본 블로그 단계를 마무리합니다. |
+| `step-9` | [lecture/step-9.md](./step-9.md) | [overview/step-9.md](../overview/step-9.md) | step-1부터 step-8까지 만든 기본 블로그 흐름을 점검하고, 다음 기능 확장 단계로 넘어갈 준비를 합니다. |
 | `step-10` | [lecture/step-10.md](./step-10.md) | [overview/step-10.md](../overview/step-10.md) | 작성/수정 API에 서버 검증을 추가하고 공백 입력 오류 메시지를 화면에 표시합니다. |
 | `step-11` | [lecture/step-11.md](./step-11.md) | [overview/step-11.md](../overview/step-11.md) | 제출 중 상태를 추가하고 작성/수정 성공 후 해당 게시글 상세 페이지로 이동합니다. |
 | `step-12` | [lecture/step-12.md](./step-12.md) | [overview/step-12.md](../overview/step-12.md) | 홈 목록과 상세 화면에 작성일과 수정일을 표시합니다. |
@@ -36,7 +36,7 @@
 ## 실습 방식
 
 1. 현재 단계 문서의 Overview를 먼저 읽고 이번에 완성할 기능을 파악합니다.
-2. 각 작업 단위의 설명을 읽은 뒤, `수정할 파일` 링크로 프로젝트 내부 파일을 엽니다.
+2. 각 작업 단위의 설명을 읽은 뒤, `직접 수정할 파일` 링크로 프로젝트 내부 파일을 엽니다.
 3. `이전 단계와 달라지는 코드` diff에서 `+` 줄은 추가하고 `-` 줄은 제거합니다.
-4. 새 파일은 diff에 표시된 전체 내용을 입력하고, 삭제 파일은 문서의 명령으로 제거합니다.
+4. npm 명령으로 자동 변경되는 파일은 직접 타이핑하지 말고 결과만 확인합니다.
 5. 실행 확인 명령과 브라우저 체크를 마친 뒤 다음 단계로 넘어갑니다.
