@@ -1,6 +1,6 @@
 # Overview Index
 
-이 문서는 `step-19` 브랜치까지의 단계별 개요 목록입니다.
+이 문서는 `step-20` 브랜치까지의 단계별 개요 목록입니다.
 기존 `docs/step-N.md` 문서는 분석과 참고를 위해 `docs/overview/step-N.md` 위치로 이동했습니다.
 학생이 바로 따라 하는 실습형 문서는 `docs/lecture/`에 있습니다.
 
@@ -28,6 +28,7 @@
 | `step-17` | [overview/step-17.md](./step-17.md) | [lecture/step-17.md](../lecture/step-17.md) | sort query string과 정렬 select를 추가해 최신순, 오래된순, 제목순 정렬을 서버에서 처리합니다. |
 | `step-18` | [overview/step-18.md](./step-18.md) | [lecture/step-18.md](../lecture/step-18.md) | 전역 404, 상세 전용 404, 전역 Error UI를 추가해 오류 상황의 사용자 경험을 개선합니다. |
 | `step-19` | [overview/step-19.md](./step-19.md) | [lecture/step-19.md](../lecture/step-19.md) | 게시글 카테고리를 데이터, 작성/수정 form, 목록 필터, 상세 표시까지 전체 흐름에 연결합니다. |
+| `step-20` | [overview/step-20.md](./step-20.md) | [lecture/step-20.md](../lecture/step-20.md) | simpledotcss를 제거하고 Tailwind CSS v4를 설치한 뒤 공통 layout, nav, footer에 기본 utility class를 적용합니다. |
 
 ## 단계 묶음
 
@@ -40,6 +41,7 @@
 | `step-10 ~ step-13` | 검증, 사용자 경험, 날짜 표시, 삭제 |
 | `step-14 ~ step-17` | 검색, 페이지네이션, 정렬 같은 목록 기능 확장 |
 | `step-18 ~ step-19` | 오류 화면 개선과 카테고리 데이터 모델 확장 |
+| `step-20 ~ step-20` | Tailwind CSS v4 설치와 UI 정리 |
 
 ## 읽는 순서
 
