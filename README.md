@@ -30,6 +30,7 @@
 | `step-19` | 카테고리 |
 | `step-20` | `simpledotcss` 제거, Tailwind CSS v4 설치, 공통 layout/nav/footer 정리 |
 | `step-21` | 홈 목록, 상세 읽기 화면, About 페이지의 기본 카드 UI |
+| `step-22` | 게시글 작성/수정 form과 Contact form의 Tailwind UI |
 
 전체 단계 요약은 `/docs/index.md`에 있고, 각 단계 설명은 `/docs/step-N.md`에 있습니다.
 
