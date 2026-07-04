@@ -4,6 +4,14 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 
+function formatDate(dateValue) {
+  if (!dateValue) {
+    return "";
+  }
+
+  return new Date(dateValue).toLocaleString("ko-KR");
+}
+
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
@@ -40,6 +48,8 @@ export default function Home() {
           {posts.map((post) => (
             <article key={post._id} className={styles.article}>
               <Link href={`/detail/${post._id}`}>{post.title}</Link>
+              <p>Created: {formatDate(post.createdAt)}</p>
+              {post.updatedAt && <p>Updated: {formatDate(post.updatedAt)}</p>}
             </article>
           ))}
         </section>
