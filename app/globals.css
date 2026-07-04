@@ -22,3 +22,11 @@ header nav a,
 header nav a:visited {
   margin-bottom: 0;
 }
+
+form {
+  max-width: 42rem;
+}
+
+textarea {
+  min-height: 12rem;
+}
