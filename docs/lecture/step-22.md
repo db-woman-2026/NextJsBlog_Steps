@@ -493,7 +493,7 @@ index c14ed86..549c4e7 100644
 ### 설명/확인 포인트
 
 - ContactForm의 controlled input 흐름은 유지하고 class만 Tailwind 기준으로 바꿉니다.
-- 성공 메시지는 녹색 alert 패턴으로 표시합니다.
+- submit 후에는 기존처럼 브라우저 `alert()` mockup을 띄우고 입력값을 비웁니다.
 
 ## 실행 확인
 
