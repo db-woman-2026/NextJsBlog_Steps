@@ -1,9 +1,5 @@
 # Step 20. Tailwind CSS v4 설치와 공통 layout 정리
 
-이 문서는 이전 단계 실습 결과에서 시작해 `step-20` 수준의 기능을 완성하는 실습 자료입니다.
-원본 개요는 [docs/overview/step-20.md](../overview/step-20.md)에 보존되어 있습니다.
-아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
-
 ## 이번 스텝 주요 기능 Overview
 
 simpledotcss를 제거하고 Tailwind CSS v4를 설치한 뒤 공통 layout, nav, footer에 기본 utility class를 적용합니다.
@@ -11,16 +7,6 @@ simpledotcss를 제거하고 Tailwind CSS v4를 설치한 뒤 공통 layout, nav
 - simpledotcss를 제거하고 Tailwind CSS v4와 PostCSS 설정을 추가합니다.
 - 전역 CSS를 Tailwind import 중심으로 바꿉니다.
 - 공통 layout, Header, Footer에 Tailwind utility class를 적용합니다.
-
-## 시작 기준
-
-이미 `step-19` 실습을 끝낸 코드에서 이어서 진행합니다.
-단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
-
-```bash
-git switch practice-step-19
-git switch -c practice-step-20
-```
 
 ## 작업 1. Tailwind CSS v4 설치와 패키지 정리
 

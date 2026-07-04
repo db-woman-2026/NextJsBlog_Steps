@@ -1,9 +1,5 @@
 # Step 21. 홈 목록과 상세 읽기 화면 UI 정리
 
-이 문서는 이전 단계 실습 결과에서 시작해 `step-21` 수준의 기능을 완성하는 실습 자료입니다.
-원본 개요는 [docs/overview/step-21.md](../overview/step-21.md)에 보존되어 있습니다.
-아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
-
 ## 이번 스텝 주요 기능 Overview
 
 홈 목록, 상세 읽기 화면, About 페이지를 Tailwind utility class로 정리해 카드형 읽기 UI를 만듭니다.
@@ -11,16 +7,6 @@
 - 홈 화면에 제목 영역, 필터 패널, 게시글 카드 UI를 적용합니다.
 - 상세 화면을 article 카드 형태로 정리합니다.
 - About 페이지를 텍스트와 이미지가 있는 반응형 레이아웃으로 바꾸고 기존 CSS module을 제거합니다.
-
-## 시작 기준
-
-이미 `step-20` 실습을 끝낸 코드에서 이어서 진행합니다.
-단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
-
-```bash
-git switch practice-step-20
-git switch -c practice-step-21
-```
 
 ## 작업 1. 홈 목록을 카드형 Tailwind UI로 변경
 
