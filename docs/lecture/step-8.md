@@ -26,7 +26,7 @@ new file mode 100644
 index 0000000..8bf074b
 --- /dev/null
 +++ b/app/contact/ContactForm.js
-@@ -0,0 +1,49 @@
+@@ -0,0 +1,53 @@
 +"use client";
 +
 +import { useState } from "react";
@@ -42,6 +42,10 @@ index 0000000..8bf074b
 +    alert(
 +      `메일 전송 mockup입니다.\n\n이름: ${name}\n이메일: ${email}\n내용: ${message}`,
 +    );
++
++    setName("");
++    setEmail("");
++    setMessage("");
 +  }
 +
 +  return (
