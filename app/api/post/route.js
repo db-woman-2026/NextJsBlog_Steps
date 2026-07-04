@@ -8,7 +8,8 @@ export async function GET(request) {
     const page = searchParams.get("page") || "1";
     const limit = searchParams.get("limit") || "5";
     const sort = searchParams.get("sort") || "created-desc";
-    const posts = await listPosts({ keyword, page, limit, sort });
+    const category = searchParams.get("category") || "all";
+    const posts = await listPosts({ keyword, page, limit, sort, category });
 
     return apiSuccess(posts, "Posts fetched successfully");
   } catch (error) {
@@ -33,6 +34,7 @@ export async function POST(request) {
       title,
       content,
       image: postData.image,
+      category: postData.category,
     });
 
     return apiSuccess(

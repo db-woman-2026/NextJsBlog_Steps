@@ -24,6 +24,7 @@ export default async function BlogDetail({ params }) {
     <main className={styles.container}>
       <article>
         <h1>{post.title}</h1>
+        <p>Category: {post.category || "general"}</p>
         <p>Created: {formatDate(post.createdAt)}</p>
         {post.updatedAt && <p>Updated: {formatDate(post.updatedAt)}</p>}
         <pre className={styles.content}>{post.content}</pre>
