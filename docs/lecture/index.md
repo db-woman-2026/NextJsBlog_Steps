@@ -3,13 +3,13 @@
 이 폴더는 `step-1` 브랜치에서 사용할 수 있는 실습형 강의 자료입니다.
 각 문서는 학생이 이전 단계 실습 결과에서 현재 단계로 넘어오며 직접 입력할 기능 코드를 작업 단위로 나누고, 설명 바로 아래에 프로젝트 내부 파일 링크와 실제 diff를 제공합니다.
 
-원본 개요 문서는 `docs/overview/`에 보존되어 있습니다. 강의 실습은 이 `docs/lecture/` 문서를 기준으로 진행합니다.
+강의 실습은 이 `docs/lecture/` 문서를 기준으로 진행합니다.
 
 ## 강의 목록
 
-| 단계 | 강의 자료 | 원본 개요 | 요약 |
-| --- | --- | --- | --- |
-| `step-1` | [lecture/step-1.md](./step-1.md) | [overview/step-1.md](../overview/step-1.md) | App Router의 기본 라우팅을 익히기 위해 Home, About, Post, Contact 페이지와 공통 Header/Footer를 만듭니다. |
+| 단계 | 강의 자료 | 요약 |
+| --- | --- | --- |
+| `step-1` | [lecture/step-1.md](./step-1.md) | App Router의 기본 라우팅을 익히기 위해 Home, About, Post, Contact 페이지와 공통 Header/Footer를 만듭니다. |
 
 ## 실습 방식
 
