@@ -2,7 +2,7 @@
 
 초급 개발자 교육용 Next.js 블로그 프로젝트를 단계별 브랜치로 나눈 저장소입니다.
 
-`main`은 `create-next-app` 직후의 기본 프로젝트 상태입니다. `step-1`부터는 이전 단계 위에 코드를 누적해서 실습합니다. `step-9`는 기본 블로그 기능의 마무리이고, `step-10`부터는 기능 확장 단계입니다.
+`main`은 `create-next-app` 직후의 기본 프로젝트 상태입니다. `step-1`부터는 이전 단계 위에 코드를 누적해서 실습합니다. `step-9`는 기본 블로그 기능의 마무리이고, `step-10`부터는 기능 확장 단계입니다. `step-20`부터는 `simpledotcss`를 제거하고 Tailwind CSS v4로 기본 UI를 정리합니다.
 
 ## Branch Flow
 
@@ -31,6 +31,7 @@
 | `step-20` | `simpledotcss` 제거, Tailwind CSS v4 설치, 공통 layout/nav/footer 정리 |
 | `step-21` | 홈 목록, 상세 읽기 화면, About 페이지의 기본 카드 UI |
 | `step-22` | 게시글 작성/수정 form과 Contact form의 Tailwind UI |
+| `step-23` | 삭제 버튼, Not Found, Error 화면 정리와 Tailwind 전환 마무리 |
 
 전체 단계 요약은 `/docs/index.md`에 있고, 각 단계 설명은 `/docs/step-N.md`에 있습니다.
 
