@@ -1,6 +1,6 @@
 # Step 6. 새 게시글 작성 form 만들기
 
-이 문서는 `step-5`에서 시작해 `step-6`를 완성하는 실습 자료입니다.
+이 문서는 이전 단계 실습 결과에서 시작해 `step-6` 수준의 기능을 완성하는 실습 자료입니다.
 원본 개요는 [docs/overview/step-6.md](../overview/step-6.md)에 보존되어 있습니다.
 아래 파일 링크는 GitHub가 아니라 이 프로젝트 안의 현재 단계 파일을 여는 경로입니다.
 
@@ -14,24 +14,19 @@
 
 ## 시작 기준
 
-이전 단계인 `step-5` 브랜치까지 완료된 상태에서 시작합니다.
+이미 `step-5` 실습을 끝낸 코드에서 이어서 진행합니다.
+단계별로 브랜치를 나눠 관리한다면 이전 실습 브랜치에서 새 브랜치를 만듭니다.
 
 ```bash
-git switch step-5
+git switch practice-step-5
 git switch -c practice-step-6
-```
-
-정답 브랜치는 확인용으로만 사용합니다.
-
-```bash
-git switch step-6
 ```
 
 ## 작업 1. 작성 form 클라이언트 컴포넌트로 전환
 
 입력값 상태와 submit 이벤트가 필요하므로 `app/post/page.js` 맨 위에 `"use client";`를 추가합니다. form 제출 시 기본 새로고침을 막고 API로 JSON을 보냅니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/post/page.js](../../app/post/page.js)
 
@@ -127,7 +122,7 @@ index 99c31e0..54ca12e 100644
 
 작성 화면이 너무 좁거나 textarea가 낮아지지 않도록 전역 CSS와 CSS module에 최소 스타일을 추가합니다.
 
-### 수정할 파일
+### 직접 수정할 파일
 
 - 수정: [app/globals.css](../../app/globals.css)
 - 생성: [app/post/page.module.css](../../app/post/page.module.css)
