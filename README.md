@@ -32,6 +32,27 @@ git merge step-N
 git merge-base --is-ancestor step-N step-(N+1)
 ```
 
+## Recreate Starter
+
+`main`과 같은 starter를 새로 만들어야 한다면 `create-next-app`도 현재 프로젝트의 Next.js 버전에 맞춰 고정합니다. `latest`를 사용하면 생성되는 기본 코드나 의존성 버전이 달라질 수 있습니다.
+
+```bash
+npx create-next-app@16.2.10 nextjsblog-steps \
+  --js \
+  --eslint \
+  --app \
+  --no-tailwind \
+  --no-src-dir \
+  --import-alias "@/*" \
+  --use-npm \
+  --disable-git \
+  --no-agents-md
+```
+
+이 명령은 `next@16.2.10`, `react@19.2.4`, `react-dom@19.2.4`, `eslint-config-next@16.2.10` 조합으로 생성되는 것을 확인했습니다. 생성 후 `npm run lint`와 `npm run build`도 통과합니다.
+
+생성 폴더 이름에 따라 `package.json`의 `name`은 달라질 수 있고, 시간이 지나면 lockfile의 하위 의존성 patch 버전은 달라질 수 있습니다. 수업 기준 starter를 정확히 맞출 때는 이 저장소의 `main` 브랜치를 기준으로 사용합니다.
+
 ## Branch Flow
 
 | 브랜치 | 내용 |
