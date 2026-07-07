@@ -4,6 +4,18 @@
 
 `main`은 `create-next-app` 직후의 기본 프로젝트 상태입니다. `step-1`부터는 이전 단계 위에 코드를 누적해서 실습합니다. `step-9`는 기본 블로그 기능의 마무리이고, `step-10`부터는 기능 확장 단계입니다.
 
+## Branch Hierarchy
+
+이 저장소의 브랜치는 독립적인 예제 복사본이 아니라 부모-자식 관계를 가진 학습 이력입니다. 기본 흐름은 `main -> step-1 -> step-2 -> ... -> step-N`이며, 각 `step-N`은 바로 이전 단계 위에 기능과 문서를 누적합니다.
+
+향후 작업 시 이 계층을 기준으로 수정해야 합니다. 특정 단계부터 필요한 변경은 가장 이른 affected step에서 먼저 커밋하고, 그 다음 step으로 순서대로 merge해서 전파합니다. 같은 변경을 여러 step 브랜치에 각각 따로 커밋하면 교육용 브랜치의 ancestry가 깨져 수강생과 강의자가 서로 다른 기준을 보게 됩니다.
+
+브랜치 관계는 아래 명령이 성공하는 상태를 목표로 유지합니다.
+
+```bash
+git merge-base --is-ancestor step-N step-(N+1)
+```
+
 ## Recreate Starter
 
 `main`과 같은 starter를 새로 만들어야 한다면 `create-next-app`도 현재 프로젝트의 Next.js 버전에 맞춰 고정합니다. `latest`를 사용하면 생성되는 기본 코드나 의존성 버전이 달라질 수 있습니다.
