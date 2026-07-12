@@ -10,6 +10,7 @@
 
 - 수강생에게는 보통 `main` 기반의 starter만 제공합니다.
 - 강의자는 `step-N` 브랜치를 정답/비교용으로 열어 설명합니다.
+- 실습 전에 `docs/basic/`에서 필수 구조와 문법을 쉬운 예제로 익힙니다.
 - 실습형 문서는 `docs/lecture/`를 기준으로 진행합니다.
 - 기존 개요 문서는 `docs/overview/`에 참고용으로 보존되어 있습니다.
 
@@ -123,18 +124,21 @@ npx create-next-app@16.2.10 nextjsblog-steps \
 
 | 문서 | 역할 |
 | --- | --- |
+| [docs/basic/index.md](./docs/basic/index.md) | JavaScript부터 MongoDB까지 선수 학습 과정과 권장 순서 |
+| [docs/basic/00-learning-map.md](./docs/basic/00-learning-map.md) | 각 기초 개념을 독립 예제로 읽고 실습 단계와 연결하는 장별 자료 |
 | [docs/lecture/index.md](./docs/lecture/index.md) | 수강생이 따라 입력하는 강의 문서 목록 |
 | [docs/lecture/step-N.md](./docs/lecture/step-1.md) | 이전 단계에서 현재 단계로 넘어가며 직접 수정할 내용 |
 | [docs/overview/index.md](./docs/overview/index.md) | 단계별 개요와 참고 문서 목록 |
 | [docs/overview/step-N.md](./docs/overview/step-1.md) | 기존 단계 개요 보존본 |
 
-강의 문서는 다음 순서로 읽습니다.
+학습 문서는 다음 순서로 읽습니다.
 
-1. 현재 단계 문서의 Overview로 이번에 완성할 기능을 파악합니다.
-2. 각 작업 단위의 설명을 읽고, `직접 수정할 파일` 링크로 프로젝트 내부 파일을 엽니다.
-3. `이전 단계와 달라지는 코드` diff에서 `+` 줄은 추가하고 `-` 줄은 제거합니다.
-4. npm 명령으로 자동 변경되는 파일은 직접 타이핑하지 말고 결과만 확인합니다.
-5. 실행 확인 명령과 브라우저 체크를 마친 뒤 다음 단계로 넘어갑니다.
+1. `docs/basic/index.md`의 순서대로 기초 개념과 예제를 읽습니다.
+2. 현재 실습 단계 문서의 Overview로 이번에 완성할 기능을 파악합니다.
+3. 각 작업 단위의 설명을 읽고, `직접 수정할 파일` 링크로 프로젝트 내부 파일을 엽니다.
+4. `이전 단계와 달라지는 코드` diff에서 `+` 줄은 추가하고 `-` 줄은 제거합니다.
+5. npm 명령으로 자동 변경되는 파일은 직접 타이핑하지 말고 결과만 확인합니다.
+6. 실행 확인 명령과 브라우저 체크를 마친 뒤 다음 단계로 넘어갑니다.
 
 ## Stack
 
