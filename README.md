@@ -2,6 +2,16 @@
 
 초급 개발자 교육용 Next.js 블로그를 `main` starter에서 시작해 `step-N` 브랜치로 단계별 누적 학습하는 저장소입니다.
 
+## Learning Order
+
+프로젝트 실습 전에 [Basic Course](./docs/basic/index.md)에서 JavaScript, React, Next.js, HTTP, MongoDB의 필수 구조와 문법을 쉬운 예제로 먼저 익힙니다. 그다음 [Lecture](./docs/lecture/index.md)를 `step-1`부터 순서대로 따라 하며 블로그를 직접 완성합니다.
+
+```txt
+docs/basic/   코드 구조와 문법을 눈으로 익히는 선수 학습
+      ↓
+docs/lecture/ 단계별 diff를 직접 입력하는 프로젝트 실습
+```
+
 ## Branch Hierarchy
 
 이 저장소의 브랜치는 독립적인 예제 복사본이 아니라 부모-자식 관계를 가진 학습 이력입니다. 기본 흐름은 `main -> step-1 -> step-2 -> ... -> step-N`이며, 각 `step-N`은 바로 이전 단계 위에 기능과 문서를 누적합니다.
