@@ -30,6 +30,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+Windows 11에서는 먼저 [Windows 11 환경 준비](./docs/windows-11.md)를 확인합니다.
+
 First, run the development server:
 
 ```bash
@@ -40,6 +42,12 @@ yarn dev
 pnpm dev
 # or
 bun dev
+```
+
+PowerShell에서 `npm.ps1` 실행이 차단되면 다음 명령을 사용합니다.
+
+```powershell
+npm.cmd run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
