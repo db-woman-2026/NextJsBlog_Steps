@@ -26,14 +26,28 @@ NextJsBlog_Steps/
 
 터미널의 현재 위치가 프로젝트 폴더인지 먼저 확인해야 합니다.
 
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+
 ```bash
 pwd
+```
+
+PowerShell에서는 다음 명령을 사용합니다.
+
+```powershell
+Get-Location
 ```
 
 현재 폴더의 파일 목록을 확인합니다.
 
 ```bash
 ls
+```
+
+PowerShell에서는 다음 명령을 사용합니다.
+
+```powershell
+Get-ChildItem
 ```
 
 명령 앞의 `$` 기호가 문서에 보이더라도 보통 `$`는 입력하지 않습니다. 이 문서의 코드 블록에는 입력할 명령만 표시합니다.
