@@ -105,7 +105,7 @@ export default function Header() {
 }
 ```
 
-일반 HTML에서는 `<a href="/about">About</a>`를 사용할 수 있습니다. Next.js에서는 내부 페이지 이동에 `Link`를 자주 사용합니다. `Link`는 페이지 전환을 Next.js가 효율적으로 처리할 수 있게 도와줍니다.
+일반 HTML에서는 `<a href="/about">About</a>`를 사용할 수 있습니다. Next.js에서는 내부 페이지 이동에 `Link`를 자주 사용합니다. `Link`를 사용하면 Next.js가 내부 페이지 전환을 처리합니다.
 
 ## Footer 컴포넌트 만들기
 
