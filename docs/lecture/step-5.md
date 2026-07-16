@@ -21,7 +21,7 @@
 ### 수정할 파일
 
 - 수정: [app/page.js](../../app/page.js)
-- 생성: [app/page.module.css](../../app/page.module.css)
+- 생성: [step-5의 app/page.module.css](https://github.com/db-woman-2026/NextJsBlog_Steps/blob/step-5/app/page.module.css)
 
 ### 코드 변경
 

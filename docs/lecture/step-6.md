@@ -117,7 +117,7 @@ index 99c31e0..54ca12e 100644
 ### 수정할 파일
 
 - 수정: [app/globals.css](../../app/globals.css)
-- 생성: [app/post/page.module.css](../../app/post/page.module.css)
+- 생성: [step-6의 app/post/page.module.css](https://github.com/db-woman-2026/NextJsBlog_Steps/blob/step-6/app/post/page.module.css)
 
 ### 코드 변경
 
