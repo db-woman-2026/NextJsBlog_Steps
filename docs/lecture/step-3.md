@@ -62,7 +62,7 @@ npm install mongodb@^7.4.0
 ~~~diff
 diff --git a/.env.example b/.env.example
 new file mode 100644
-index 0000000..3fd71bc
+index 0000000..676d3a9
 --- /dev/null
 +++ b/.env.example
 @@ -0,0 +1,2 @@
@@ -153,7 +153,7 @@ index 0000000..070dacd
 ~~~diff
 diff --git a/lib/posts.js b/lib/posts.js
 new file mode 100644
-index 0000000..c9aa495
+index 0000000..050a428
 --- /dev/null
 +++ b/lib/posts.js
 @@ -0,0 +1,79 @@
