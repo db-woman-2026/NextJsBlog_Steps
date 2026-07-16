@@ -1,6 +1,6 @@
 # Step 2. simpledotcss와 이미지 설정으로 화면 정돈하기
 
-## 이 단계의 목표
+## 배울 내용
 
 `step-2` 브랜치는 `step-1`에서 만든 라우팅 껍데기에 기본 스타일과 이미지를 더합니다.
 
@@ -136,7 +136,7 @@ export default nextConfig;
 
 ## About 페이지 수정
 
-`app/about/page.js`는 소개 페이지입니다. 이 단계에서는 텍스트만 있던 페이지에 이미지를 추가합니다.
+`app/about/page.js`는 소개 페이지입니다. 텍스트만 있던 페이지에 이미지를 추가합니다.
 
 ```jsx
 import Image from "next/image";
@@ -163,7 +163,7 @@ export default function AboutPage() {
 
 `I&apos;m`은 HTML에서 작은따옴표를 안전하게 표시하기 위한 표현입니다. JSX에서는 문자열 안의 특수 문자를 그대로 쓸 때 린트 규칙에 걸릴 수 있으므로 이런 HTML entity를 사용합니다.
 
-## 직접 실습 순서
+## 실습 순서
 
 1. `npm install simpledotcss@^2.3.7`을 실행한다.
 2. `package.json`에 `simpledotcss`가 추가됐는지 확인한다.
