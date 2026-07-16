@@ -27,7 +27,7 @@ simpledotcss와 next/image를 적용해 기본 화면을 정돈하고 외부 이
 - 수정: [package.json](../../package.json)
 - 수정: [package-lock.json](../../package-lock.json)
 
-위 파일들은 명령 실행 결과를 확인만 합니다. 강의 중 직접 타이핑할 대상은 아닙니다.
+위 파일들은 명령 실행 결과만 확인합니다. 강의 중 입력할 대상은 아닙니다.
 
 ### 먼저 실행
 
@@ -92,7 +92,7 @@ index 7c249fa..a6f7b7a 100644
 
 ### 설명과 확인
 
-- `package.json`과 `package-lock.json`은 npm이 자동 갱신하므로 직접 타이핑하지 않습니다.
+- `package.json`과 `package-lock.json`은 npm이 자동 갱신하므로 수동으로 입력하지 않습니다.
 - `@import "simpledotcss/simple.min.css";`가 전역 스타일의 출발점입니다.
 - Header와 nav의 여백만 프로젝트에 맞게 짧게 덮어씁니다.
 
