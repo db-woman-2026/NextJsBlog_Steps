@@ -1,6 +1,6 @@
 # 12. 경로, params, 이동, 특수 화면
 
-## 이번 장의 목표
+## 배울 내용
 
 - 정적 경로, 동적 경로, query string을 구분합니다.
 - `params`와 `searchParams`에서 값을 읽습니다.
@@ -212,7 +212,7 @@ export default function Error({ error, reset }) {
 
 404는 “요청한 자원이 없음”이고 Error 화면은 “처리 중 예상하지 못한 실패”입니다.
 
-## 프로젝트에서 다시 만나기
+## 프로젝트 예시
 
 - `/detail/[id]`, `/post/[id]`, `/api/post/[id]`에서 동적 id를 사용합니다.
 - 검색, 페이지, 정렬, 카테고리를 query string으로 API에 전달합니다.

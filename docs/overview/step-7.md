@@ -1,6 +1,6 @@
 # Step 7. 게시글 수정 화면 만들기
 
-## 이 단계의 목표
+## 배울 내용
 
 `step-7` 브랜치는 게시글 수정 화면을 추가하는 단계입니다.
 
@@ -80,7 +80,7 @@ app/post/[id]/page.js
 <Link href="/">Back to list</Link>
 ```
 
-이번 단계에서는 수정 화면이 생기므로 이 링크를 다음처럼 바꿉니다.
+수정 화면이 생기므로 이 링크를 다음처럼 바꿉니다.
 
 ```jsx
 <Link href={`/post/${id}`}>Edit</Link>
@@ -229,7 +229,7 @@ import styles from "../page.module.css";
 
 수정 페이지 파일은 `app/post/[id]/page.js`에 있으므로, 한 단계 위 폴더의 CSS 파일을 가져오기 위해 `../page.module.css`를 사용합니다.
 
-## 직접 실습 순서
+## 실습 순서
 
 1. `app/post/[id]` 폴더를 만든다.
 2. `app/post/[id]/page.js` 파일을 만든다.
