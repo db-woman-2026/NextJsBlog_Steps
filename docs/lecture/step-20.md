@@ -8,6 +8,12 @@ simpledotcss를 제거하고 Tailwind CSS v4를 설치한 뒤 공통 layout, nav
 - 전역 CSS를 Tailwind import 중심으로 바꿉니다.
 - 공통 layout, Header, Footer에 Tailwind utility class를 적용합니다.
 
+## 시작 전 확인
+
+권장 시간은 70분입니다. 이 문서의 diff는 `step-19` 완료 코드에 적용합니다. `step-20` branch는 아래 변경이 이미 반영된 완성본입니다.
+
+수정 전에 `git status --short`의 출력이 없는지 확인합니다. 변경이 남아 있다면 원인을 확인하고 시작 상태를 정리합니다.
+
 ## 작업 1. Tailwind CSS v4 설치와 패키지 정리
 
 이 단계부터 화면 스타일링 방식을 simpledotcss에서 Tailwind utility class로 바꿉니다. 패키지 명령을 먼저 실행하고, 학생은 PostCSS 설정 파일과 전역 CSS만 직접 작성합니다.
@@ -245,6 +251,10 @@ npm run dev
 
 - `npm run build`가 Tailwind/PostCSS 설정 오류 없이 통과한다.
 - Header, 본문, Footer가 같은 최대 폭 기준으로 정렬된다.
+
+## 독립 확인
+
+Tailwind 설치 전후 `package.json`과 PostCSS 설정을 비교합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험을 위해 바꾼 값은 다음 단계 전에 복구합니다.
 
 ## 마무리 확인
 

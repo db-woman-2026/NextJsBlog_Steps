@@ -40,28 +40,29 @@ app/page.js
 
 기존 게시글에는 `category`가 없을 수 있습니다.
 
-그래서 서버에서는 기본값을 `general`로 처리합니다.
+그래서 서버에서는 기본값을 `general`로 처리합니다. 저장할 수 있는 값도 네 가지로 제한합니다.
 
 ```js
+const postCategories = ["general", "notice", "daily", "tech"];
+
 function normalizeCategory(category) {
-  return typeof category === "string" && category.trim()
-    ? category.trim()
-    : "general";
+  const normalized = typeof category === "string" ? category.trim() : "";
+  return postCategories.includes(normalized) ? normalized : "general";
 }
 ```
 
-작성/수정 요청에 카테고리가 없더라도 DB에는 안정적인 값이 저장됩니다.
+작성/수정 요청에 카테고리가 없거나 허용되지 않은 값이 들어오면 `general`을 저장합니다. 화면의 select만 믿지 않고 데이터 계층에서도 규칙을 지킵니다.
 
 ## 샘플 게시글 카테고리
 
 샘플 게시글에는 여러 카테고리를 번갈아 넣습니다.
 
 ```js
-const seedCategories = ["general", "notice", "daily", "tech"];
+const postCategories = ["general", "notice", "daily", "tech"];
 ```
 
 ```js
-category: seedCategories[index % seedCategories.length],
+category: postCategories[index % postCategories.length],
 ```
 
 이렇게 하면 처음 데이터를 만들었을 때도 카테고리 필터를 바로 실습할 수 있습니다.
@@ -72,7 +73,7 @@ category: seedCategories[index % seedCategories.length],
 
 ```js
 function buildPostQuery(keyword, category) {
-  const searchKeyword = keyword.trim();
+  const searchKeyword = escapeRegex(keyword.trim());
   const selectedCategory = category.trim();
   const query = {};
 
@@ -224,6 +225,8 @@ http://localhost:3000/
 선택한 카테고리의 글만 보이면 성공입니다.
 
 검색어와 정렬을 함께 사용해도 카테고리 조건이 유지되는지 확인합니다.
+
+API 도구나 브라우저 개발자 도구에서 허용 목록에 없는 category로 작성 요청도 보냅니다. 저장된 값을 다시 조회했을 때 `general`이어야 합니다. 확인용 게시글은 테스트가 끝나면 삭제합니다.
 
 ## 검증 명령
 

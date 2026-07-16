@@ -5,12 +5,19 @@
 게시글 카테고리를 데이터, 작성/수정 form, 목록 필터, 상세 표시까지 전체 흐름에 연결합니다.
 
 - 게시글 데이터에 category 필드를 추가하고 기본값을 둡니다.
+- 저장할 category는 `general`, `notice`, `daily`, `tech` 중 하나로 제한합니다.
 - 작성/수정 form에서 카테고리를 선택할 수 있게 합니다.
 - 목록 API와 홈 화면에 카테고리 필터를 연결하고 상세 화면에 카테고리를 표시합니다.
 
+## 시작 전 확인
+
+권장 시간은 100분입니다. 이 문서의 diff는 `step-18` 완료 코드에 적용합니다. `step-19` branch는 아래 변경이 이미 반영된 완성본입니다.
+
+수정 전에 `git status --short`의 출력이 없는지 확인합니다. 변경이 남아 있다면 원인을 확인하고 시작 상태를 정리합니다.
+
 ## 작업 1. 데이터 계층에 category 필드 반영
 
-새 글, 샘플 글, 수정 글 모두 같은 category 규칙을 가져야 합니다. 이전 단계에서 만든 기존 게시글에는 아직 category가 없을 수 있으므로, 목록을 조회할 때 누락된 값을 `general`로 보정해 화면과 필터가 안정적으로 동작하게 합니다.
+새 글, 샘플 글, 수정 글 모두 같은 category 규칙을 가져야 합니다. 이전 단계에서 만든 기존 게시글에는 아직 category가 없을 수 있으므로, 목록을 조회할 때 누락된 값을 `general`로 보정해 화면과 필터가 안정적으로 동작하게 합니다. API를 직접 호출해 임의의 category를 보내도 허용 목록 밖의 값은 저장하지 않습니다.
 
 ### 수정할 파일
 
@@ -22,32 +29,31 @@
 
 ~~~diff
 diff --git a/lib/posts.js b/lib/posts.js
-index 2013802..f62257a 100644
+index bd655c9..2be817c 100644
 --- a/lib/posts.js
 +++ b/lib/posts.js
-@@ -3,6 +3,13 @@ import getMongoClient from "./mongodb";
+@@ -3,6 +3,12 @@ import getMongoClient from "./mongodb";
 
- const dbName = process.env.MONGODB_DB || "blog";
+ const dbName = process.env.MONGODB_DB || "next_blog_practice";
  const collectionName = "posts";
-+const seedCategories = ["general", "notice", "daily", "tech"];
++const postCategories = ["general", "notice", "daily", "tech"];
 +
 +function normalizeCategory(category) {
-+  return typeof category === "string" && category.trim()
-+    ? category.trim()
-+    : "general";
++  const normalized = typeof category === "string" ? category.trim() : "";
++  return postCategories.includes(normalized) ? normalized : "general";
 +}
 
- function createSeedPosts() {
-   return Array.from({ length: 10 }, (_, index) => ({
-@@ -11,6 +18,7 @@ function createSeedPosts() {
+ if (!dbName.startsWith("next_blog_")) {
+   throw new Error("MONGODB_DB must start with next_blog_");
+@@ -15,6 +21,7 @@ function createSeedPosts() {
      content:
        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
      image: "https://picsum.photos/100",
-+    category: seedCategories[index % seedCategories.length],
++    category: postCategories[index % postCategories.length],
    }));
  }
 
-@@ -19,6 +27,19 @@ async function getPostsCollection() {
+@@ -23,6 +30,19 @@ async function getPostsCollection() {
    return client.db(dbName).collection(collectionName);
  }
  
@@ -64,17 +70,16 @@ index 2013802..f62257a 100644
 +  );
 +}
 +
- export async function seedPostsIfEmpty() {
-   const collection = await getPostsCollection();
-   const count = await collection.countDocuments();
-
-@@ -28,19 +49,23 @@ export async function seedPostsIfEmpty() {
+ function escapeRegex(value) {
+   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+ }
+@@ -36,19 +56,23 @@ export async function seedPostsIfEmpty() {
    }
  }
 
 -function buildPostQuery(keyword) {
 +function buildPostQuery(keyword, category) {
-   const searchKeyword = keyword.trim();
+   const searchKeyword = escapeRegex(keyword.trim());
 +  const selectedCategory = category.trim();
 +  const query = {};
 
@@ -101,7 +106,7 @@ index 2013802..f62257a 100644
  }
 
  function buildPostSort(sort) {
-@@ -62,11 +87,14 @@ export async function listPosts({
+@@ -80,11 +104,14 @@ export async function listPosts({
    page = 1,
    limit = 5,
    sort = "created-desc",
@@ -114,10 +119,10 @@ index 2013802..f62257a 100644
 +  await ensurePostCategories(collection);
 +
 +  const query = buildPostQuery(keyword, category);
-   const currentPage = Math.max(Number(page) || 1, 1);
-   const pageSize = Math.min(Math.max(Number(limit) || 5, 1), 20);
-   const skip = (currentPage - 1) * pageSize;
-@@ -99,6 +127,7 @@ export async function createPost(postData) {
+   const requestedPage = toPositiveInteger(page, 1);
+   const pageSize = toPositiveInteger(limit, 5, 20);
+   const totalPosts = await collection.countDocuments(query);
+@@ -118,6 +145,7 @@ export async function createPost(postData) {
      title: postData.title,
      content: postData.content,
      image: postData.image || "https://picsum.photos/100",
@@ -125,7 +130,7 @@ index 2013802..f62257a 100644
      createdAt: new Date(),
    });
 
-@@ -135,6 +164,7 @@ export async function updatePost(id, postData) {
+@@ -154,6 +182,7 @@ export async function updatePost(id, postData) {
        $set: {
          title: postData.title,
          content: postData.content,
@@ -139,6 +144,7 @@ index 2013802..f62257a 100644
 
 - 샘플 데이터에도 category가 들어가야 필터를 바로 테스트할 수 있습니다.
 - 이전 단계에서 이미 만든 게시글은 category가 없을 수 있으므로 목록 조회 전에 `general`로 보정합니다.
+- 작성/수정 category가 허용 목록에 없거나 비어 있으면 `general`로 저장합니다.
 - 검색 조건과 카테고리 조건은 동시에 적용됩니다.
 
 ## 작업 2. API 요청/응답에 category 연결
@@ -531,6 +537,11 @@ npm run dev
 - 작성 화면에서 category를 선택해 저장한다.
 - 홈에서 category 필터를 바꾸면 목록이 바뀐다.
 - 상세 화면에 category가 보인다.
+- API를 직접 호출해 허용되지 않은 category를 보내면 `general`로 저장된다. 확인용 게시글은 테스트 뒤 삭제한다.
+
+## 독립 확인
+
+허용되지 않은 category 입력이 저장되지 않는지 확인합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험을 위해 바꾼 값은 다음 단계 전에 복구합니다.
 
 ## 마무리 확인
 

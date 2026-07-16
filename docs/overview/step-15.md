@@ -68,7 +68,7 @@ export async function listPosts(keyword = "") {
   await seedPostsIfEmpty();
 
   const collection = await getPostsCollection();
-  const searchKeyword = keyword.trim();
+  const searchKeyword = escapeRegex(keyword.trim());
 
   if (!searchKeyword) {
     return collection.find({}).sort({ createdAt: -1 }).toArray();
@@ -90,9 +90,19 @@ export async function listPosts(keyword = "") {
 
 검색어가 있으면 제목 또는 본문에 검색어가 포함된 글을 찾습니다.
 
+`escapeRegex()`는 사용자가 입력한 정규식 특수 문자를 일반 문자로 바꿉니다.
+
+```js
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+```
+
+예를 들어 `.`이나 `?`를 검색해도 정규식 연산자로 해석하지 않습니다. `[`처럼 정규식 문법을 깨뜨릴 수 있는 입력도 안전하게 검색합니다.
+
 ## $regex와 $options
 
-MongoDB의 `$regex`는 정규식 검색 조건입니다.
+MongoDB의 `$regex`는 정규식 검색 조건입니다. 이 강의에서는 이 기능을 부분 문자열 검색에만 쓰므로 사용자 입력을 먼저 이스케이프합니다.
 
 ```js
 { title: { $regex: searchKeyword, $options: "i" } }

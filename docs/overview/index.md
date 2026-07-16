@@ -2,6 +2,8 @@
 
 Windows 11에서는 [Windows 11 환경 준비](../windows-11.md)를 마친 뒤 시작합니다.
 
+전체 일정과 단계별 산출물은 [강의 운영안](../course-plan.md), 막혔을 때의 복구 순서는 [문제 해결](../troubleshooting.md)에서 확인합니다.
+
 `step-22` 브랜치까지의 단계별 개요 목록입니다.
 기존 `docs/step-N.md` 문서는 분석과 참고를 위해 `docs/overview/step-N.md` 위치로 이동했습니다.
 학생이 바로 따라 하는 실습형 문서는 `docs/lecture/`에 있습니다.
