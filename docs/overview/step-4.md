@@ -407,8 +407,16 @@ catch (error) {
 
 실제로 API를 호출하려면 MongoDB가 실행 중이어야 하고 `.env.local`이 있어야 합니다.
 
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+
 ```bash
 cp .env.example .env.local
+```
+
+PowerShell에서는 다음 명령을 사용합니다.
+
+```powershell
+Copy-Item .env.example .env.local
 ```
 
 로컬 MongoDB를 사용한다면 `.env.local`은 다음처럼 둘 수 있습니다.
@@ -442,6 +450,17 @@ MongoDB가 정상 연결되어 있으면 `{ success, message, data }` 형식의 
 curl -X POST http://localhost:3000/api/post \
   -H "Content-Type: application/json" \
   -d '{"title":"First API Post","content":"Created from curl"}'
+```
+
+PowerShell에서는 다음 명령을 사용합니다.
+
+```powershell
+$body = @{
+  title = "First API Post"
+  content = "Created from curl"
+} | ConvertTo-Json
+
+Invoke-RestMethod -Method Post -Uri "http://localhost:3000/api/post" -ContentType "application/json" -Body $body
 ```
 
 성공하면 다음과 비슷한 응답을 받습니다.
