@@ -1,6 +1,6 @@
 # 08. JSX와 컴포넌트
 
-## 이번 장의 목표
+## 배울 내용
 
 - HTML과 비슷한 JSX의 기본 규칙을 구분합니다.
 - 컴포넌트와 props로 UI를 나누고 조합하는 코드를 읽습니다.
@@ -196,7 +196,7 @@ function PostList() {
 
 `key`는 React가 각 항목을 구분하도록 돕는 안정적인 고유값입니다. 배열 위치인 index보다 데이터의 `id`를 우선 사용합니다.
 
-## 프로젝트에서 다시 만나기
+## 프로젝트 예시
 
 - `Header`, `Footer`, `ContactForm`, `DeletePostButton`을 컴포넌트로 나눕니다.
 - root layout의 `{children}` 자리에 각 page가 들어갑니다.

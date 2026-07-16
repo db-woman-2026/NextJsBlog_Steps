@@ -1,6 +1,6 @@
 # 15. Tailwind CSS 읽기
 
-## 이번 장의 목표
+## 배울 내용
 
 - 일반 CSS와 Tailwind utility class의 관계를 이해합니다.
 - spacing, color, typography, layout class를 묶어 읽습니다.
@@ -193,7 +193,7 @@ const textareaClassName = `${inputClassName} min-h-48 resize-y`;
 
 모르는 class 하나 때문에 전체 JSX를 이해하지 못할 필요는 없습니다. 먼저 layout, spacing, color처럼 큰 역할을 찾습니다.
 
-## 프로젝트에서 다시 만나기
+## 프로젝트 예시
 
 - `step-20`: Tailwind CSS v4를 설치하고 layout, Header, Footer에 적용합니다.
 - `step-21`: 목록과 상세 화면에 card, grid, 반응형 배치를 적용합니다.
