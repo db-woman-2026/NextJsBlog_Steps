@@ -123,7 +123,7 @@ console.log(title);
 환경 변수는 `.env.local`처럼 환경 파일에 입력합니다.
 
 ```txt
-MONGODB_DB=blog
+MONGODB_DB=next_blog_practice
 ```
 
 문서의 코드 블록 오른쪽 위 언어 이름이 `bash`, `js`, `json`, `txt` 중 무엇인지 확인하면 입력 위치를 구분하기 쉽습니다.
