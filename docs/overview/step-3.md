@@ -1,6 +1,6 @@
 # Step 3. MongoDB 연결과 게시글 데이터 함수 만들기
 
-## 이 단계의 목표
+## 배울 내용
 
 `step-3` 브랜치는 블로그의 데이터 계층을 만드는 단계입니다.
 
@@ -208,7 +208,7 @@ if (!ObjectId.isValid(id)) {
 }
 ```
 
-## 직접 실습 순서
+## 실습 순서
 
 1. `npm install mongodb@^7.4.0`을 실행한다.
 2. `.gitignore`에서 `.env.example`은 커밋 가능하도록 예외 규칙을 추가한다.
