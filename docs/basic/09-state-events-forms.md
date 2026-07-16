@@ -1,6 +1,6 @@
 # 09. state, 이벤트, controlled form
 
-## 이번 장의 목표
+## 배울 내용
 
 - 일반 변수와 React state의 차이를 이해합니다.
 - `useState`의 현재값과 변경 함수를 구분합니다.
@@ -225,7 +225,7 @@ setPosts([...posts, newPost]);
 setPost({ ...post, title: "새 제목" });
 ```
 
-## 프로젝트에서 다시 만나기
+## 프로젝트 예시
 
 - `step-6`: title/content controlled form과 submit 이벤트를 만듭니다.
 - `step-8`: name/email/message state로 Contact form을 만듭니다.
