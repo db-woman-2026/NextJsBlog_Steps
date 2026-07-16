@@ -122,7 +122,7 @@ index 0000000..4418093
 ### 수정할 파일
 
 - 생성: [app/detail/[id]/page.js](../../app/detail/%5Bid%5D/page.js)
-- 생성: [app/detail/[id]/page.module.css](../../app/detail/%5Bid%5D/page.module.css)
+- 생성: [step-5의 app/detail/[id]/page.module.css](https://github.com/db-woman-2026/NextJsBlog_Steps/blob/step-5/app/detail/%5Bid%5D/page.module.css)
 
 ### 코드 변경
 
