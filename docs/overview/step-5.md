@@ -332,9 +332,18 @@ CSS Module을 사용하면 클래스 이름이 해당 컴포넌트 범위 안에
 - `.env.local` 생성
 - 개발 서버 실행
 
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+
 ```bash
 cp .env.example .env.local
 npm run dev
+```
+
+PowerShell에서는 다음 명령을 사용합니다.
+
+```powershell
+Copy-Item .env.example .env.local
+npm.cmd run dev
 ```
 
 브라우저에서 다음 주소를 엽니다.
