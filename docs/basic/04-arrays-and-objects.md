@@ -1,6 +1,6 @@
 # 04. 배열과 객체
 
-## 이번 장의 목표
+## 배울 내용
 
 - 배열과 객체에서 값을 읽고 변경하지 않은 새 값을 만듭니다.
 - `map`, `filter`, `find`의 차이를 구분합니다.
@@ -201,7 +201,7 @@ console.log(response.data?.title); // undefined
 
 `response.data.title`이었다면 `data`가 `null`이므로 오류가 발생합니다.
 
-## 프로젝트에서 다시 만나기
+## 프로젝트 예시
 
 - navigation과 category 선택지는 객체 배열로 정의합니다.
 - `Array.from({ length: 10 }, ...)`으로 예제 게시글 배열을 만듭니다.

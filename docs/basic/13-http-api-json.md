@@ -1,6 +1,6 @@
 # 13. HTTP, API, JSON, 검증
 
-## 이번 장의 목표
+## 배울 내용
 
 - HTTP 요청의 method, URL, header, body를 구분합니다.
 - CRUD와 GET/POST/PUT/DELETE의 관계를 이해합니다.
@@ -211,7 +211,7 @@ catch (error) {
 
 사용자 응답에는 비밀번호, 환경 변수, DB 연결 문자열, 긴 stack trace 같은 내부 정보를 넣지 않습니다.
 
-## 프로젝트에서 다시 만나기
+## 프로젝트 예시
 
 - `step-4`: CRUD API와 `{ success, message, data }` 구조를 만듭니다.
 - `step-6`: form 데이터를 JSON body로 POST합니다.
