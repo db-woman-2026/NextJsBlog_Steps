@@ -51,7 +51,7 @@ index 050a428..2daf81e 100644
 
 ### 설명과 확인
 
-- 잘못된 ObjectId는 null을 반환해 API가 404로 처리할 수 있게 합니다.
+- 잘못된 ObjectId는 `null`을 반환하고, API route는 이 결과를 404 응답으로 변환합니다.
 - 삭제 결과의 `deletedCount`로 실제 삭제 여부를 판단합니다.
 
 ## 작업 2. DELETE API 추가
