@@ -133,7 +133,7 @@ export async function GET() {
 }
 ```
 
-함수 이름이 중요합니다. `GET` 요청을 처리하려면 export된 함수 이름이 `GET`이어야 합니다.
+Next.js는 export된 `GET` 함수를 찾아 GET 요청을 이 route handler로 전달합니다.
 
 흐름은 다음과 같습니다.
 
@@ -422,8 +422,8 @@ Copy-Item .env.example .env.local
 로컬 MongoDB를 사용한다면 `.env.local`은 다음처럼 둘 수 있습니다.
 
 ```txt
-MONGODB_URI=mongodb://localhost:27017/blog
-MONGODB_DB=blog
+MONGODB_URI=mongodb://localhost:27017/next_blog_practice
+MONGODB_DB=next_blog_practice
 ```
 
 ## 브라우저에서 GET 테스트
