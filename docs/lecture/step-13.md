@@ -28,10 +28,10 @@ MongoDB 삭제 함수, DELETE /api/post/[id], 상세 화면 삭제 버튼으로 
 
 ~~~diff
 diff --git a/lib/posts.js b/lib/posts.js
-index c9aa495..d24f792 100644
+index 050a428..2daf81e 100644
 --- a/lib/posts.js
 +++ b/lib/posts.js
-@@ -47,6 +47,15 @@ export async function createPost(postData) {
+@@ -51,6 +51,15 @@ export async function createPost(postData) {
    return result;
  }
 
