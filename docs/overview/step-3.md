@@ -96,7 +96,7 @@ Copy-Item .env.example .env.local
 !.env.example
 ```
 
-첫 줄은 `.env`로 시작하는 파일을 모두 무시합니다. 둘째 줄은 그중 `.env.example`만 예외로 커밋할 수 있게 합니다.
+첫 줄은 `.env`로 시작하는 파일을 모두 무시합니다. 둘째 줄은 `.env.example`을 무시 대상에서 제외하므로 이 예제 파일은 커밋됩니다.
 
 ## lib/mongodb.js의 역할
 
@@ -238,8 +238,8 @@ MongoDB가 로컬에서 실행 중이어야 실제 데이터 조회가 가능합
 예시 환경 변수는 다음과 같습니다.
 
 ```txt
-MONGODB_URI=mongodb://localhost:27017/blog
-MONGODB_DB=blog
+MONGODB_URI=mongodb://localhost:27017/next_blog_practice
+MONGODB_DB=next_blog_practice
 ```
 
 MongoDB Atlas를 사용한다면 `MONGODB_URI`에는 Atlas에서 제공하는 연결 문자열을 넣습니다. 이 값은 비밀번호를 포함할 수 있으므로 `.env.local`에만 저장하고 Git에 올리지 않습니다.
