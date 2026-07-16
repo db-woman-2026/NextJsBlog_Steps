@@ -19,8 +19,16 @@ step-20에서 공통 shell을 바꿨으므로, 이제 사용자가 가장 먼저
 
 ### 먼저 실행
 
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+
 ```bash
 rm app/page.module.css
+```
+
+PowerShell에서는 다음 명령을 사용합니다.
+
+```powershell
+Remove-Item app/page.module.css
 ```
 
 ### 코드 변경
@@ -320,6 +328,12 @@ index 4418093..0000000
 
 ```bash
 rm app/detail/[id]/page.module.css
+```
+
+PowerShell에서는 다음 명령을 사용합니다.
+
+```powershell
+Remove-Item -LiteralPath 'app/detail/[id]/page.module.css'
 ```
 
 ### 코드 변경
