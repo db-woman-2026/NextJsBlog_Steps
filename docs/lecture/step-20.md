@@ -1,6 +1,6 @@
 # Step 20. Tailwind CSS v4 설치와 공통 layout 정리
 
-## 이번 스텝 주요 기능 Overview
+## 이번 단계에서 할 일
 
 simpledotcss를 제거하고 Tailwind CSS v4를 설치한 뒤 공통 layout, nav, footer에 기본 utility class를 적용합니다.
 
@@ -12,7 +12,7 @@ simpledotcss를 제거하고 Tailwind CSS v4를 설치한 뒤 공통 layout, nav
 
 이 단계부터 화면 스타일링 방식을 simpledotcss에서 Tailwind utility class로 바꿉니다. 패키지 명령을 먼저 실행하고, 학생은 PostCSS 설정 파일과 전역 CSS만 직접 작성합니다.
 
-### 직접 수정할 파일
+### 수정할 파일
 
 - 생성: [postcss.config.mjs](../../postcss.config.mjs)
 - 수정: [app/globals.css](../../app/globals.css)
@@ -24,7 +24,7 @@ simpledotcss를 제거하고 Tailwind CSS v4를 설치한 뒤 공통 layout, nav
 
 위 파일들은 명령 실행 결과를 확인만 합니다. 강의 중 직접 타이핑할 대상은 아닙니다.
 
-### 먼저 실행할 명령
+### 먼저 실행
 
 ```bash
 npm uninstall simpledotcss
@@ -33,7 +33,7 @@ npm install -D tailwindcss @tailwindcss/postcss postcss
 
 위 명령은 `package.json`, `package-lock.json`, `node_modules`를 함께 갱신합니다. 이전 단계의 `node_modules`가 남아 있거나 완성 브랜치를 바로 checkout해 확인하는 경우에는 lockfile 기준으로 의존성을 다시 맞춰야 하므로 `npm ci`를 실행합니다. `Cannot find module '@tailwindcss/postcss'` 오류가 나오면 Tailwind/PostCSS 의존성이 아직 설치되지 않은 상태입니다.
 
-### 이전 단계와 달라지는 코드
+### 코드 변경
 
 아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
 
@@ -91,7 +91,7 @@ index 0000000..61e3684
 +export default config;
 ~~~
 
-### 설명/확인 포인트
+### 설명과 확인
 
 - Tailwind v4에서는 이 프로젝트 기준으로 별도 `tailwind.config.js` 없이 시작합니다.
 - `postcss.config.mjs`는 Tailwind PostCSS 플러그인을 Next.js 빌드에 연결합니다.
@@ -101,11 +101,11 @@ index 0000000..61e3684
 
 모든 페이지가 같은 최대 폭과 배경색 안에서 보이도록 `app/layout.js`의 body 구조를 정리합니다. Header, 본문, Footer를 세로 flex 구조로 배치합니다.
 
-### 직접 수정할 파일
+### 수정할 파일
 
 - 수정: [app/layout.js](../../app/layout.js)
 
-### 이전 단계와 달라지는 코드
+### 코드 변경
 
 아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
 
@@ -135,7 +135,7 @@ index e041f0f..6f5244d 100644
    );
 ~~~
 
-### 설명/확인 포인트
+### 설명과 확인
 
 - `flex-1`은 본문이 남은 높이를 채우게 합니다.
 - `max-w-5xl`은 이후 카드형 목록과 form이 너무 넓어지지 않게 제한합니다.
@@ -144,12 +144,12 @@ index e041f0f..6f5244d 100644
 
 simpledotcss가 자동으로 꾸며주던 nav 스타일을 직접 utility class로 작성합니다. 메뉴 항목은 배열로 분리해 반복 렌더링합니다.
 
-### 직접 수정할 파일
+### 수정할 파일
 
 - 수정: [app/components/Header.js](../../app/components/Header.js)
 - 수정: [app/components/Footer.js](../../app/components/Footer.js)
 
-### 이전 단계와 달라지는 코드
+### 코드 변경
 
 아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
 
@@ -219,7 +219,7 @@ index eb664b1..a744ef8 100644
      </header>
 ~~~
 
-### 설명/확인 포인트
+### 설명과 확인
 
 - Header의 `navigationItems`는 링크가 늘어날 때 JSX 반복을 줄입니다.
 - Footer는 얇은 border와 작은 텍스트로 공통 shell에 맞춥니다.
@@ -244,7 +244,7 @@ npm run dev
 - `npm run build`가 Tailwind/PostCSS 설정 오류 없이 통과한다.
 - Header, 본문, Footer가 같은 최대 폭 기준으로 정렬된다.
 
-## 다음 단계로 넘어가기 전
+## 마무리 확인
 
 - 이 문서의 각 작업 단위에서 설명을 먼저 읽고, 바로 아래 diff를 기준으로 파일을 수정합니다.
 - 새 파일은 diff에 나온 전체 내용을 입력하고, 기존 파일은 diff의 `+`/`-` 줄만 비교하면서 수정합니다.

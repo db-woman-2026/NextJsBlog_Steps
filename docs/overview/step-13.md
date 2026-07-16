@@ -1,6 +1,6 @@
 # Step 13. 삭제 기능 추가
 
-## 이 단계의 목표
+## 배울 내용
 
 `step-13`은 게시글 삭제 기능을 추가하는 단계입니다.
 
@@ -146,7 +146,7 @@ router.push("/");
 router.refresh();
 ```
 
-## 직접 실습 순서
+## 실습 순서
 
 1. `lib/posts.js`에 `deletePost(id)`를 추가한다.
 2. `app/api/post/[id]/route.js`에서 `deletePost`를 import한다.
@@ -179,6 +179,6 @@ npm run lint
 npm run build
 ```
 
-## 이 단계의 핵심
+## 정리
 
 삭제 기능은 서버 데이터 변경과 사용자 확인이 모두 필요한 기능입니다. 그래서 데이터 함수, API Route, 클라이언트 버튼을 함께 설계해야 합니다.

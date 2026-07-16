@@ -1,6 +1,6 @@
 # Step 22. 작성, 수정, Contact form UI 정리
 
-## 이번 스텝 주요 기능 Overview
+## 이번 단계에서 할 일
 
 게시글 작성/수정 form과 Contact form에 같은 Tailwind 입력/버튼 패턴을 적용합니다.
 
@@ -12,18 +12,18 @@
 
 작성 화면에 제목 영역과 form 카드 UI를 적용합니다. 반복되는 label/input/button class는 상수로 분리해 같은 패턴을 재사용합니다.
 
-### 직접 수정할 파일
+### 수정할 파일
 
 - 수정: [app/post/page.js](../../app/post/page.js)
 - 삭제: `app/post/page.module.css`
 
-### 먼저 실행할 명령
+### 먼저 실행
 
 ```bash
 rm app/post/page.module.css
 ```
 
-### 이전 단계와 달라지는 코드
+### 코드 변경
 
 아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
 
@@ -181,7 +181,7 @@ index 8a6b6ea..0000000
 -}
 ~~~
 
-### 설명/확인 포인트
+### 설명과 확인
 
 - `fieldClassName`, `labelClassName`, `inputClassName` 같은 상수는 긴 class 문자열 반복을 줄입니다.
 - 오류 메시지는 `role="alert"`를 유지하면서 빨간 alert 스타일을 적용합니다.
@@ -190,11 +190,11 @@ index 8a6b6ea..0000000
 
 수정 화면도 작성 화면과 같은 입력 패턴을 사용합니다. 로딩/오류/제출 중 상태가 스타일과 함께 일관되게 보여야 합니다.
 
-### 직접 수정할 파일
+### 수정할 파일
 
 - 수정: [app/post/[id]/page.js](../../app/post/%5Bid%5D/page.js)
 
-### 이전 단계와 달라지는 코드
+### 코드 변경
 
 아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
 
@@ -342,7 +342,7 @@ index 9fa480c..79589b4 100644
        </form>
 ~~~
 
-### 설명/확인 포인트
+### 설명과 확인
 
 - 작성 화면과 수정 화면의 class 상수 이름과 구조를 맞추면 비교 학습이 쉽습니다.
 - disabled 상태는 입력칸과 버튼 모두에서 시각적으로 드러나야 합니다.
@@ -351,12 +351,12 @@ index 9fa480c..79589b4 100644
 
 Contact form도 실제 기능은 mockup이지만 사용자가 입력하는 화면이므로 같은 UI 패턴을 적용합니다. 페이지 자체에는 제목/설명을 두고 form은 카드로 묶습니다.
 
-### 직접 수정할 파일
+### 수정할 파일
 
 - 수정: [app/contact/page.js](../../app/contact/page.js)
 - 수정: [app/contact/ContactForm.js](../../app/contact/ContactForm.js)
 
-### 이전 단계와 달라지는 코드
+### 코드 변경
 
 아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
 
@@ -490,7 +490,7 @@ index c14ed86..549c4e7 100644
    );
 ~~~
 
-### 설명/확인 포인트
+### 설명과 확인
 
 - ContactForm의 controlled input 흐름은 유지하고 class만 Tailwind 기준으로 바꿉니다.
 - submit 후에는 기존처럼 브라우저 `alert()` mockup을 띄우고 입력값을 비웁니다.
@@ -515,7 +515,7 @@ npm run dev
 - `/post`, `/post/[id]`, `/contact` form이 같은 입력 패턴으로 보인다.
 - 오류 메시지가 alert 스타일로 보이고 `role="alert"`가 유지된다.
 
-## 다음 단계로 넘어가기 전
+## 마무리 확인
 
 - 이 문서의 각 작업 단위에서 설명을 먼저 읽고, 바로 아래 diff를 기준으로 파일을 수정합니다.
 - 새 파일은 diff에 나온 전체 내용을 입력하고, 기존 파일은 diff의 `+`/`-` 줄만 비교하면서 수정합니다.

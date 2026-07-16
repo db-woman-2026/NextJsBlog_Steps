@@ -1,12 +1,12 @@
 # 16. 블로그 코드 흐름 읽기
 
-## 이번 장의 목표
+## 배울 내용
 
 - 앞 장의 개념을 실제 블로그 기능 흐름에 연결합니다.
 - 목록, 상세, 작성, 수정, 삭제에서 데이터가 이동하는 방향을 설명합니다.
 - 실습을 시작할 준비가 되었는지 스스로 확인합니다.
 
-이 장은 새 문법을 추가하지 않습니다. 지금까지 본 문법이 한 기능 안에서 어떻게 이어지는지 읽습니다.
+새 문법을 추가하지 않습니다. 지금까지 본 문법이 한 기능 안에서 어떻게 이어지는지 읽습니다.
 
 ## 1. 공통 화면 구조
 
@@ -37,7 +37,7 @@ app/layout.js
   <- posts.map(...)으로 목록 렌더링
 ```
 
-코드의 핵심 모양입니다.
+코드의 기본 형태입니다.
 
 ```js
 const response = await fetch("/api/post");
@@ -67,7 +67,7 @@ setPosts(result.data);
   -> 있으면 제목과 본문 렌더링
 ```
 
-서버 컴포넌트의 핵심 모양입니다.
+서버 컴포넌트의 기본 형태입니다.
 
 ```jsx
 export default async function DetailPage({ params }) {
@@ -99,7 +99,7 @@ export default async function DetailPage({ params }) {
   -> /detail/postId로 이동
 ```
 
-클라이언트 form의 핵심 모양입니다.
+클라이언트 form의 기본 형태입니다.
 
 ```js
 const response = await fetch("/api/post", {
@@ -109,7 +109,7 @@ const response = await fetch("/api/post", {
 });
 ```
 
-서버 검증의 핵심 모양입니다.
+서버 검증의 기본 형태입니다.
 
 ```js
 const postData = await request.json();
