@@ -87,7 +87,7 @@ index 54ca12e..b6d7668 100644
 ### 설명과 확인
 
 - 응답의 `data.postId`를 읽어 `/detail/${postId}`로 이동합니다.
-- `finally`에서 `isSubmitting`을 false로 되돌려 실패 시 다시 제출할 수 있게 합니다.
+- `finally`에서 `isSubmitting`을 false로 되돌려 실패하더라도 제출 버튼을 다시 활성화합니다.
 
 ## 작업 2. 수정 form 제출 상태 추가
 
