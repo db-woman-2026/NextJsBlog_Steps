@@ -153,6 +153,8 @@ API 라우트는 다음과 같습니다.
 
 코드 규칙과 production build는 다음 명령으로 확인합니다.
 
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+
 ```bash
 npm run lint
 npm run build
@@ -163,6 +165,13 @@ npm run build
 ```bash
 cp .env.example .env.local
 npm run dev
+```
+
+PowerShell에서는 다음 명령을 사용합니다.
+
+```powershell
+Copy-Item .env.example .env.local
+npm.cmd run dev
 ```
 
 로컬 MongoDB를 사용한다면 `.env.local`은 다음처럼 둘 수 있습니다.
