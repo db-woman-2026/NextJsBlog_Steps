@@ -40,6 +40,8 @@ lib/posts.js    -> posts 컬렉션에서 게시글을 다루는 일만 담당
 
 다음 명령으로 MongoDB Node.js Driver를 설치합니다.
 
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+
 ```bash
 npm install mongodb@^7.4.0
 ```
@@ -77,6 +79,12 @@ MONGODB_DB=blog
 
 ```bash
 cp .env.example .env.local
+```
+
+PowerShell에서는 다음 명령을 사용합니다.
+
+```powershell
+Copy-Item .env.example .env.local
 ```
 
 그리고 개인 환경에 맞게 `.env.local`을 수정합니다.
