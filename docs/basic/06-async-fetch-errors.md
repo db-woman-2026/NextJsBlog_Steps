@@ -1,6 +1,6 @@
 # 06. 비동기와 오류 처리
 
-## 이번 장의 목표
+## 배울 내용
 
 - 동기 처리와 비동기 처리의 차이를 이해합니다.
 - Promise, `async`, `await`가 함께 쓰이는 모양을 읽습니다.
@@ -204,7 +204,7 @@ try {
 
 `error instanceof Error`는 error가 `Error`로 만든 객체인지 확인합니다.
 
-## 프로젝트에서 다시 만나기
+## 프로젝트 예시
 
 - MongoDB 연결, 조회, 저장 함수는 Promise를 반환하므로 `await`합니다.
 - 화면에서 `fetch`로 API를 호출하고 `response.json()`을 다시 `await`합니다.

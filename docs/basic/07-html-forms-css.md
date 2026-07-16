@@ -1,6 +1,6 @@
 # 07. HTML, form, CSS
 
-## 이번 장의 목표
+## 배울 내용
 
 - 자주 쓰는 HTML 태그와 attribute를 알아봅니다.
 - form의 label, input, button 관계를 이해합니다.
@@ -217,7 +217,7 @@ export default function Page() {
 
 `styles.form`은 build 과정에서 다른 파일의 `.form`과 충돌하지 않는 class 이름으로 바뀝니다. 전역 기본값은 `globals.css`, 한 화면 전용 스타일은 `*.module.css`처럼 역할을 나눌 수 있습니다.
 
-## 프로젝트에서 다시 만나기
+## 프로젝트 예시
 
 - `step-1`: `header`, `nav`, `main`, `footer`로 공통 구조를 만듭니다.
 - `step-6`: label, input, textarea, submit button으로 게시글 form을 만듭니다.
