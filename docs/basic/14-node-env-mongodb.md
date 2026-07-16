@@ -1,6 +1,6 @@
 # 14. Node.js, 환경 변수, MongoDB
 
-## 이번 장의 목표
+## 배울 내용
 
 - 브라우저 JavaScript와 Node.js 서버 실행 환경을 구분합니다.
 - 환경 변수에 둘 값과 공개 코드에 둘 값을 구분합니다.
@@ -238,7 +238,7 @@ const posts = await collection
   .toArray();
 ```
 
-## 프로젝트에서 다시 만나기
+## 프로젝트 예시
 
 - `step-3`: 환경 변수, MongoClient helper, 게시글 collection 함수를 만듭니다.
 - 첫 목록 요청에서 collection이 비어 있으면 예제 document를 넣습니다.
