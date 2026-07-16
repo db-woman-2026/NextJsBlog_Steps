@@ -1,6 +1,6 @@
 # Step 21. 홈 목록과 상세 읽기 화면 UI 정리
 
-이전 단계에서 Tailwind CSS v4를 설치하고 공통 layout, nav, footer를 정리했습니다. 이번 단계에서는 사용자가 가장 먼저 보는 읽기 화면을 정리합니다.
+이전 단계에서 Tailwind CSS v4를 설치하고 공통 layout, nav, footer를 정리했습니다. 사용자가 가장 먼저 보는 읽기 화면을 정리합니다.
 
 ## 이번 단계에서 하는 일
 
@@ -33,7 +33,7 @@ import styles from "./page.module.css";
 </section>
 ```
 
-이번 단계에서는 이 파일을 제거하고 JSX에 Tailwind class를 직접 작성합니다.
+이 파일을 제거하고 JSX에 Tailwind class를 직접 작성합니다.
 
 ```jsx
 <section className="grid gap-4" aria-label="Blog posts">

@@ -1,12 +1,12 @@
 # Step 16. 페이지네이션
 
-## 이 단계의 목표
+## 배울 내용
 
 `step-16`은 게시글 목록에 페이지네이션을 추가하는 단계입니다.
 
 검색 기능까지 추가하면 게시글 목록은 점점 커질 수 있습니다. 모든 글을 한 번에 가져오면 데이터가 많아질수록 느려질 수 있습니다.
 
-이 단계에서는 다음을 구현합니다.
+다음을 구현합니다.
 
 - `GET /api/post?page=1&limit=5` 형식의 query string을 지원한다.
 - MongoDB에서 `skip`, `limit`으로 일부 게시글만 가져온다.
@@ -205,7 +205,7 @@ const [serverKeyword, setServerKeyword] = useState("");
 await loadPosts({ page: nextPage, searchKeyword: serverKeyword });
 ```
 
-## 직접 실습 순서
+## 실습 순서
 
 1. `lib/posts.js`에서 검색 조건을 만드는 `buildPostQuery` 함수를 만든다.
 2. `listPosts`가 `{ keyword, page, limit }` 옵션 객체를 받도록 바꾼다.
@@ -235,6 +235,6 @@ npm run lint
 npm run build
 ```
 
-## 이 단계의 핵심
+## 정리
 
 페이지네이션은 단순한 버튼 UI가 아니라 API, DB 조회 방식, 화면 상태가 함께 바뀌는 기능입니다. 검색 이후에 추가해야 검색 결과도 페이지 단위로 다룰 수 있습니다.
