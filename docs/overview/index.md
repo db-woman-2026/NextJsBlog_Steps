@@ -1,6 +1,6 @@
-# Overview Index
+# 단계별 개요
 
-이 문서는 `step-19` 브랜치까지의 단계별 개요 목록입니다.
+`step-19` 브랜치까지의 단계별 개요 목록입니다.
 기존 `docs/step-N.md` 문서는 분석과 참고를 위해 `docs/overview/step-N.md` 위치로 이동했습니다.
 학생이 바로 따라 하는 실습형 문서는 `docs/lecture/`에 있습니다.
 

@@ -1,6 +1,6 @@
 # 11. App Router와 컴포넌트 경계
 
-## 이번 장의 목표
+## 배울 내용
 
 - Next.js와 React의 관계를 설명합니다.
 - `app` 폴더의 `page.js`, `layout.js`, `route.js` 역할을 구분합니다.
@@ -200,7 +200,7 @@ export default function Profile() {
 
 `Image`에는 이미지 주소를 설명하는 `alt`와 레이아웃 크기를 계산할 `width`, `height`를 지정합니다. 프로젝트 밖의 원격 이미지를 사용하면 허용할 host와 path를 `next.config.mjs`의 `images.remotePatterns`에 설정해야 합니다.
 
-## 프로젝트에서 다시 만나기
+## 프로젝트 예시
 
 - `step-1`: root layout, page, Header, Footer를 만듭니다.
 - `step-2`: `next/image`와 원격 이미지 허용 설정을 사용합니다.
