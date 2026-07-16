@@ -28,7 +28,7 @@ simpledotcss를 제거하고 Tailwind CSS v4를 설치한 뒤 공통 layout, nav
 - 수정: [package.json](../../package.json)
 - 수정: [package-lock.json](../../package-lock.json)
 
-위 파일들은 명령 실행 결과를 확인만 합니다. 강의 중 직접 타이핑할 대상은 아닙니다.
+위 파일들은 명령 실행 결과만 확인합니다. 강의 중 입력할 대상은 아닙니다.
 
 ### 먼저 실행
 
@@ -103,7 +103,7 @@ index 0000000..61e3684
 
 - Tailwind v4에서는 이 프로젝트 기준으로 별도 `tailwind.config.js` 없이 시작합니다.
 - `postcss.config.mjs`는 Tailwind PostCSS 플러그인을 Next.js 빌드에 연결합니다.
-- `package.json`과 `package-lock.json`은 npm 명령이 자동 갱신하므로 직접 타이핑하지 않습니다.
+- `package.json`과 `package-lock.json`은 npm 명령이 자동 갱신하므로 수동으로 입력하지 않습니다.
 
 ## 작업 2. 공통 layout에 화면 폭과 배경 적용
 
