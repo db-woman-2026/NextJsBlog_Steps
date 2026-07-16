@@ -61,6 +61,8 @@ Get-Content .env.local -Encoding utf8
 
 서비스가 멈춰 있다면 관리자 PowerShell에서 `Start-Service MongoDB`를 실행합니다. Atlas를 쓸 때는 Atlas 연결 문자열을 `.env.local`에 입력하고 개발 서버를 다시 시작합니다.
 
+강의 데이터베이스 이름은 `next_blog_`로 시작하게 정합니다. 예시는 `next_blog_practice`입니다. 기존 프로젝트에서 사용하던 `blog` 데이터베이스를 그대로 연결하지 않습니다.
+
 ## 4. PowerShell 명령 대응
 
 | macOS·Linux 예제 | PowerShell |
