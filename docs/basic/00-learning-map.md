@@ -1,6 +1,6 @@
 # 00. 학습 지도와 개발 환경
 
-## 이번 장의 목표
+## 배울 내용
 
 - 프로젝트, 파일, 폴더, 터미널의 관계를 설명합니다.
 - `package.json`, `package-lock.json`, `node_modules`의 역할을 구분합니다.
@@ -114,7 +114,7 @@ MONGODB_DB=blog
 
 문서의 코드 블록 오른쪽 위 언어 이름이 `bash`, `js`, `json`, `txt` 중 무엇인지 확인하면 입력 위치를 구분하기 쉽습니다.
 
-## 프로젝트에서 다시 만나기
+## 프로젝트 예시
 
 - `step-1`: `npm ci`, `npm run dev`, `npm run lint`를 처음 사용합니다.
 - `step-3`: MongoDB 패키지를 추가하고 환경 파일을 만듭니다.
