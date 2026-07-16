@@ -177,8 +177,8 @@ npm.cmd run dev
 로컬 MongoDB를 사용한다면 `.env.local`은 다음처럼 둘 수 있습니다.
 
 ```txt
-MONGODB_URI=mongodb://localhost:27017/blog
-MONGODB_DB=blog
+MONGODB_URI=mongodb://localhost:27017/next_blog_practice
+MONGODB_DB=next_blog_practice
 ```
 
 ## 단계형 브랜치 관리 원칙
