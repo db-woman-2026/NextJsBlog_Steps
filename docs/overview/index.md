@@ -2,6 +2,8 @@
 
 Windows 11에서는 [Windows 11 환경 준비](../windows-11.md)를 마친 뒤 시작합니다.
 
+전체 일정과 단계별 산출물은 [강의 운영안](../course-plan.md), 막혔을 때의 복구 순서는 [문제 해결](../troubleshooting.md)에서 확인합니다.
+
 `step-23`까지의 기능 설명과 변경 이유를 정리했습니다. 입력 순서와 diff는 `docs/lecture/`에서 확인합니다.
 
 ## 전체 흐름
