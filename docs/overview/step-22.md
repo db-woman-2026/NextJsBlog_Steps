@@ -89,7 +89,7 @@ Tailwind의 `disabled:` 접두사는 HTML 요소가 `disabled` 상태일 때만 
 const textareaClassName = `${inputClassName} min-h-48 resize-y`;
 ```
 
-`min-h-48`은 최소 높이를 확보하고, `resize-y`는 사용자가 세로 방향으로만 크기를 조절할 수 있게 합니다.
+`min-h-48`은 최소 높이를 확보하고, `resize-y`는 사용자의 크기 조절 방향을 세로로 제한합니다.
 
 ## 오류 메시지
 
@@ -103,7 +103,7 @@ const textareaClassName = `${inputClassName} min-h-48 resize-y`;
 )}
 ```
 
-`role="alert"`는 화면 낭독기에도 오류 메시지임을 알려주는 역할을 합니다. 스타일을 입히더라도 기존 의미를 잃지 않는 것이 중요합니다.
+`role="alert"`는 화면 낭독기에 오류 메시지임을 알립니다. Tailwind class를 바꿔도 이 의미 정보는 그대로 유지합니다.
 
 ## Contact form
 
