@@ -1,6 +1,6 @@
 # Step 6. 새 게시글 작성 화면 만들기
 
-## 이 단계의 목표
+## 배울 내용
 
 `step-6` 브랜치는 `/post` 페이지를 실제 게시글 작성 화면으로 바꾸는 단계입니다.
 
@@ -247,7 +247,7 @@ textarea {
 
 form은 여러 페이지에서 다시 사용할 수 있으므로 전역 스타일에 둡니다. 나중에 수정 화면과 Contact form도 이 기본 스타일을 함께 사용합니다.
 
-## 직접 실습 순서
+## 실습 순서
 
 1. `app/post/page.js` 맨 위에 `"use client";`를 추가한다.
 2. `useState`, `useRouter`, CSS Module을 import한다.
