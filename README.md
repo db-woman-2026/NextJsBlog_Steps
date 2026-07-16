@@ -84,10 +84,18 @@ npx create-next-app@16.2.10 nextjsblog-steps \
 
 ## Getting Started
 
+Windows 11에서는 먼저 [Windows 11 환경 준비](./docs/windows-11.md)를 확인합니다.
+
 의존성을 설치합니다.
 
 ```bash
-npm install
+npm ci
+```
+
+PowerShell에서 `npm.ps1` 실행이 차단되면 다음 명령을 사용합니다.
+
+```powershell
+npm.cmd ci
 ```
 
 환경 변수 예시 파일을 복사합니다.
@@ -96,17 +104,29 @@ npm install
 cp .env.example .env.local
 ```
 
+PowerShell에서는 다음 명령을 사용합니다.
+
+```powershell
+Copy-Item .env.example .env.local
+```
+
 로컬 MongoDB를 사용한다면 `.env.local`을 다음처럼 둡니다.
 
 ```txt
-MONGODB_URI=mongodb://localhost:27017/blog
-MONGODB_DB=blog
+MONGODB_URI=mongodb://localhost:27017/next_blog_practice
+MONGODB_DB=next_blog_practice
 ```
 
 개발 서버를 실행합니다.
 
 ```bash
 npm run dev
+```
+
+PowerShell에서 `npm.ps1` 실행이 차단되면 다음 명령을 사용합니다.
+
+```powershell
+npm.cmd run dev
 ```
 
 브라우저에서 [http://localhost:3000](http://localhost:3000)을 엽니다.
