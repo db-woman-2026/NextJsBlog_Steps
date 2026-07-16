@@ -29,7 +29,7 @@ Contact 페이지를 mockup form으로 바꾸고 controlled input과 submit 이�
 ~~~diff
 diff --git a/app/contact/ContactForm.js b/app/contact/ContactForm.js
 new file mode 100644
-index 0000000..8bf074b
+index 0000000..c746234
 --- /dev/null
 +++ b/app/contact/ContactForm.js
 @@ -0,0 +1,53 @@
