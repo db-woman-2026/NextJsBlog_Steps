@@ -210,7 +210,7 @@ export default function Profile() {
 
 ## 확인하기
 
-1. `/about` URL을 만드는 핵심은 컴포넌트 함수 이름인가요, `app` 안의 파일 위치인가요?
+1. `/about` URL은 컴포넌트 함수 이름과 `app` 안의 파일 위치 중 무엇으로 결정되나요?
 2. `useState`가 필요한 파일 맨 위에는 무엇을 적나요?
 3. 클라이언트 컴포넌트에서 MongoDB 연결 함수를 직접 import하면 안 되는 이유는 무엇인가요?
 
