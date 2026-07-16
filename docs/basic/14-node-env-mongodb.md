@@ -23,15 +23,15 @@ Next.js는 두 실행 환경을 한 프로젝트에서 연결합니다. `"use cl
 환경마다 달라지거나 공개하면 안 되는 값은 코드에 직접 적지 않고 환경 변수로 전달합니다.
 
 ```txt
-MONGODB_URI=mongodb://localhost:27017/blog
-MONGODB_DB=blog
+MONGODB_URI=mongodb://localhost:27017/next_blog_practice
+MONGODB_DB=next_blog_practice
 ```
 
 서버 코드에서 `process.env`로 읽습니다.
 
 ```js
 const uri = process.env.MONGODB_URI;
-const dbName = process.env.MONGODB_DB || "blog";
+const dbName = process.env.MONGODB_DB || "next_blog_practice";
 ```
 
 `.env.local`은 개발자 컴퓨터의 실제 값을 담고 Git에 올리지 않습니다. `.env.example`은 필요한 변수 이름과 안전한 예시를 공유합니다.

@@ -67,7 +67,7 @@ export async function listPosts({ keyword = "", page = 1, limit = 5 } = {}) {
 
 ```js
 function buildPostQuery(keyword) {
-  const searchKeyword = keyword.trim();
+  const searchKeyword = escapeRegex(keyword.trim());
 
   if (!searchKeyword) {
     return {};
@@ -84,16 +84,23 @@ function buildPostQuery(keyword) {
 
 검색어가 없으면 빈 조건 `{}`을 반환합니다. MongoDB에서 빈 조건은 전체 문서 조회를 의미합니다.
 
-## page와 limit 정리
+## page와 limit 검증
 
-query string으로 받은 값은 문자열입니다. 그래서 숫자로 바꿔야 합니다.
+query string은 문자열이며 사용자가 직접 바꿀 수 있습니다. 숫자로 바꾸는 것만으로는 `1.5`, `Infinity` 같은 값을 걸러낼 수 없으므로 양의 정수인지 확인합니다.
 
 ```js
-const currentPage = Math.max(Number(page) || 1, 1);
-const pageSize = Math.min(Math.max(Number(limit) || 5, 1), 20);
+function toPositiveInteger(value, fallback, max = Number.MAX_SAFE_INTEGER) {
+  const number = Number(value);
+
+  if (!Number.isInteger(number) || number < 1) {
+    return fallback;
+  }
+
+  return Math.min(number, max);
+}
 ```
 
-`page`는 최소 1입니다.
+`page`는 1 이상의 정수만 허용합니다. 잘못된 값은 1을 사용합니다.
 
 `limit`은 최소 1, 최대 20으로 제한합니다. 사용자가 너무 큰 값을 보내도 한 번에 과도한 데이터를 가져오지 않게 하기 위해서입니다.
 
@@ -102,8 +109,13 @@ const pageSize = Math.min(Math.max(Number(limit) || 5, 1), 20);
 MongoDB에서 일부 문서만 가져올 때 `skip`과 `limit`을 사용합니다.
 
 ```js
+const totalPosts = await collection.countDocuments(query);
+const totalPages = Math.max(Math.ceil(totalPosts / pageSize), 1);
+const currentPage = Math.min(requestedPage, totalPages);
 const skip = (currentPage - 1) * pageSize;
 ```
+
+전체 페이지 수를 먼저 구하고 요청한 page가 범위를 벗어나면 마지막 페이지로 보정합니다. 따라서 실제 데이터가 2페이지뿐일 때 `page=999`를 요청해도 빈 999페이지가 아니라 2페이지를 반환합니다.
 
 예를 들어 페이지 크기가 5일 때:
 
@@ -227,6 +239,12 @@ http://localhost:3000/
 게시글이 5개씩 보이고, `Next` 버튼으로 다음 페이지로 이동할 수 있어야 합니다.
 
 검색어를 입력하고 `Server Search`를 누른 뒤에도 페이지 버튼이 검색 결과 기준으로 동작해야 합니다.
+
+주소창이나 API 도구에서 다음 경계값도 확인합니다.
+
+- `?page=0`과 `?page=1.5`는 1페이지를 반환한다.
+- `?page=999`는 실제 마지막 페이지를 반환한다.
+- `?limit=100`은 최대값 20으로 보정한다.
 
 ## 검증 명령
 
