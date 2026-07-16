@@ -127,7 +127,7 @@ index 41c1fad..c14ed86 100644
 ### 설명과 확인
 
 - 클라이언트 상태가 필요한 파일에만 `"use client";`를 둡니다.
-- 이 분리는 이후 Next.js 서버/클라이언트 컴포넌트 구분을 이해하는 데 중요합니다.
+- 페이지는 Server Component로 유지하고, 상태와 이벤트가 필요한 form만 Client Component로 분리합니다.
 
 ## 실행 확인
 
