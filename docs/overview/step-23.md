@@ -103,11 +103,11 @@ Tailwind 전환은 총 네 단계로 나눴습니다.
 
 ## 확인 방법
 
-> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
-```bash
-npm run lint
-npm run build
+```powershell
+npm.cmd run lint
+npm.cmd run build
 ```
 
 브라우저에서는 다음 화면을 확인합니다.
@@ -118,7 +118,7 @@ npm run build
 /detail/없는ID
 ```
 
-Error 화면은 일반적인 사용 흐름에서 쉽게 발생하지 않을 수 있습니다. 그래도 `npm run build`가 통과하면 최소한 컴포넌트 문법과 빌드 가능성은 확인할 수 있습니다.
+Error 화면은 일반적인 사용 흐름에서 쉽게 발생하지 않을 수 있습니다. 그래도 `npm.cmd run build`가 통과하면 최소한 컴포넌트 문법과 빌드 가능성은 확인할 수 있습니다.
 
 ## 체크리스트
 

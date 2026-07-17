@@ -18,7 +18,7 @@
 
 브랜치는 누적형 계단 구조를 유지해야 합니다. 어떤 수정이 특정 단계에 속한다면 가장 이른 affected step에서 고치고, 그 브랜치를 다음 단계로 순차 병합합니다.
 
-```bash
+```powershell
 git switch step-N
 # 수정, 검증, commit, push
 
@@ -29,7 +29,7 @@ git merge step-N
 
 같은 수정 내용을 여러 step 브랜치에 각각 따로 커밋하지 않습니다. 파일 내용은 비슷해 보여도 교육용 브랜치 히스토리와 부모-자식 관계가 깨질 수 있기 때문입니다. 인접 단계의 ancestry는 다음 명령이 성공하는 상태를 목표로 합니다.
 
-```bash
+```powershell
 git merge-base --is-ancestor step-N step-(N+1)
 ```
 
