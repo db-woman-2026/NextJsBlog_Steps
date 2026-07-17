@@ -332,11 +332,11 @@ CSS Module을 사용하면 클래스 이름이 해당 컴포넌트 범위 안에
 - `.env.local` 생성
 - 개발 서버 실행
 
-> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
-```bash
-cp .env.example .env.local
-npm run dev
+```powershell
+Copy-Item -LiteralPath .env.example -Destination .env.local
+npm.cmd run dev
 ```
 
 PowerShell에서는 다음 명령을 사용합니다.
@@ -358,9 +358,9 @@ http://localhost:3000/
 
 ## 검증 명령
 
-```bash
-npm run lint
-npm run build
+```powershell
+npm.cmd run lint
+npm.cmd run build
 ```
 
 빌드 출력에 다음 route가 보이면 목록과 상세 라우트가 함께 준비된 것입니다.
