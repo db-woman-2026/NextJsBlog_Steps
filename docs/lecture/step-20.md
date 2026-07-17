@@ -32,14 +32,14 @@ simpledotcss를 제거하고 Tailwind CSS v4를 설치한 뒤 공통 layout, nav
 
 ### 먼저 실행
 
-> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
-```bash
-npm uninstall simpledotcss
-npm install -D tailwindcss @tailwindcss/postcss postcss
+```powershell
+npm.cmd uninstall simpledotcss
+npm.cmd install -D tailwindcss @tailwindcss/postcss postcss
 ```
 
-위 명령은 `package.json`, `package-lock.json`, `node_modules`를 함께 갱신합니다. 이전 단계의 `node_modules`가 남아 있거나 완성 브랜치를 바로 checkout해 확인하는 경우에는 lockfile 기준으로 의존성을 다시 맞춰야 하므로 `npm ci`를 실행합니다. `Cannot find module '@tailwindcss/postcss'` 오류가 나오면 Tailwind/PostCSS 의존성이 아직 설치되지 않은 상태입니다.
+위 명령은 `package.json`, `package-lock.json`, `node_modules`를 함께 갱신합니다. 이전 단계의 `node_modules`가 남아 있거나 완성 브랜치를 바로 checkout해 확인하는 경우에는 lockfile 기준으로 의존성을 다시 맞춰야 하므로 `npm.cmd ci`를 실행합니다. `Cannot find module '@tailwindcss/postcss'` 오류가 나오면 Tailwind/PostCSS 의존성이 아직 설치되지 않은 상태입니다.
 
 ### 코드 변경
 
@@ -236,20 +236,20 @@ index eb664b1..a744ef8 100644
 
 기본 정적 검사는 다음 명령으로 확인합니다.
 
-```bash
-npm run lint
-npm run build
+```powershell
+npm.cmd run lint
+npm.cmd run build
 ```
 
 브라우저 확인이 필요하면 개발 서버를 켠 뒤 해당 화면을 확인합니다.
 
-```bash
-npm run dev
+```powershell
+npm.cmd run dev
 ```
 
 체크할 내용은 다음과 같습니다.
 
-- `npm run build`가 Tailwind/PostCSS 설정 오류 없이 통과한다.
+- `npm.cmd run build`가 Tailwind/PostCSS 설정 오류 없이 통과한다.
 - Header, 본문, Footer가 같은 최대 폭 기준으로 정렬된다.
 
 ## 독립 확인
