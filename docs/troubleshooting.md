@@ -12,9 +12,9 @@
 
 `step-N.md`의 diff는 `step-(N-1)` 완료 코드에 적용합니다. `step-N` branch를 checkout했다면 변경이 이미 들어 있습니다.
 
-> Windows 11에서는 [환경 준비](./windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](./windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
-```bash
+```powershell
 git status --short
 git branch --show-current
 ```
@@ -25,9 +25,9 @@ git branch --show-current
 
 branch를 바꾼 뒤 `package.json`이나 lockfile이 달라졌다면 의존성을 다시 맞춥니다.
 
-```bash
-npm ci
-npm run lint
+```powershell
+npm.cmd ci
+npm.cmd run lint
 ```
 
 Windows의 `npm.ps1` 오류는 `npm.cmd ci`, `npm.cmd run lint`로 실행합니다. package 이름을 보고 임의 버전을 추가하기 전에 현재 단계의 `package.json`을 확인합니다.
@@ -67,13 +67,13 @@ Invoke-RestMethod -Method Get -Uri "http://localhost:3000/api/post"
 
 ## Tailwind class가 적용되지 않습니다
 
-`package.json`, `postcss.config.mjs`, `app/globals.css`의 import를 현재 단계 완성본과 비교합니다. 개발 서버를 재시작하고 `npm run build`에서도 같은 오류가 나는지 확인합니다.
+`package.json`, `postcss.config.mjs`, `app/globals.css`의 import를 현재 단계 완성본과 비교합니다. 개발 서버를 재시작하고 `npm.cmd run build`에서도 같은 오류가 나는지 확인합니다.
 
 ## 복구 후 확인
 
-```bash
-npm run lint
-npm run build
+```powershell
+npm.cmd run lint
+npm.cmd run build
 git status --short
 ```
 
