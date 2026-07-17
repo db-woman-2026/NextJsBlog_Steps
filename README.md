@@ -1,54 +1,92 @@
 # NextJsBlog_Steps
 
-초급 개발자 교육용 Next.js 블로그를 `main` starter에서 시작해 `step-N` 브랜치로 단계별 누적 학습하는 저장소입니다.
+Windows 11 x64에서 Next.js 블로그를 단계별로 만드는 초급 강의 저장소입니다. `main`은 시작 화면이고 `step-1`부터 `step-23`까지 기능과 강의 문서를 누적합니다.
 
-## Branch Hierarchy
+## 브랜치 학습 구조
 
-이 저장소의 브랜치는 독립적인 예제 복사본이 아니라 부모-자식 관계를 가진 학습 이력입니다. 기본 흐름은 `main -> step-1 -> step-2 -> ... -> step-N`이며, 각 `step-N`은 바로 이전 단계 위에 기능과 문서를 누적합니다.
-
-향후 작업 시 이 계층을 기준으로 수정해야 합니다. 특정 단계부터 필요한 변경은 가장 이른 affected step에서 먼저 커밋하고, 그 다음 step으로 순서대로 merge해서 전파합니다. 같은 변경을 여러 step 브랜치에 각각 따로 커밋하면 교육용 브랜치의 ancestry가 깨져 수강생과 강의자가 서로 다른 기준을 보게 됩니다.
-
-브랜치 관계는 아래 명령이 성공하는 상태를 목표로 유지합니다.
-
-```bash
-git merge-base --is-ancestor step-N step-(N+1)
+```text
+main -> step-1 -> step-2 -> ... -> step-23
 ```
 
-## create-next-app README
+각 `step-N`은 바로 이전 branch를 부모로 가집니다. 특정 단계부터 필요한 수정은 가장 이른 branch에 commit하고 다음 branch로 차례대로 merge합니다.
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```powershell
+git merge-base --is-ancestor step-1 step-2
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Windows Terminal 설치
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+시작 메뉴에서 `Windows PowerShell`을 한 번 열고 Windows Terminal을 설치합니다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```powershell
+winget --version
+winget install --id Microsoft.WindowsTerminal -e --source winget --accept-source-agreements --accept-package-agreements
+```
 
-## Learn More
+설치가 끝나면 처음 열었던 창을 닫습니다. 시작 메뉴에서 `Windows Terminal`을 열고 `Windows PowerShell` 프로필을 선택합니다.
 
-To learn more about Next.js, take a look at the following resources:
+## 개발 프로그램 새로 설치
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+프로그램이 이미 보여도 다음 명령을 모두 실행해 설치 상태를 확인합니다.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```powershell
+winget install --id OpenJS.NodeJS.LTS -e --source winget --architecture x64 --accept-source-agreements --accept-package-agreements
+winget install --id Git.Git -e --source winget --architecture x64 --accept-source-agreements --accept-package-agreements
+winget install --id Microsoft.VisualStudioCode -e --source winget --architecture x64 --accept-source-agreements --accept-package-agreements
+```
 
-## Deploy on Vercel
+Windows Terminal 창을 모두 닫고 새 창에서 버전을 확인합니다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```powershell
+node --version
+npm.cmd --version
+git --version
+code --version
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+이 과정은 Node.js `22.13.0` 이상을 사용합니다. `npm.ps1` 실행 정책 오류가 나오면 시스템 정책을 바꾸지 말고 `npm.cmd`와 `npx.cmd`를 사용합니다.
+
+> !@#windows11 test: [Windows 11 x64 초기화 PC에서 Windows Terminal, Node.js LTS x64, Git for Windows x64, VS Code x64를 위 winget 명령으로 신규 설치하고 Next.js 전체 단계를 다시 검증합니다.]@#
+
+## 저장소 준비와 실행
+
+강의 저장소는 현재 사용자 프로필의 `dongbu` 폴더 아래에 둡니다.
+
+```powershell
+New-Item -ItemType Directory -Path "$HOME\dongbu" -Force | Out-Null
+Set-Location "$HOME\dongbu"
+git clone https://github.com/db-woman-2026/NextJsBlog_Steps.git
+Set-Location "$HOME\dongbu\NextJsBlog_Steps"
+git switch main
+git status --short
+npm.cmd ci
+npm.cmd run lint
+npm.cmd run build
+npm.cmd run dev
+```
+
+이미 저장소 폴더를 받았다면 `git clone`은 생략합니다. 브라우저에서 `http://localhost:3000`을 열고 개발 서버는 `Ctrl+C`로 종료합니다.
+
+Windows 방화벽이 Node.js 연결을 물으면 공용 네트워크는 선택하지 않고 신뢰하는 개인 네트워크에서만 허용합니다. OneDrive가 관리하는 바탕 화면이나 문서 폴더 대신 `$HOME\dongbu\NextJsBlog_Steps`를 사용합니다.
+
+## 다음 단계
+
+```powershell
+Set-Location "$HOME\dongbu\NextJsBlog_Steps"
+git switch step-1
+npm.cmd ci
+npm.cmd run lint
+npm.cmd run build
+npm.cmd run dev
+```
+
+`step-1`부터는 [Windows 11 환경 준비](https://github.com/db-woman-2026/NextJsBlog_Steps/blob/step-1/docs/windows-11.md)와 단계별 강의 문서를 함께 확인합니다.
+
+## 공식 안내
+
+- [Windows Terminal 설치](https://learn.microsoft.com/windows/terminal/install)
+- [winget install 명령](https://learn.microsoft.com/windows/package-manager/winget/install)
+- [Node.js 다운로드](https://nodejs.org/en/download)
+- [Git for Windows](https://git-scm.com/install/windows)
+- [VS Code Windows 설치](https://code.visualstudio.com/docs/setup/windows)
+- [Next.js 설치](https://nextjs.org/docs/app/getting-started/installation)
