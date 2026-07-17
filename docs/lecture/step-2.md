@@ -31,7 +31,7 @@ simpledotcss와 next/image를 적용해 기본 화면을 정돈하고 외부 이
 
 ### 먼저 실행
 
-> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
 ```powershell
 npm.cmd install simpledotcss@^2.3.7

@@ -12,7 +12,7 @@
 
 `step-N.md`의 diff는 `step-(N-1)` 완료 코드에 적용합니다. `step-N` branch를 checkout했다면 변경이 이미 들어 있습니다.
 
-> Windows 11에서는 [환경 준비](./windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](./windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
 ```powershell
 git status --short
