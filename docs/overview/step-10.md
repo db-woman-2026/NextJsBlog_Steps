@@ -30,15 +30,9 @@
 
 또한 API는 브라우저 form 없이도 직접 호출될 수 있습니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. Windows Terminal의 PowerShell에서 `git`, `node`, `npm.cmd` 명령을 실행합니다.
 
-```bash
-curl -X POST http://localhost:3000/api/post \
-  -H "Content-Type: application/json" \
-  -d '{"title":"   ","content":"   "}'
-```
-
-PowerShell에서는 다음 명령을 사용합니다.
+새 PowerShell 탭에서 다음 요청을 보냅니다.
 
 ```powershell
 $body = @{
@@ -147,8 +141,8 @@ if (!response.ok) {
 
 개발 서버를 실행합니다.
 
-```bash
-npm run dev
+```powershell
+npm.cmd run dev
 ```
 
 작성 화면에서 제목이나 본문에 공백만 입력하고 제출합니다.
@@ -167,9 +161,9 @@ Title and content are required
 
 ## 검증 명령
 
-```bash
-npm run lint
-npm run build
+```powershell
+npm.cmd run lint
+npm.cmd run build
 ```
 
 ## 정리

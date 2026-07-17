@@ -234,10 +234,10 @@ nav ul {
 
 개발 서버를 실행합니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
-```bash
-npm run dev
+```powershell
+npm.cmd run dev
 ```
 
 브라우저에서 다음 주소를 확인합니다.
@@ -255,9 +255,9 @@ http://localhost:3000/contact
 
 코드 문법과 빌드 가능 여부는 다음 명령으로 확인합니다.
 
-```bash
-npm run lint
-npm run build
+```powershell
+npm.cmd run lint
+npm.cmd run build
 ```
 
 `lint`는 코드 규칙 위반을 찾고, `build`는 실제 배포용으로 컴파일할 수 있는지 확인합니다.
