@@ -6,7 +6,7 @@ Next.js App Router, MongoDB CRUD, 검색과 페이지네이션, 오류 화면, T
 
 - JavaScript 함수, 배열, 객체, `async`와 `await`의 모양을 읽을 수 있습니다.
 - React의 component, props, state, event를 한 번 이상 사용했습니다.
-- 터미널에서 `npm ci`와 `npm run dev`를 실행할 수 있습니다.
+- 터미널에서 `npm.cmd ci`와 `npm.cmd run dev`를 실행할 수 있습니다.
 - HTTP method와 JSON의 기본 의미를 알고 있습니다.
 
 ## 권장 운영
@@ -62,4 +62,4 @@ Next.js App Router, MongoDB CRUD, 검색과 페이지네이션, 오류 화면, T
 - 강의 전용 MongoDB에서 생성·조회·수정·삭제 결과를 확인합니다.
 - 검색어, page, limit, sort, category의 경계값을 처리합니다.
 - loading, empty, error 상태 중 필요한 화면을 구분합니다.
-- `npm run lint`와 `npm run build`를 통과한 뒤 브라우저 동작을 확인합니다.
+- `npm.cmd run lint`와 `npm.cmd run build`를 통과한 뒤 브라우저 동작을 확인합니다.

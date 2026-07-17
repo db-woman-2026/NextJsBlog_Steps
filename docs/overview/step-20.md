@@ -34,16 +34,16 @@ Tailwind CSS는 다음과 같은 방식으로 이 문제를 해결합니다.
 
 먼저 기존 `simpledotcss`를 제거합니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
-```bash
-npm uninstall simpledotcss
+```powershell
+npm.cmd uninstall simpledotcss
 ```
 
 그리고 Tailwind CSS v4와 PostCSS 플러그인을 설치합니다.
 
-```bash
-npm install -D tailwindcss @tailwindcss/postcss postcss
+```powershell
+npm.cmd install -D tailwindcss @tailwindcss/postcss postcss
 ```
 
 Tailwind CSS v4에서는 기본적인 Next.js 프로젝트라면 별도의 `tailwind.config.js` 없이 시작할 수 있습니다.
@@ -150,15 +150,15 @@ Footer도 공통 layout에 맞게 간단히 정리합니다.
 
 ## 확인 방법
 
-```bash
-npm run lint
-npm run build
+```powershell
+npm.cmd run lint
+npm.cmd run build
 ```
 
 개발 서버를 실행한 뒤 `/`, `/about`, `/post`, `/contact`를 열어 Header와 Footer가 모든 페이지에서 같은 폭과 높이로 보이는지 확인합니다.
 
-```bash
-npm run dev
+```powershell
+npm.cmd run dev
 ```
 
 ## 체크리스트
