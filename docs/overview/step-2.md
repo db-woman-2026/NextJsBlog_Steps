@@ -31,8 +31,8 @@
 
 > Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
-```bash
-npm install simpledotcss@^2.3.7
+```powershell
+npm.cmd install simpledotcss@^2.3.7
 ```
 
 설치 후 `package.json`의 `dependencies`에 다음 항목이 추가됩니다.
@@ -167,7 +167,7 @@ export default function AboutPage() {
 
 ## 실습 순서
 
-1. `npm install simpledotcss@^2.3.7`을 실행한다.
+1. `npm.cmd install simpledotcss@^2.3.7`을 실행한다.
 2. `package.json`에 `simpledotcss`가 추가됐는지 확인한다.
 3. `app/globals.css` 맨 위에 `@import "simpledotcss/simple.min.css";`를 작성한다.
 4. 기존에 직접 작성했던 메뉴/본문/푸터 스타일을 제거한다.
@@ -182,8 +182,8 @@ export default function AboutPage() {
 
 하지만 `next.config.mjs`는 Next.js 실행 설정입니다. 설정 파일을 바꾼 뒤에는 개발 서버를 껐다가 다시 켜는 습관을 들이는 것이 좋습니다.
 
-```bash
-npm run dev
+```powershell
+npm.cmd run dev
 ```
 
 ## 확인할 화면
@@ -200,9 +200,9 @@ http://localhost:3000/about
 
 ## 검증 명령
 
-```bash
-npm run lint
-npm run build
+```powershell
+npm.cmd run lint
+npm.cmd run build
 ```
 
 `build`가 통과하면 외부 이미지 설정도 정상적으로 반영된 것입니다.
