@@ -20,7 +20,7 @@ docs/lecture/ 단계별 diff를 직접 입력하는 프로젝트 실습
 
 브랜치 관계는 아래 명령이 성공하는 상태를 목표로 유지합니다.
 
-```bash
+```powershell
 git merge-base --is-ancestor step-N step-(N+1)
 ```
 
@@ -32,19 +32,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 Windows 11에서는 먼저 [Windows 11 환경 준비](./docs/windows-11.md)를 확인합니다.
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-PowerShell에서 `npm.ps1` 실행이 차단되면 다음 명령을 사용합니다.
+Windows Terminal의 PowerShell에서 개발 서버를 실행합니다.
 
 ```powershell
 npm.cmd run dev
