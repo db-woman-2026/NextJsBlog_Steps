@@ -407,10 +407,10 @@ catch (error) {
 
 실제로 API를 호출하려면 MongoDB가 실행 중이어야 하고 `.env.local`이 있어야 합니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
-```bash
-cp .env.example .env.local
+```powershell
+Copy-Item -LiteralPath .env.example -Destination .env.local
 ```
 
 PowerShell에서는 다음 명령을 사용합니다.
@@ -430,8 +430,8 @@ MONGODB_DB=next_blog_practice
 
 개발 서버를 실행합니다.
 
-```bash
-npm run dev
+```powershell
+npm.cmd run dev
 ```
 
 브라우저에서 다음 주소로 접속합니다.
@@ -442,22 +442,14 @@ http://localhost:3000/api/post
 
 MongoDB가 정상 연결되어 있으면 `{ success, message, data }` 형식의 JSON이 표시됩니다. 처음에는 샘플 게시글 10개가 `data` 배열에 자동으로 들어갈 수 있습니다.
 
-## curl로 POST 테스트
+## PowerShell로 POST 테스트
 
-브라우저 주소창에서는 POST 요청을 보내기 어렵습니다. 터미널에서 `curl`을 사용할 수 있습니다.
-
-```bash
-curl -X POST http://localhost:3000/api/post \
-  -H "Content-Type: application/json" \
-  -d '{"title":"First API Post","content":"Created from curl"}'
-```
-
-PowerShell에서는 다음 명령을 사용합니다.
+브라우저 주소창에서는 POST 요청을 보낼 수 없습니다. 새 Windows Terminal의 PowerShell 탭에서 다음 명령을 사용합니다.
 
 ```powershell
 $body = @{
   title = "First API Post"
-  content = "Created from curl"
+  content = "Created from PowerShell"
 } | ConvertTo-Json
 
 Invoke-RestMethod -Method Post -Uri "http://localhost:3000/api/post" -ContentType "application/json" -Body $body
@@ -479,9 +471,9 @@ Invoke-RestMethod -Method Post -Uri "http://localhost:3000/api/post" -ContentTyp
 
 코드 구조 자체는 다음 명령으로 검증합니다.
 
-```bash
-npm run lint
-npm run build
+```powershell
+npm.cmd run lint
+npm.cmd run build
 ```
 
 API 동작까지 확인하려면 개발 서버, MongoDB, `.env.local`이 모두 필요합니다.
