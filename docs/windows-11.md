@@ -113,9 +113,9 @@ Get-Content -LiteralPath .env.local -Encoding utf8
 
 `MONGODB_DB`는 `next_blog_`로 시작하는 전용 실습 DB를 사용합니다. 비밀번호가 포함된 연결 문자열은 화면 공유, 문서, commit에 넣지 않습니다.
 
-## 6. Windows 프로덕션 빌드
+## 6. Windows 개발 서버와 프로덕션 빌드
 
-`step-4`부터 MongoDB 패키지가 서버 bundle에 포함됩니다. Next.js 16의 기본 Turbopack 빌드는 Windows에서 MongoDB용 junction 생성 오류 87을 일으킬 수 있으므로 이 강의의 `build` script는 공식 `--webpack` 옵션을 사용합니다.
+`step-4`부터 MongoDB 패키지가 서버 bundle에 포함됩니다. Next.js 16의 기본 Turbopack 개발 서버와 빌드는 Windows에서 MongoDB용 junction 생성 오류 87을 일으킬 수 있으므로 이 강의의 `dev`와 `build` script는 공식 `--webpack` 옵션을 사용합니다.
 
 ```powershell
 Set-Location "$HOME\dongbu\NextJsBlog_Steps"
@@ -123,9 +123,10 @@ git switch step-4
 npm.cmd ci
 npm.cmd run lint
 npm.cmd run build
+npm.cmd run dev
 ```
 
-`next build --webpack`과 route 목록이 오류 없이 끝나면 성공입니다. `package.json`의 `build` script에서 `--webpack`을 임의로 제거하지 않습니다.
+`next build --webpack`과 route 목록이 오류 없이 끝난 뒤 API가 JSON을 반환하면 성공입니다. `package.json`의 `dev`와 `build` script에서 `--webpack`을 임의로 제거하지 않습니다.
 
 ## 7. API 요청 확인
 
