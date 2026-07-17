@@ -114,17 +114,17 @@ index b3e7f90..8fa71cd 100644
 
 기본 정적 검사는 다음 명령으로 확인합니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
-```bash
-npm run lint
-npm run build
+```powershell
+npm.cmd run lint
+npm.cmd run build
 ```
 
 브라우저 확인이 필요하면 개발 서버를 켠 뒤 해당 화면을 확인합니다.
 
-```bash
-npm run dev
+```powershell
+npm.cmd run dev
 ```
 
 체크할 내용은 다음과 같습니다.
