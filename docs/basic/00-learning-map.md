@@ -132,7 +132,7 @@ MONGODB_DB=next_blog_practice
 
 - `step-1`: `npm.cmd ci`, `npm.cmd run dev`, `npm.cmd run lint`를 처음 사용합니다.
 - `step-3`: MongoDB 패키지를 추가하고 환경 파일을 만듭니다.
-- `step-20`: Tailwind 패키지가 추가되므로 현재 브랜치에 맞게 의존성을 다시 설치합니다.
+- `step-20`: Tailwind 패키지가 추가되므로 설치 명령으로 의존성을 갱신합니다.
 
 ## 확인하기
 
