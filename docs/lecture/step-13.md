@@ -1,6 +1,6 @@
 # Step 13. 게시글 삭제 기능 만들기
 
-## 이번 단계에서 할 일
+## 변경 내용
 
 MongoDB 삭제 함수, DELETE /api/post/[id], 상세 화면 삭제 버튼으로 삭제 흐름을 완성합니다.
 
@@ -10,7 +10,7 @@ MongoDB 삭제 함수, DELETE /api/post/[id], 상세 화면 삭제 버튼으로 
 
 ## 시작 전 확인
 
-권장 시간은 60분입니다. 개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
+개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
 
 수정 전에 `git status --short`의 출력이 없는지 확인합니다. 변경이 남아 있다면 원인을 확인하고 시작 상태를 정리합니다.
 
@@ -22,31 +22,103 @@ MongoDB 삭제 함수, DELETE /api/post/[id], 상세 화면 삭제 버튼으로 
 
 - 수정: `lib/posts.js`
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/lib/posts.js b/lib/posts.js
-index 050a428..2daf81e 100644
---- a/lib/posts.js
-+++ b/lib/posts.js
-@@ -51,6 +51,15 @@ export async function createPost(postData) {
-   return result;
- }
+#### `lib/posts.js`
 
-+export async function deletePost(id) {
-+  if (!ObjectId.isValid(id)) {
-+    return null;
-+  }
-+
-+  const collection = await getPostsCollection();
-+  return collection.deleteOne({ _id: new ObjectId(id) });
-+}
-+
- export async function getPostById(id) {
-   if (!ObjectId.isValid(id)) {
-     return null;
+`lib/posts.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~js
+import { ObjectId } from "mongodb";
+import getMongoClient from "./mongodb";
+
+const dbName = process.env.MONGODB_DB || "next_blog_practice";
+const collectionName = "posts";
+
+if (!dbName.startsWith("next_blog_")) {
+  throw new Error("MONGODB_DB must start with next_blog_");
+}
+
+function createSeedPosts() {
+  return Array.from({ length: 10 }, (_, index) => ({
+    createdAt: new Date(),
+    title: `Blog Post ${index + 1}`,
+    content:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+    image: "https://picsum.photos/100",
+  }));
+}
+
+async function getPostsCollection() {
+  const client = await getMongoClient();
+  return client.db(dbName).collection(collectionName);
+}
+
+export async function seedPostsIfEmpty() {
+  const collection = await getPostsCollection();
+  const count = await collection.countDocuments();
+
+  if (count === 0) {
+    await collection.insertMany(createSeedPosts());
+  }
+}
+
+export async function listPosts() {
+  await seedPostsIfEmpty();
+
+  const collection = await getPostsCollection();
+  return collection.find({}).sort({ createdAt: -1 }).toArray();
+}
+
+export async function createPost(postData) {
+  const collection = await getPostsCollection();
+  const result = await collection.insertOne({
+    title: postData.title,
+    content: postData.content,
+    image: postData.image || "https://picsum.photos/100",
+    createdAt: new Date(),
+  });
+
+  return result;
+}
+
+export async function deletePost(id) {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+
+  const collection = await getPostsCollection();
+  return collection.deleteOne({ _id: new ObjectId(id) });
+}
+
+export async function getPostById(id) {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+
+  const collection = await getPostsCollection();
+  return collection.findOne({ _id: new ObjectId(id) });
+}
+
+export async function updatePost(id, postData) {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+
+  const collection = await getPostsCollection();
+  return collection.updateOne(
+    { _id: new ObjectId(id) },
+    {
+      $set: {
+        title: postData.title,
+        content: postData.content,
+        updatedAt: new Date(),
+      },
+    },
+  );
+}
 ~~~
 
 ### 설명과 확인
@@ -62,42 +134,75 @@ index 050a428..2daf81e 100644
 
 - 수정: [app/api/post/[id]/route.js](../../app/api/post/%5Bid%5D/route.js)
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/api/post/[id]/route.js b/app/api/post/[id]/route.js
-index f5f3b68..8a4a070 100644
---- a/app/api/post/[id]/route.js
-+++ b/app/api/post/[id]/route.js
-@@ -1,5 +1,5 @@
- import { apiError, apiSuccess } from "@/lib/apiResponse";
--import { getPostById, updatePost } from "@/lib/posts";
-+import { deletePost, getPostById, updatePost } from "@/lib/posts";
+#### `app/api/post/[id]/route.js`
 
- export async function GET(_request, { params }) {
-   try {
-@@ -42,3 +42,19 @@ export async function PUT(request, { params }) {
-     return apiError("Internal Server Error", 500);
-   }
- }
-+
-+export async function DELETE(_request, { params }) {
-+  try {
-+    const { id } = await params;
-+    const result = await deletePost(id);
-+
-+    if (!result || result.deletedCount === 0) {
-+      return apiError("Post not found", 404);
-+    }
-+
-+    return apiSuccess({ postId: id }, "Post deleted successfully");
-+  } catch (error) {
-+    console.error("Error deleting post:", error);
-+    return apiError("Internal Server Error", 500);
-+  }
-+}
+`app/api/post/[id]/route.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~js
+import { apiError, apiSuccess } from "@/lib/apiResponse";
+import { deletePost, getPostById, updatePost } from "@/lib/posts";
+
+export async function GET(_request, { params }) {
+  try {
+    const { id } = await params;
+    const post = await getPostById(id);
+
+    if (!post) {
+      return apiError("Post not found", 404);
+    }
+
+    return apiSuccess(post, "Post fetched successfully");
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
+
+export async function PUT(request, { params }) {
+  try {
+    const { id } = await params;
+    const postData = await request.json();
+    const title =
+      typeof postData.title === "string" ? postData.title.trim() : "";
+    const content =
+      typeof postData.content === "string" ? postData.content.trim() : "";
+
+    if (!title || !content) {
+      return apiError("Title and content are required", 400);
+    }
+
+    const result = await updatePost(id, { title, content });
+
+    if (!result || result.matchedCount === 0) {
+      return apiError("Post not found", 404);
+    }
+
+    return apiSuccess({ postId: id }, "Post updated successfully");
+  } catch (error) {
+    console.error("Error updating post:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
+
+export async function DELETE(_request, { params }) {
+  try {
+    const { id } = await params;
+    const result = await deletePost(id);
+
+    if (!result || result.deletedCount === 0) {
+      return apiError("Post not found", 404);
+    }
+
+    return apiSuccess({ postId: id }, "Post deleted successfully");
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
 ~~~
 
 ### 설명과 확인
@@ -114,85 +219,105 @@ index f5f3b68..8a4a070 100644
 - 생성: [app/detail/[id]/DeletePostButton.js](../../app/detail/%5Bid%5D/DeletePostButton.js)
 - 수정: [app/detail/[id]/page.js](../../app/detail/%5Bid%5D/page.js)
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/detail/[id]/DeletePostButton.js b/app/detail/[id]/DeletePostButton.js
-new file mode 100644
-index 0000000..02feb32
---- /dev/null
-+++ b/app/detail/[id]/DeletePostButton.js
-@@ -0,0 +1,48 @@
-+"use client";
-+
-+import { useState } from "react";
-+import { useRouter } from "next/navigation";
-+
-+export default function DeletePostButton({ id }) {
-+  const [error, setError] = useState("");
-+  const [isDeleting, setIsDeleting] = useState(false);
-+  const router = useRouter();
-+
-+  async function handleDelete() {
-+    const shouldDelete = window.confirm("Delete this post?");
-+
-+    if (!shouldDelete) {
-+      return;
-+    }
-+
-+    setError("");
-+    setIsDeleting(true);
-+
-+    try {
-+      const response = await fetch(`/api/post/${id}`, {
-+        method: "DELETE",
-+      });
-+      const result = await response.json();
-+
-+      if (!response.ok) {
-+        throw new Error(result.message || "Failed to delete post");
-+      }
-+
-+      router.push("/");
-+      router.refresh();
-+    } catch (err) {
-+      setError(err instanceof Error ? err.message : "Failed to delete post");
-+    } finally {
-+      setIsDeleting(false);
-+    }
-+  }
-+
-+  return (
-+    <>
-+      <button type="button" onClick={handleDelete} disabled={isDeleting}>
-+        {isDeleting ? "Deleting..." : "Delete"}
-+      </button>
-+      {error && <p role="alert">{error}</p>}
-+    </>
-+  );
-+}
-diff --git a/app/detail/[id]/page.js b/app/detail/[id]/page.js
-index 8fa71cd..3e7ae22 100644
---- a/app/detail/[id]/page.js
-+++ b/app/detail/[id]/page.js
-@@ -1,6 +1,7 @@
- import Link from "next/link";
- import { notFound } from "next/navigation";
- import { getPostById } from "@/lib/posts";
-+import DeletePostButton from "./DeletePostButton";
- import styles from "./page.module.css";
+#### `app/detail/[id]/DeletePostButton.js`
 
- function formatDate(dateValue) {
-@@ -28,6 +29,7 @@ export default async function BlogDetail({ params }) {
-         <pre className={styles.content}>{post.content}</pre>
-       </article>
-       <Link href={`/post/${id}`}>Edit</Link>
-+      <DeletePostButton id={id} />
-     </main>
-   );
- }
+`app/detail/[id]/DeletePostButton.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~js
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+export default function DeletePostButton({ id }) {
+  const [error, setError] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const router = useRouter();
+
+  async function handleDelete() {
+    const shouldDelete = window.confirm("Delete this post?");
+
+    if (!shouldDelete) {
+      return;
+    }
+
+    setError("");
+    setIsDeleting(true);
+
+    try {
+      const response = await fetch(`/api/post/${id}`, {
+        method: "DELETE",
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to delete post");
+      }
+
+      router.push("/");
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete post");
+    } finally {
+      setIsDeleting(false);
+    }
+  }
+
+  return (
+    <>
+      <button type="button" onClick={handleDelete} disabled={isDeleting}>
+        {isDeleting ? "Deleting..." : "Delete"}
+      </button>
+      {error && <p role="alert">{error}</p>}
+    </>
+  );
+}
+~~~
+
+#### `app/detail/[id]/page.js`
+
+`app/detail/[id]/page.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~js
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getPostById } from "@/lib/posts";
+import DeletePostButton from "./DeletePostButton";
+import styles from "./page.module.css";
+
+function formatDate(dateValue) {
+  if (!dateValue) {
+    return "";
+  }
+
+  return new Date(dateValue).toLocaleString("ko-KR");
+}
+
+export default async function BlogDetail({ params }) {
+  const { id } = await params;
+  const post = await getPostById(id);
+
+  if (!post) {
+    notFound();
+  }
+
+  return (
+    <main className={styles.container}>
+      <article>
+        <h1>{post.title}</h1>
+        <p>Created: {formatDate(post.createdAt)}</p>
+        {post.updatedAt && <p>Updated: {formatDate(post.updatedAt)}</p>}
+        <pre className={styles.content}>{post.content}</pre>
+      </article>
+      <Link href={`/post/${id}`}>Edit</Link>
+      <DeletePostButton id={id} />
+    </main>
+  );
+}
 ~~~
 
 ### 설명과 확인
@@ -224,12 +349,12 @@ npm.cmd run dev
 
 ## 독립 확인
 
-잘못된 ObjectId, 없는 ObjectId, 정상 ObjectId의 응답을 비교합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험을 위해 바꾼 값은 다음 단계 전에 복구합니다.
+잘못된 ObjectId, 없는 ObjectId, 정상 ObjectId의 응답을 비교합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험값은 검사를 마치면 원래대로 복구합니다.
 
 ## 마무리 확인
 
-- 이 문서의 각 작업 단위에서 설명을 먼저 읽고, 바로 아래 diff를 기준으로 파일을 수정합니다.
-- 새 파일은 diff에 나온 전체 내용을 입력하고, 기존 파일은 diff의 `+`/`-` 줄만 비교하면서 수정합니다.
+- 각 작업 단위의 설명과 파일 경로를 먼저 확인합니다.
+- 코드 블록은 해당 파일의 일부가 아니라 현재 단계에서 사용할 전체 내용입니다.
 
 ## 저장소에 기록하기
 
@@ -238,13 +363,11 @@ npm.cmd run dev
 ```powershell
 git branch --show-current
 git status --short
-git diff
 npm.cmd run lint
 npm.cmd run build
 git add .
-git diff --staged
 git commit -m "Complete Next.js step 13"
-git push origin main
+git push
 git status --short --branch
 ```
 

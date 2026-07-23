@@ -1,6 +1,6 @@
 # 09. state, 이벤트, controlled form
 
-## 배울 내용
+## 확인할 내용
 
 - 일반 변수와 React state의 차이를 이해합니다.
 - `useState`의 현재값과 변경 함수를 구분합니다.
@@ -157,7 +157,7 @@ button 클릭뿐 아니라 input에서 Enter를 눌러도 form의 `onSubmit` 흐
 
 ## 8. 여러 입력 상태
 
-초급 단계에서는 각 입력을 별도 state로 관리하면 흐름이 명확합니다.
+각 입력을 별도 state로 관리하면 변경 흐름이 명확합니다.
 
 ```jsx
 const [title, setTitle] = useState("");

@@ -1,10 +1,10 @@
 # 12. 경로, params, 이동, 특수 화면
 
-## 배울 내용
+## 확인할 내용
 
 - 정적 경로, 동적 경로, query string을 구분합니다.
 - `params`와 `searchParams`에서 값을 읽습니다.
-- `Link`, router, `notFound()`의 역할을 알아봅니다.
+- `Link`, router, `notFound()`의 역할을 구분합니다.
 
 ## 1. 정적 경로와 동적 경로
 
