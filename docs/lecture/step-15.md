@@ -1,6 +1,6 @@
 # Step 15. 서버 검색으로 전환하기
 
-## 이번 단계에서 할 일
+## 변경 내용
 
 keyword query string을 API로 보내 MongoDB에서 직접 검색하는 서버 검색을 추가합니다.
 
@@ -10,7 +10,7 @@ keyword query string을 API로 보내 MongoDB에서 직접 검색하는 서버 �
 
 ## 시작 전 확인
 
-권장 시간은 60분입니다. 개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
+개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
 
 수정 전에 `git status --short`의 출력이 없는지 확인합니다. 변경이 남아 있다면 원인을 확인하고 시작 상태를 정리합니다.
 
@@ -18,54 +18,121 @@ keyword query string을 API로 보내 MongoDB에서 직접 검색하는 서버 �
 
 검색 대상이 많아질수록 브라우저 필터보다 데이터베이스 검색이 적합합니다. `listPosts`가 선택적으로 keyword를 받아 MongoDB query를 구성하게 합니다. 사용자가 입력한 `.`, ``lib/posts.js`
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/lib/posts.js b/lib/posts.js
-index 2daf81e..ccc3e82 100644
---- a/lib/posts.js
-+++ b/lib/posts.js
-@@ -23,6 +23,10 @@ async function getPostsCollection() {
-   return client.db(dbName).collection(collectionName);
- }
+#### `lib/posts.js`
 
-+function escapeRegex(value) {
-+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-+}
-+
- export async function seedPostsIfEmpty() {
-   const collection = await getPostsCollection();
-   const count = await collection.countDocuments();
-@@ -32,11 +36,25 @@ export async function seedPostsIfEmpty() {
-   }
- }
+`lib/posts.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
 
--export async function listPosts() {
-+export async function listPosts(keyword = "") {
-   await seedPostsIfEmpty();
+~~~js
+import { ObjectId } from "mongodb";
+import getMongoClient from "./mongodb";
 
-   const collection = await getPostsCollection();
--  return collection.find({}).sort({ createdAt: -1 }).toArray();
-+  const searchKeyword = escapeRegex(keyword.trim());
-+
-+  if (!searchKeyword) {
-+    return collection.find({}).sort({ createdAt: -1 }).toArray();
-+  }
-+
-+  return collection
-+    .find({
-+      $or: [
-+        { title: { $regex: searchKeyword, $options: "i" } },
-+        { content: { $regex: searchKeyword, $options: "i" } },
-+      ],
-+    })
-+    .sort({ createdAt: -1 })
-+    .toArray();
- }
+const dbName = process.env.MONGODB_DB || "next_blog_practice";
+const collectionName = "posts";
 
- export async function createPost(postData) {
+if (!dbName.startsWith("next_blog_")) {
+  throw new Error("MONGODB_DB must start with next_blog_");
+}
+
+function createSeedPosts() {
+  return Array.from({ length: 10 }, (_, index) => ({
+    createdAt: new Date(),
+    title: `Blog Post ${index + 1}`,
+    content:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+    image: "https://picsum.photos/100",
+  }));
+}
+
+async function getPostsCollection() {
+  const client = await getMongoClient();
+  return client.db(dbName).collection(collectionName);
+}
+
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+export async function seedPostsIfEmpty() {
+  const collection = await getPostsCollection();
+  const count = await collection.countDocuments();
+
+  if (count === 0) {
+    await collection.insertMany(createSeedPosts());
+  }
+}
+
+export async function listPosts(keyword = "") {
+  await seedPostsIfEmpty();
+
+  const collection = await getPostsCollection();
+  const searchKeyword = escapeRegex(keyword.trim());
+
+  if (!searchKeyword) {
+    return collection.find({}).sort({ createdAt: -1 }).toArray();
+  }
+
+  return collection
+    .find({
+      $or: [
+        { title: { $regex: searchKeyword, $options: "i" } },
+        { content: { $regex: searchKeyword, $options: "i" } },
+      ],
+    })
+    .sort({ createdAt: -1 })
+    .toArray();
+}
+
+export async function createPost(postData) {
+  const collection = await getPostsCollection();
+  const result = await collection.insertOne({
+    title: postData.title,
+    content: postData.content,
+    image: postData.image || "https://picsum.photos/100",
+    createdAt: new Date(),
+  });
+
+  return result;
+}
+
+export async function deletePost(id) {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+
+  const collection = await getPostsCollection();
+  return collection.deleteOne({ _id: new ObjectId(id) });
+}
+
+export async function getPostById(id) {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+
+  const collection = await getPostsCollection();
+  return collection.findOne({ _id: new ObjectId(id) });
+}
+
+export async function updatePost(id, postData) {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+
+  const collection = await getPostsCollection();
+  return collection.updateOne(
+    { _id: new ObjectId(id) },
+    {
+      $set: {
+        title: postData.title,
+        content: postData.content,
+        updatedAt: new Date(),
+      },
+    },
+  );
+}
 ~~~
 
 ### 설명과 확인
@@ -74,30 +141,59 @@ index 2daf81e..ccc3e82 100644
 - 정규식 옵션 `i`는 대소문자를 구분하지 않게 합니다.
 - `escapeRegex()`는 검색어의 정규식 특수 문자를 이스케이프합니다. 이 처리가 없으면 `.`은 모든 문자, ``app/api/post/route.js`
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/api/post/route.js b/app/api/post/route.js
-index 346044d..ef88194 100644
---- a/app/api/post/route.js
-+++ b/app/api/post/route.js
-@@ -1,9 +1,12 @@
- import { apiError, apiSuccess } from "@/lib/apiResponse";
- import { createPost, listPosts } from "@/lib/posts";
+#### `app/api/post/route.js`
 
--export async function GET() {
-+export async function GET(request) {
-   try {
--    const posts = await listPosts();
-+    const { searchParams } = new URL(request.url);
-+    const keyword = searchParams.get("keyword") || "";
-+    const posts = await listPosts(keyword);
-+
-     return apiSuccess(posts, "Posts fetched successfully");
-   } catch (error) {
-     console.error("Error fetching posts:", error);
+`app/api/post/route.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~js
+import { apiError, apiSuccess } from "@/lib/apiResponse";
+import { createPost, listPosts } from "@/lib/posts";
+
+export async function GET(request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const keyword = searchParams.get("keyword") || "";
+    const posts = await listPosts(keyword);
+
+    return apiSuccess(posts, "Posts fetched successfully");
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
+
+export async function POST(request) {
+  try {
+    const postData = await request.json();
+    const title =
+      typeof postData.title === "string" ? postData.title.trim() : "";
+    const content =
+      typeof postData.content === "string" ? postData.content.trim() : "";
+
+    if (!title || !content) {
+      return apiError("Title and content are required", 400);
+    }
+
+    const result = await createPost({
+      title,
+      content,
+      image: postData.image,
+    });
+
+    return apiSuccess(
+      { postId: result.insertedId },
+      "Post created successfully",
+      { status: 201 },
+    );
+  } catch (error) {
+    console.error("Error creating post:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
 ~~~
 
 ### 설명과 확인
@@ -107,114 +203,178 @@ index 346044d..ef88194 100644
 
 ## 작업 3. 홈 화면 fetch URL에 keyword 연결
 
-`Server Search` 버튼을 누르면 현재 검색어로 API URL을 만들고 서버 검색 결과를 받아 화면에 표시합니다. 이 단계부터 검색 결과는 DB 기준입니다.
+`Server Search` 버튼을 누르면 현재 검색어로 API URL을 만들고 서버 검색 결과를 받아 화면에 표시합니다. 검색 결과는 DB 값을 기준으로 합니다.
 
 ### 수정할 파일
 
 - 수정: `app/page.js`
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/page.js b/app/page.js
-index 3c36f22..56808c0 100644
---- a/app/page.js
-+++ b/app/page.js
-@@ -23,6 +23,17 @@ function postMatchesKeyword(post, keyword) {
-   );
- }
+#### `app/page.js`
 
-+async function fetchPosts(url) {
-+  const response = await fetch(url, { cache: "no-store" });
-+  const result = await response.json();
-+
-+  if (!response.ok) {
-+    throw new Error(result.message || "Failed to fetch posts");
-+  }
-+
-+  return result.data;
-+}
-+
- export default function Home() {
-   const [allPosts, setAllPosts] = useState([]);
-   const [posts, setPosts] = useState([]);
-@@ -34,15 +45,9 @@ export default function Home() {
-   useEffect(() => {
-     async function loadPosts() {
-       try {
--        const response = await fetch("/api/post", { cache: "no-store" });
--        const result = await response.json();
--
--        if (!response.ok) {
--          throw new Error(result.message || "Failed to fetch posts");
--        }
--
--        setAllPosts(result.data);
--        setPosts(result.data);
-+        const data = await fetchPosts("/api/post");
-+        setAllPosts(data);
-+        setPosts(data);
-       } catch (err) {
-         setError(err instanceof Error ? err.message : "Failed to fetch posts");
-       } finally {
-@@ -72,11 +77,41 @@ export default function Home() {
-     setSearchMessage(`Client filter result: ${filteredPosts.length} posts`);
-   }
+`app/page.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
 
--  function handleShowAll() {
-+  async function handleServerSearch() {
-+    const searchKeyword = keyword.trim();
-+    const url = searchKeyword
-+      ? `/api/post?keyword=${encodeURIComponent(searchKeyword)}`
-+      : "/api/post";
-+
-     setError("");
--    setKeyword("");
--    setPosts(allPosts);
--    setSearchMessage("");
-+    setIsLoading(true);
-+
-+    try {
-+      const data = await fetchPosts(url);
-+      setPosts(data);
-+      setSearchMessage(`Server search result: ${data.length} posts`);
-+    } catch (err) {
-+      setError(err instanceof Error ? err.message : "Failed to fetch posts");
-+    } finally {
-+      setIsLoading(false);
-+    }
-+  }
-+
-+  async function handleShowAll() {
-+    setError("");
-+    setIsLoading(true);
-+
-+    try {
-+      const data = await fetchPosts("/api/post");
-+      setAllPosts(data);
-+      setPosts(data);
-+      setKeyword("");
-+      setSearchMessage("");
-+    } catch (err) {
-+      setError(err instanceof Error ? err.message : "Failed to fetch posts");
-+    } finally {
-+      setIsLoading(false);
-+    }
-   }
+~~~js
+"use client";
 
-   return (
-@@ -94,6 +129,9 @@ export default function Home() {
-         <button type="button" onClick={handleClientFilter} disabled={isLoading}>
-           Client Filter
-         </button>
-+        <button type="button" onClick={handleServerSearch} disabled={isLoading}>
-+          Server Search
-+        </button>
-         <button type="button" onClick={handleShowAll} disabled={isLoading}>
-           Show All
-         </button>
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import styles from "./page.module.css";
+
+function formatDate(dateValue) {
+  if (!dateValue) {
+    return "";
+  }
+
+  return new Date(dateValue).toLocaleString("ko-KR");
+}
+
+function postMatchesKeyword(post, keyword) {
+  const title = post.title || "";
+  const content = post.content || "";
+  const lowerKeyword = keyword.toLowerCase();
+
+  return (
+    title.toLowerCase().includes(lowerKeyword) ||
+    content.toLowerCase().includes(lowerKeyword)
+  );
+}
+
+async function fetchPosts(url) {
+  const response = await fetch(url, { cache: "no-store" });
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Failed to fetch posts");
+  }
+
+  return result.data;
+}
+
+export default function Home() {
+  const [allPosts, setAllPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [keyword, setKeyword] = useState("");
+  const [searchMessage, setSearchMessage] = useState("");
+
+  useEffect(() => {
+    async function loadPosts() {
+      try {
+        const data = await fetchPosts("/api/post");
+        setAllPosts(data);
+        setPosts(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to fetch posts");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadPosts();
+  }, []);
+
+  function handleClientFilter() {
+    const searchKeyword = keyword.trim();
+
+    setError("");
+
+    if (!searchKeyword) {
+      setPosts(allPosts);
+      setSearchMessage("Showing all posts because the search keyword is empty.");
+      return;
+    }
+
+    const filteredPosts = allPosts.filter((post) =>
+      postMatchesKeyword(post, searchKeyword),
+    );
+
+    setPosts(filteredPosts);
+    setSearchMessage(`Client filter result: ${filteredPosts.length} posts`);
+  }
+
+  async function handleServerSearch() {
+    const searchKeyword = keyword.trim();
+    const url = searchKeyword
+      ? `/api/post?keyword=${encodeURIComponent(searchKeyword)}`
+      : "/api/post";
+
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const data = await fetchPosts(url);
+      setPosts(data);
+      setSearchMessage(`Server search result: ${data.length} posts`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch posts");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleShowAll() {
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const data = await fetchPosts("/api/post");
+      setAllPosts(data);
+      setPosts(data);
+      setKeyword("");
+      setSearchMessage("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch posts");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <main>
+      <form onSubmit={(event) => event.preventDefault()}>
+        <label htmlFor="keyword">Search posts:</label>
+        <input
+          type="search"
+          id="keyword"
+          value={keyword}
+          onChange={(event) => setKeyword(event.target.value)}
+          disabled={isLoading}
+        />
+
+        <button type="button" onClick={handleClientFilter} disabled={isLoading}>
+          Client Filter
+        </button>
+        <button type="button" onClick={handleServerSearch} disabled={isLoading}>
+          Server Search
+        </button>
+        <button type="button" onClick={handleShowAll} disabled={isLoading}>
+          Show All
+        </button>
+      </form>
+
+      {searchMessage && <p>{searchMessage}</p>}
+      {isLoading && <p>Loading posts...</p>}
+      {error && <p role="alert">{error}</p>}
+      {!isLoading && !error && posts.length === 0 && <p>No posts found.</p>}
+      {!isLoading && !error && (
+        <section className={styles.articleList} aria-label="Blog posts">
+          {posts.map((post) => (
+            <article key={post._id} className={styles.article}>
+              <Link href={`/detail/${post._id}`}>{post.title}</Link>
+              <p>Created: {formatDate(post.createdAt)}</p>
+              {post.updatedAt && <p>Updated: {formatDate(post.updatedAt)}</p>}
+            </article>
+          ))}
+        </section>
+      )}
+    </main>
+  );
+}
 ~~~
 
 ### 설명과 확인
@@ -247,12 +407,12 @@ npm.cmd run dev
 
 ## 독립 확인
 
-`.`, `[`, `?`를 검색해 문자 그대로 처리되는지 확인합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험을 위해 바꾼 값은 다음 단계 전에 복구합니다.
+`.`, `[`, `?`를 검색해 문자 그대로 처리되는지 확인합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험값은 검사를 마치면 원래대로 복구합니다.
 
 ## 마무리 확인
 
-- 이 문서의 각 작업 단위에서 설명을 먼저 읽고, 바로 아래 diff를 기준으로 파일을 수정합니다.
-- 새 파일은 diff에 나온 전체 내용을 입력하고, 기존 파일은 diff의 `+`/`-` 줄만 비교하면서 수정합니다.
+- 각 작업 단위의 설명과 파일 경로를 먼저 확인합니다.
+- 코드 블록은 해당 파일의 일부가 아니라 현재 단계에서 사용할 전체 내용입니다.
 
 ## 저장소에 기록하기
 
@@ -261,13 +421,11 @@ npm.cmd run dev
 ```powershell
 git branch --show-current
 git status --short
-git diff
 npm.cmd run lint
 npm.cmd run build
 git add .
-git diff --staged
 git commit -m "Complete Next.js step 15"
-git push origin main
+git push
 git status --short --branch
 ```
 
