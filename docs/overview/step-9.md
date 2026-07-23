@@ -106,25 +106,25 @@ API 라우트는 다음과 같습니다.
 
 코드 규칙과 production build는 다음 명령으로 확인합니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm.cmd` 형태를 그대로 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm` 형태를 그대로 사용합니다.
 
 ```powershell
-npm.cmd run lint
-npm.cmd run build
+npm run lint
+npm run build
 ```
 
 실제 게시글 흐름까지 확인하려면 MongoDB와 `.env.local`이 필요합니다.
 
 ```powershell
 Copy-Item -LiteralPath .env.example -Destination .env.local
-npm.cmd run dev
+npm run dev
 ```
 
 PowerShell에서는 다음 명령을 사용합니다.
 
 ```powershell
 Copy-Item .env.example .env.local
-npm.cmd run dev
+npm run dev
 ```
 
 로컬 MongoDB를 사용한다면 `.env.local`은 다음처럼 둘 수 있습니다.
