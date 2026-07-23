@@ -10,7 +10,7 @@
 
 ## diff가 현재 파일에 맞지 않습니다
 
-`step-N.md`의 diff는 `step-(N-1)` 완료 코드에 적용합니다. `step-N` branch를 checkout했다면 변경이 이미 들어 있습니다.
+각 `step-N.md`의 diff는 직전 단계까지 직접 입력한 코드에 적용합니다. 개인 저장소의 `main`에서 같은 변경을 두 번 입력하지 않았는지 먼저 확인합니다.
 
 > Windows 11에서는 [환경 준비](./windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
@@ -19,7 +19,7 @@ git status --short
 git branch --show-current
 ```
 
-현재 branch와 문서 번호가 같다면 완성본 확인 모드인지 먼저 판단합니다. 충돌하는 줄을 억지로 중복 입력하지 않습니다.
+현재 branch가 `main`이 아니면 작업을 중단하고 저장소 상태를 확인합니다. 충돌하는 줄을 억지로 중복 입력하지 않습니다.
 
 ## package를 찾지 못합니다
 
@@ -67,7 +67,7 @@ Invoke-RestMethod -Method Get -Uri "http://localhost:3000/api/post"
 
 ## Tailwind class가 적용되지 않습니다
 
-`package.json`, `postcss.config.mjs`, `app/globals.css`의 import를 현재 단계 완성본과 비교합니다. 개발 서버를 재시작하고 `npm.cmd run build`에서도 같은 오류가 나는지 확인합니다.
+`package.json`, `postcss.config.mjs`, `app/globals.css`의 import를 해당 단계의 코드 변경 블록과 비교합니다. 개발 서버를 재시작하고 `npm.cmd run build`에서도 같은 오류가 나는지 확인합니다.
 
 ## 복구 후 확인
 
