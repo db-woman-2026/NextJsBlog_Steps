@@ -19,7 +19,7 @@
 MongoDB Driver가 포함된 Next.js 프로젝트를 Windows에서 안정적으로 build하도록 공식 webpack 옵션을 사용합니다. npm 명령으로 `package.json`의 script를 바꾸며 파일을 직접 입력하지 않습니다.
 
 ```powershell
-npm.cmd pkg set "scripts.dev=next dev --webpack" "scripts.build=next build --webpack"
+npm pkg set "scripts.dev=next dev --webpack" "scripts.build=next build --webpack"
 ```
 
 `package.json`에서 `dev`와 `build` 값에 `--webpack`이 추가되었는지 확인합니다.
@@ -196,17 +196,17 @@ export async function PUT(request, { params }) {
 
 기본 정적 검사는 다음 명령으로 확인합니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm.cmd` 형태를 그대로 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm` 형태를 그대로 사용합니다.
 
 ```powershell
-npm.cmd run lint
-npm.cmd run build
+npm run lint
+npm run build
 ```
 
 브라우저 확인이 필요하면 개발 서버를 켠 뒤 해당 화면을 확인합니다.
 
 ```powershell
-npm.cmd run dev
+npm run dev
 ```
 
 체크할 내용은 다음과 같습니다.
@@ -230,8 +230,8 @@ npm.cmd run dev
 ```powershell
 git branch --show-current
 git status --short
-npm.cmd run lint
-npm.cmd run build
+npm run lint
+npm run build
 git add .
 git commit -m "Complete Next.js step 4"
 git push
