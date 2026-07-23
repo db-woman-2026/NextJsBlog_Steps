@@ -2,7 +2,7 @@
 
 ## 배울 내용
 
-`step-3` 브랜치는 블로그의 데이터 계층을 만드는 단계입니다.
+Step 3에서는 블로그의 데이터 계층을 만듭니다.
 
 화면은 아직 게시글을 보여주지 않습니다. API Route도 아직 없습니다. 대신 서버 코드에서 MongoDB에 연결하고, 게시글을 조회/생성/수정할 수 있는 함수를 준비합니다.
 
@@ -40,7 +40,7 @@ lib/posts.js    -> posts 컬렉션에서 게시글을 다루는 일만 담당
 
 다음 명령으로 MongoDB Node.js Driver를 설치합니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
 ```powershell
 npm.cmd install mongodb@^7.4.0
