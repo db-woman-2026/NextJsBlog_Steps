@@ -267,18 +267,18 @@ form은 작성, 수정, Contact 화면에서 재사용하므로 전역 스타일
 
 MongoDB와 개발 서버가 실행 중이어야 작성 기능을 확인할 수 있습니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm.cmd` 형태를 그대로 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm` 형태를 그대로 사용합니다.
 
 ```powershell
 Copy-Item -LiteralPath .env.example -Destination .env.local
-npm.cmd run dev
+npm run dev
 ```
 
 PowerShell에서는 다음 명령을 사용합니다.
 
 ```powershell
 Copy-Item .env.example .env.local
-npm.cmd run dev
+npm run dev
 ```
 
 브라우저에서 다음 주소로 이동합니다.
@@ -294,8 +294,8 @@ http://localhost:3000/post
 ## 검증 명령
 
 ```powershell
-npm.cmd run lint
-npm.cmd run build
+npm run lint
+npm run build
 ```
 
 실제 저장 동작까지 확인하려면 MongoDB가 필요합니다.

@@ -12,7 +12,7 @@
 
 각 `step-N.md`의 코드 블록은 해당 단계에서 사용할 파일 전체 내용입니다. 개인 저장소의 `main`에서 파일 경로와 현재 단계를 먼저 확인합니다.
 
-> Windows 11에서는 [환경 준비](./windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm.cmd` 형태를 그대로 사용합니다.
+> Windows 11에서는 [환경 준비](./windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm` 형태를 그대로 사용합니다.
 
 ```powershell
 git status --short
@@ -26,11 +26,11 @@ git branch --show-current
 패키지 설치 명령 뒤 `package.json`이나 lockfile이 달라졌다면 의존성을 다시 맞춥니다.
 
 ```powershell
-npm.cmd install
-npm.cmd run lint
+npm install
+npm run lint
 ```
 
-패키지 설치와 검사는 위 PowerShell 코드 블록의 `npm.cmd install`, `npm.cmd run lint`를 그대로 실행합니다. package 이름을 보고 임의 버전을 추가하기 전에 현재 단계의 설치 명령을 확인합니다.
+패키지 설치와 검사는 위 PowerShell 코드 블록의 `npm install`, `npm run lint`를 그대로 실행합니다. package 이름을 보고 임의 버전을 추가하기 전에 현재 단계의 설치 명령을 확인합니다.
 
 ## MongoDB에 연결되지 않습니다
 
@@ -67,13 +67,13 @@ Invoke-RestMethod -Method Get -Uri "http://localhost:3000/api/post"
 
 ## Tailwind class가 적용되지 않습니다
 
-`package.json`, `postcss.config.mjs`, `app/globals.css`의 import를 해당 단계의 전체 코드와 비교합니다. 개발 서버를 재시작하고 `npm.cmd run build`에서도 같은 오류가 나는지 확인합니다.
+`package.json`, `postcss.config.mjs`, `app/globals.css`의 import를 해당 단계의 전체 코드와 비교합니다. 개발 서버를 재시작하고 `npm run build`에서도 같은 오류가 나는지 확인합니다.
 
 ## 복구 후 확인
 
 ```powershell
-npm.cmd run lint
-npm.cmd run build
+npm run lint
+npm run build
 git status --short
 ```
 
