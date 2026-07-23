@@ -1,11 +1,11 @@
 # 13. HTTP, API, JSON, 검증
 
-## 배울 내용
+## 확인할 내용
 
 - HTTP 요청의 method, URL, header, body를 구분합니다.
 - CRUD와 GET/POST/PUT/DELETE의 관계를 이해합니다.
 - 상태 코드와 일관된 JSON 응답을 읽습니다.
-- 클라이언트 검증과 서버 검증의 차이를 알아봅니다.
+- 클라이언트 검증과 서버 검증의 차이를 설명합니다.
 
 ## 1. HTTP 요청의 구성
 

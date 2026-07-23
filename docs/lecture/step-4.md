@@ -1,6 +1,6 @@
 # Step 4. API Route와 통일된 JSON 응답 만들기
 
-## 이번 단계에서 할 일
+## 변경 내용
 
 게시글 목록/작성/단건조회/수정 API Route를 만들고 { success, message, data } 응답 형식을 통일합니다.
 
@@ -10,9 +10,19 @@
 
 ## 시작 전 확인
 
-권장 시간은 90분입니다. 개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
+개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
 
 수정 전에 `git status --short`의 출력이 없는지 확인합니다. 변경이 남아 있다면 원인을 확인하고 시작 상태를 정리합니다.
+
+## 작업 0. Windows용 실행 script 설정
+
+MongoDB Driver가 포함된 Next.js 프로젝트를 Windows에서 안정적으로 build하도록 공식 webpack 옵션을 사용합니다. npm 명령으로 `package.json`의 script를 바꾸며 파일을 직접 입력하지 않습니다.
+
+```powershell
+npm.cmd pkg set "scripts.dev=next dev --webpack" "scripts.build=next build --webpack"
+```
+
+`package.json`에서 `dev`와 `build` 값에 `--webpack`이 추가되었는지 확인합니다.
 
 ## 작업 1. 공통 API 응답 helper 추가
 
@@ -22,46 +32,44 @@ API마다 응답 모양이 달라지면 화면 코드가 복잡해집니다. 성
 
 - 생성: `lib/apiResponse.js`
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/lib/apiResponse.js b/lib/apiResponse.js
-new file mode 100644
-index 0000000..bfcd9bd
---- /dev/null
-+++ b/lib/apiResponse.js
-@@ -0,0 +1,23 @@
-+import { NextResponse } from "next/server";
-+
-+export function apiSuccess(data, message = "OK", init = {}) {
-+  return NextResponse.json(
-+    {
-+      success: true,
-+      message,
-+      data,
-+    },
-+    init,
-+  );
-+}
-+
-+export function apiError(message = "Internal Server Error", status = 500) {
-+  return NextResponse.json(
-+    {
-+      success: false,
-+      message,
-+      data: null,
-+    },
-+    { status },
-+  );
-+}
+#### `lib/apiResponse.js`
+
+`lib/apiResponse.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~js
+import { NextResponse } from "next/server";
+
+export function apiSuccess(data, message = "OK", init = {}) {
+  return NextResponse.json(
+    {
+      success: true,
+      message,
+      data,
+    },
+    init,
+  );
+}
+
+export function apiError(message = "Internal Server Error", status = 500) {
+  return NextResponse.json(
+    {
+      success: false,
+      message,
+      data: null,
+    },
+    { status },
+  );
+}
 ~~~
 
 ### 설명과 확인
 
 - 성공 응답은 기본 status 200, 오류 응답은 전달한 status를 사용합니다.
-- 화면 코드는 이후 단계에서 `success`, `message`, `data`를 같은 방식으로 읽습니다.
+- 화면 코드는 `success`, `message`, `data`를 같은 방식으로 읽습니다.
 
 ## 작업 2. 게시글 목록/작성 API 추가
 
@@ -71,56 +79,54 @@ index 0000000..bfcd9bd
 
 - 생성: `app/api/post/route.js`
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/api/post/route.js b/app/api/post/route.js
-new file mode 100644
-index 0000000..98fabfd
---- /dev/null
-+++ b/app/api/post/route.js
-@@ -0,0 +1,33 @@
-+import { apiError, apiSuccess } from "@/lib/apiResponse";
-+import { createPost, listPosts } from "@/lib/posts";
-+
-+export async function GET() {
-+  try {
-+    const posts = await listPosts();
-+    return apiSuccess(posts, "Posts fetched successfully");
-+  } catch (error) {
-+    console.error("Error fetching posts:", error);
-+    return apiError("Internal Server Error", 500);
-+  }
-+}
-+
-+export async function POST(request) {
-+  try {
-+    const postData = await request.json();
-+
-+    if (!postData.title || !postData.content) {
-+      return apiError("Title and content are required", 400);
-+    }
-+
-+    const result = await createPost(postData);
-+
-+    return apiSuccess(
-+      { postId: result.insertedId },
-+      "Post created successfully",
-+      { status: 201 },
-+    );
-+  } catch (error) {
-+    console.error("Error creating post:", error);
-+    return apiError("Internal Server Error", 500);
-+  }
-+}
+#### `app/api/post/route.js`
+
+`app/api/post/route.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~js
+import { apiError, apiSuccess } from "@/lib/apiResponse";
+import { createPost, listPosts } from "@/lib/posts";
+
+export async function GET() {
+  try {
+    const posts = await listPosts();
+    return apiSuccess(posts, "Posts fetched successfully");
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
+
+export async function POST(request) {
+  try {
+    const postData = await request.json();
+
+    if (!postData.title || !postData.content) {
+      return apiError("Title and content are required", 400);
+    }
+
+    const result = await createPost(postData);
+
+    return apiSuccess(
+      { postId: result.insertedId },
+      "Post created successfully",
+      { status: 201 },
+    );
+  } catch (error) {
+    console.error("Error creating post:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
 ~~~
 
 ### 설명과 확인
 
 - App Router의 API 파일명은 `route.js`입니다.
-- 이 단계에서는 아직 입력값 검증이 약합니다. 검증 강화는 step-10에서 다룹니다.
+- 현재 API는 제목과 본문의 공백 검증을 하지 않습니다.
 
 ## 작업 3. 게시글 단건 조회/수정 API 추가
 
@@ -130,57 +136,55 @@ index 0000000..98fabfd
 
 - 생성: [app/api/post/[id]/route.js](../../app/api/post/%5Bid%5D/route.js)
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/api/post/[id]/route.js b/app/api/post/[id]/route.js
-new file mode 100644
-index 0000000..0525348
---- /dev/null
-+++ b/app/api/post/[id]/route.js
-@@ -0,0 +1,40 @@
-+import { apiError, apiSuccess } from "@/lib/apiResponse";
-+import { getPostById, updatePost } from "@/lib/posts";
-+
-+export async function GET(_request, { params }) {
-+  try {
-+    const { id } = await params;
-+    const post = await getPostById(id);
-+
-+    if (!post) {
-+      return apiError("Post not found", 404);
-+    }
-+
-+    return apiSuccess(post, "Post fetched successfully");
-+  } catch (error) {
-+    console.error("Error fetching post:", error);
-+    return apiError("Internal Server Error", 500);
-+  }
-+}
-+
-+export async function PUT(request, { params }) {
-+  try {
-+    const { id } = await params;
-+    const postData = await request.json();
-+
-+    if (!postData.title || !postData.content) {
-+      return apiError("Title and content are required", 400);
-+    }
-+
-+    const result = await updatePost(id, postData);
-+
-+    if (!result || result.matchedCount === 0) {
-+      return apiError("Post not found", 404);
-+    }
-+
-+    return apiSuccess({ postId: id }, "Post updated successfully");
-+  } catch (error) {
-+    console.error("Error updating post:", error);
-+    return apiError("Internal Server Error", 500);
-+  }
-+}
+#### `app/api/post/[id]/route.js`
+
+`app/api/post/[id]/route.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~js
+import { apiError, apiSuccess } from "@/lib/apiResponse";
+import { getPostById, updatePost } from "@/lib/posts";
+
+export async function GET(_request, { params }) {
+  try {
+    const { id } = await params;
+    const post = await getPostById(id);
+
+    if (!post) {
+      return apiError("Post not found", 404);
+    }
+
+    return apiSuccess(post, "Post fetched successfully");
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
+
+export async function PUT(request, { params }) {
+  try {
+    const { id } = await params;
+    const postData = await request.json();
+
+    if (!postData.title || !postData.content) {
+      return apiError("Title and content are required", 400);
+    }
+
+    const result = await updatePost(id, postData);
+
+    if (!result || result.matchedCount === 0) {
+      return apiError("Post not found", 404);
+    }
+
+    return apiSuccess({ postId: id }, "Post updated successfully");
+  } catch (error) {
+    console.error("Error updating post:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
 ~~~
 
 ### 설명과 확인
@@ -212,12 +216,12 @@ npm.cmd run dev
 
 ## 독립 확인
 
-존재하지 않는 ID와 빈 제목 요청의 상태 코드와 JSON을 기록합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험을 위해 바꾼 값은 다음 단계 전에 복구합니다.
+존재하지 않는 ID와 빈 제목 요청의 상태 코드와 JSON을 기록합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험값은 검사를 마치면 원래대로 복구합니다.
 
 ## 마무리 확인
 
-- 이 문서의 각 작업 단위에서 설명을 먼저 읽고, 바로 아래 diff를 기준으로 파일을 수정합니다.
-- 새 파일은 diff에 나온 전체 내용을 입력하고, 기존 파일은 diff의 `+`/`-` 줄만 비교하면서 수정합니다.
+- 각 작업 단위의 설명과 파일 경로를 먼저 확인합니다.
+- 코드 블록은 해당 파일의 일부가 아니라 현재 단계에서 사용할 전체 내용입니다.
 
 ## 저장소에 기록하기
 
@@ -226,13 +230,11 @@ npm.cmd run dev
 ```powershell
 git branch --show-current
 git status --short
-git diff
 npm.cmd run lint
 npm.cmd run build
 git add .
-git diff --staged
 git commit -m "Complete Next.js step 4"
-git push origin main
+git push
 git status --short --branch
 ```
 
