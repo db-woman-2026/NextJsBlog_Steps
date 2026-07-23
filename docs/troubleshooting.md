@@ -12,7 +12,7 @@
 
 각 `step-N.md`의 코드 블록은 해당 단계에서 사용할 파일 전체 내용입니다. 개인 저장소의 `main`에서 파일 경로와 현재 단계를 먼저 확인합니다.
 
-> Windows 11에서는 [환경 준비](./windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](./windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm.cmd` 형태를 그대로 사용합니다.
 
 ```powershell
 git status --short
@@ -30,7 +30,7 @@ npm.cmd install
 npm.cmd run lint
 ```
 
-Windows의 `npm.ps1` 오류는 `npm.cmd install`, `npm.cmd run lint`로 실행합니다. package 이름을 보고 임의 버전을 추가하기 전에 현재 단계의 설치 명령을 확인합니다.
+패키지 설치와 검사는 위 PowerShell 코드 블록의 `npm.cmd install`, `npm.cmd run lint`를 그대로 실행합니다. package 이름을 보고 임의 버전을 추가하기 전에 현재 단계의 설치 명령을 확인합니다.
 
 ## MongoDB에 연결되지 않습니다
 
