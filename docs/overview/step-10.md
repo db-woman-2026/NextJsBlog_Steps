@@ -30,7 +30,7 @@
 
 또한 API는 브라우저 form 없이도 직접 호출될 수 있습니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. Windows Terminal의 PowerShell에서 `git`, `node`, `npm.cmd` 명령을 실행합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. Windows Terminal의 PowerShell에서 `git`, `node`, `npm` 명령을 실행합니다.
 
 새 PowerShell 탭에서 다음 요청을 보냅니다.
 
@@ -142,7 +142,7 @@ if (!response.ok) {
 개발 서버를 실행합니다.
 
 ```powershell
-npm.cmd run dev
+npm run dev
 ```
 
 작성 화면에서 제목이나 본문에 공백만 입력하고 제출합니다.
@@ -162,8 +162,8 @@ Title and content are required
 ## 검증 명령
 
 ```powershell
-npm.cmd run lint
-npm.cmd run build
+npm run lint
+npm run build
 ```
 
 ## 정리

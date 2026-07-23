@@ -125,24 +125,24 @@ export default function Error({ error, reset }) {
 
 기본 정적 검사는 다음 명령으로 확인합니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm.cmd` 형태를 그대로 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm` 형태를 그대로 사용합니다.
 
 ```powershell
-npm.cmd run lint
-npm.cmd run build
+npm run lint
+npm run build
 ```
 
 브라우저 확인이 필요하면 개발 서버를 켠 뒤 해당 화면을 확인합니다.
 
 ```powershell
-npm.cmd run dev
+npm run dev
 ```
 
 체크할 내용은 다음과 같습니다.
 
 - 없는 주소로 들어가면 404 화면이 보인다.
 - 없는 게시글 id로 들어가면 상세 전용 안내가 보인다.
-- `npm.cmd run build`로 error/not-found 특수 파일 문법을 확인한다.
+- `npm run build`로 error/not-found 특수 파일 문법을 확인한다.
 
 ## 독립 확인
 
@@ -160,8 +160,8 @@ npm.cmd run dev
 ```powershell
 git branch --show-current
 git status --short
-npm.cmd run lint
-npm.cmd run build
+npm run lint
+npm run build
 git add .
 git commit -m "Complete Next.js step 18"
 git push
