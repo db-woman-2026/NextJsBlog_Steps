@@ -2,7 +2,7 @@
 
 ## 배울 내용
 
-`step-8` 브랜치는 Contact 페이지를 실제 form 구조로 바꾸는 단계입니다.
+Step 8에서는 Contact 페이지를 실제 form 구조로 바꿉니다.
 
 `step-7`까지 게시글 읽기, 작성, 수정 흐름을 완성했습니다. 핵심 CRUD와 별개인 Contact 페이지를 mockup form으로 구현합니다.
 
@@ -196,7 +196,7 @@ required
 
 개발 서버를 실행합니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
 ```powershell
 npm.cmd run dev

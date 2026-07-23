@@ -2,7 +2,7 @@
 
 ## 배울 내용
 
-`step-7` 브랜치는 게시글 수정 화면을 추가하는 단계입니다.
+Step 7에서는 게시글 수정 화면을 추가합니다.
 
 이 단계에서 만드는 주소는 다음과 같습니다.
 
@@ -52,7 +52,7 @@ GET /api/post/[id]
 <Link href={`/post/${id}`}>Edit</Link>
 ```
 
-이렇게 하면 학습자는 게시글을 읽는 화면에서 수정 화면으로 이동할 수 있습니다.
+이렇게 하면 게시글을 읽는 화면에서 수정 화면으로 이동할 수 있습니다.
 
 ## 파일 위치
 
@@ -258,7 +258,7 @@ import styles from "../page.module.css";
 
 ## 검증 명령
 
-> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
 ```powershell
 npm.cmd run lint
