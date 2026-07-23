@@ -8,9 +8,9 @@
 4. API 응답 상태와 JSON을 확인합니다.
 5. MongoDB 연결과 저장 데이터를 확인합니다.
 
-## diff가 현재 파일에 맞지 않습니다
+## 문서 코드와 현재 파일이 다릅니다
 
-각 `step-N.md`의 diff는 직전 단계까지 직접 입력한 코드에 적용합니다. 개인 저장소의 `main`에서 같은 변경을 두 번 입력하지 않았는지 먼저 확인합니다.
+각 `step-N.md`의 코드 블록은 해당 단계에서 사용할 파일 전체 내용입니다. 개인 저장소의 `main`에서 파일 경로와 현재 단계를 먼저 확인합니다.
 
 > Windows 11에서는 [환경 준비](./windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
@@ -23,14 +23,14 @@ git branch --show-current
 
 ## package를 찾지 못합니다
 
-branch를 바꾼 뒤 `package.json`이나 lockfile이 달라졌다면 의존성을 다시 맞춥니다.
+패키지 설치 명령 뒤 `package.json`이나 lockfile이 달라졌다면 의존성을 다시 맞춥니다.
 
 ```powershell
-npm.cmd ci
+npm.cmd install
 npm.cmd run lint
 ```
 
-Windows의 `npm.ps1` 오류는 `npm.cmd ci`, `npm.cmd run lint`로 실행합니다. package 이름을 보고 임의 버전을 추가하기 전에 현재 단계의 `package.json`을 확인합니다.
+Windows의 `npm.ps1` 오류는 `npm.cmd install`, `npm.cmd run lint`로 실행합니다. package 이름을 보고 임의 버전을 추가하기 전에 현재 단계의 설치 명령을 확인합니다.
 
 ## MongoDB에 연결되지 않습니다
 
@@ -49,7 +49,7 @@ App Router의 component는 기본적으로 Server Component입니다. `useState`
 
 ## params 또는 searchParams 값이 예상과 다릅니다
 
-현재 과정의 Next.js 버전에서는 Server Component와 Route Handler의 동적 `params`를 비동기로 받는 예제가 있습니다. 문서의 현재 단계 코드처럼 `await params`를 사용했는지 확인합니다. Client Component에서는 `useParams`, `useSearchParams`를 구분합니다.
+이 저장소의 Next.js 버전에서는 Server Component와 Route Handler의 동적 `params`를 비동기로 받습니다. 동적 route 코드에서 `await params`를 사용했는지 확인합니다. Client Component에서는 `useParams`, `useSearchParams`를 구분합니다.
 
 ## API가 500을 반환합니다
 
@@ -67,7 +67,7 @@ Invoke-RestMethod -Method Get -Uri "http://localhost:3000/api/post"
 
 ## Tailwind class가 적용되지 않습니다
 
-`package.json`, `postcss.config.mjs`, `app/globals.css`의 import를 해당 단계의 코드 변경 블록과 비교합니다. 개발 서버를 재시작하고 `npm.cmd run build`에서도 같은 오류가 나는지 확인합니다.
+`package.json`, `postcss.config.mjs`, `app/globals.css`의 import를 해당 단계의 전체 코드와 비교합니다. 개발 서버를 재시작하고 `npm.cmd run build`에서도 같은 오류가 나는지 확인합니다.
 
 ## 복구 후 확인
 

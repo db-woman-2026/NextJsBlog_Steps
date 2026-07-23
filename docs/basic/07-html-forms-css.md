@@ -1,8 +1,8 @@
 # 07. HTML, form, CSS
 
-## 배울 내용
+## 확인할 내용
 
-- 자주 쓰는 HTML 태그와 attribute를 알아봅니다.
+- 자주 쓰는 HTML 태그와 attribute의 역할을 설명합니다.
 - form의 label, input, button 관계를 이해합니다.
 - CSS selector, box model, layout의 기본 문법을 읽습니다.
 
