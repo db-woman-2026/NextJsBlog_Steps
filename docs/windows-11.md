@@ -107,7 +107,7 @@ VS Code에서 `.gitattributes` 전체를 입력합니다.
 *.woff2 binary
 ```
 
-PowerShell에서 `npm.ps1` 실행 정책 오류가 나오면 정책을 바꾸지 말고 `npm.cmd`를 사용합니다. `npx`도 `npx.cmd`로 실행합니다.
+위 프로젝트 생성 명령의 `npx.cmd`와 아래 검사 명령의 `npm.cmd`처럼 `.cmd` 실행 파일을 직접 지정합니다.
 
 ## 5. 생성된 프로젝트 확인
 
