@@ -1,6 +1,6 @@
 # 15. Tailwind CSS 읽기
 
-## 배울 내용
+## 확인할 내용
 
 - 일반 CSS와 Tailwind utility class의 관계를 이해합니다.
 - spacing, color, typography, layout class를 묶어 읽습니다.
