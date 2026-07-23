@@ -1,6 +1,6 @@
 # Step 19. 게시글 카테고리 추가하기
 
-## 이번 단계에서 할 일
+## 변경 내용
 
 게시글 카테고리를 데이터, 작성/수정 form, 목록 필터, 상세 표시까지 전체 흐름에 연결합니다.
 
@@ -11,7 +11,7 @@
 
 ## 시작 전 확인
 
-권장 시간은 100분입니다. 개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
+개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
 
 수정 전에 `git status --short`의 출력이 없는지 확인합니다. 변경이 남아 있다면 원인을 확인하고 시작 상태를 정리합니다.
 
@@ -23,121 +23,205 @@
 
 - 수정: `lib/posts.js`
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/lib/posts.js b/lib/posts.js
-index bd655c9..2be817c 100644
---- a/lib/posts.js
-+++ b/lib/posts.js
-@@ -3,6 +3,12 @@ import getMongoClient from "./mongodb";
+#### `lib/posts.js`
 
- const dbName = process.env.MONGODB_DB || "next_blog_practice";
- const collectionName = "posts";
-+const postCategories = ["general", "notice", "daily", "tech"];
-+
-+function normalizeCategory(category) {
-+  const normalized = typeof category === "string" ? category.trim() : "";
-+  return postCategories.includes(normalized) ? normalized : "general";
-+}
+`lib/posts.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
 
- if (!dbName.startsWith("next_blog_")) {
-   throw new Error("MONGODB_DB must start with next_blog_");
-@@ -15,6 +21,7 @@ function createSeedPosts() {
-     content:
-       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-     image: "https://picsum.photos/100",
-+    category: postCategories[index % postCategories.length],
-   }));
- }
+~~~js
+import { ObjectId } from "mongodb";
+import getMongoClient from "./mongodb";
 
-@@ -23,6 +30,19 @@ async function getPostsCollection() {
-   return client.db(dbName).collection(collectionName);
- }
- 
-+async function ensurePostCategories(collection) {
-+  await collection.updateMany(
-+    {
-+      $or: [
-+        { category: { $exists: false } },
-+        { category: null },
-+        { category: "" },
-+      ],
-+    },
-+    { $set: { category: "general" } },
-+  );
-+}
-+
- function escapeRegex(value) {
-   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
- }
-@@ -36,19 +56,23 @@ export async function seedPostsIfEmpty() {
-   }
- }
+const dbName = process.env.MONGODB_DB || "next_blog_practice";
+const collectionName = "posts";
+const postCategories = ["general", "notice", "daily", "tech"];
 
--function buildPostQuery(keyword) {
-+function buildPostQuery(keyword, category) {
-   const searchKeyword = escapeRegex(keyword.trim());
-+  const selectedCategory = category.trim();
-+  const query = {};
+function normalizeCategory(category) {
+  const normalized = typeof category === "string" ? category.trim() : "";
+  return postCategories.includes(normalized) ? normalized : "general";
+}
 
--  if (!searchKeyword) {
--    return {};
--  }
--
--  return {
--    $or: [
-+  if (searchKeyword) {
-+    query.$or = [
-       { title: { $regex: searchKeyword, $options: "i" } },
-       { content: { $regex: searchKeyword, $options: "i" } },
--    ],
--  };
-+    ];
-+  }
-+
-+  if (selectedCategory && selectedCategory !== "all") {
-+    query.category = selectedCategory;
-+  }
-+
-+  return query;
- }
+if (!dbName.startsWith("next_blog_")) {
+  throw new Error("MONGODB_DB must start with next_blog_");
+}
 
- function buildPostSort(sort) {
-@@ -80,11 +104,14 @@ export async function listPosts({
-   page = 1,
-   limit = 5,
-   sort = "created-desc",
-+  category = "all",
- } = {}) {
-   await seedPostsIfEmpty();
+function createSeedPosts() {
+  return Array.from({ length: 10 }, (_, index) => ({
+    createdAt: new Date(),
+    title: `Blog Post ${index + 1}`,
+    content:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+    image: "https://picsum.photos/100",
+    category: postCategories[index % postCategories.length],
+  }));
+}
 
-   const collection = await getPostsCollection();
--  const query = buildPostQuery(keyword);
-+  await ensurePostCategories(collection);
-+
-+  const query = buildPostQuery(keyword, category);
-   const requestedPage = toPositiveInteger(page, 1);
-   const pageSize = toPositiveInteger(limit, 5, 20);
-   const totalPosts = await collection.countDocuments(query);
-@@ -118,6 +145,7 @@ export async function createPost(postData) {
-     title: postData.title,
-     content: postData.content,
-     image: postData.image || "https://picsum.photos/100",
-+    category: normalizeCategory(postData.category),
-     createdAt: new Date(),
-   });
+async function getPostsCollection() {
+  const client = await getMongoClient();
+  return client.db(dbName).collection(collectionName);
+}
 
-@@ -154,6 +182,7 @@ export async function updatePost(id, postData) {
-       $set: {
-         title: postData.title,
-         content: postData.content,
-+        category: normalizeCategory(postData.category),
-         updatedAt: new Date(),
-       },
-     },
+async function ensurePostCategories(collection) {
+  await collection.updateMany(
+    {
+      $or: [
+        { category: { $exists: false } },
+        { category: null },
+        { category: "" },
+      ],
+    },
+    { $set: { category: "general" } },
+  );
+}
+
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+export async function seedPostsIfEmpty() {
+  const collection = await getPostsCollection();
+  const count = await collection.countDocuments();
+
+  if (count === 0) {
+    await collection.insertMany(createSeedPosts());
+  }
+}
+
+function buildPostQuery(keyword, category) {
+  const searchKeyword = escapeRegex(keyword.trim());
+  const selectedCategory = category.trim();
+  const query = {};
+
+  if (searchKeyword) {
+    query.$or = [
+      { title: { $regex: searchKeyword, $options: "i" } },
+      { content: { $regex: searchKeyword, $options: "i" } },
+    ];
+  }
+
+  if (selectedCategory && selectedCategory !== "all") {
+    query.category = selectedCategory;
+  }
+
+  return query;
+}
+
+function buildPostSort(sort) {
+  switch (sort) {
+    case "created-asc":
+      return { createdAt: 1 };
+    case "title-asc":
+      return { title: 1 };
+    case "title-desc":
+      return { title: -1 };
+    case "created-desc":
+    default:
+      return { createdAt: -1 };
+  }
+}
+
+function toPositiveInteger(value, fallback, max = Number.MAX_SAFE_INTEGER) {
+  const number = Number(value);
+
+  if (!Number.isInteger(number) || number < 1) {
+    return fallback;
+  }
+
+  return Math.min(number, max);
+}
+
+export async function listPosts({
+  keyword = "",
+  page = 1,
+  limit = 5,
+  sort = "created-desc",
+  category = "all",
+} = {}) {
+  await seedPostsIfEmpty();
+
+  const collection = await getPostsCollection();
+  await ensurePostCategories(collection);
+
+  const query = buildPostQuery(keyword, category);
+  const requestedPage = toPositiveInteger(page, 1);
+  const pageSize = toPositiveInteger(limit, 5, 20);
+  const totalPosts = await collection.countDocuments(query);
+  const totalPages = Math.max(Math.ceil(totalPosts / pageSize), 1);
+  const currentPage = Math.min(requestedPage, totalPages);
+  const skip = (currentPage - 1) * pageSize;
+
+  const posts = await collection
+    .find(query)
+    .sort(buildPostSort(sort))
+    .skip(skip)
+    .limit(pageSize)
+    .toArray();
+
+  return {
+    posts,
+    pagination: {
+      page: currentPage,
+      limit: pageSize,
+      totalPosts,
+      totalPages,
+      hasPreviousPage: currentPage > 1,
+      hasNextPage: currentPage < totalPages,
+    },
+  };
+}
+
+export async function createPost(postData) {
+  const collection = await getPostsCollection();
+  const result = await collection.insertOne({
+    title: postData.title,
+    content: postData.content,
+    image: postData.image || "https://picsum.photos/100",
+    category: normalizeCategory(postData.category),
+    createdAt: new Date(),
+  });
+
+  return result;
+}
+
+export async function deletePost(id) {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+
+  const collection = await getPostsCollection();
+  return collection.deleteOne({ _id: new ObjectId(id) });
+}
+
+export async function getPostById(id) {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+
+  const collection = await getPostsCollection();
+  return collection.findOne({ _id: new ObjectId(id) });
+}
+
+export async function updatePost(id, postData) {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+
+  const collection = await getPostsCollection();
+  return collection.updateOne(
+    { _id: new ObjectId(id) },
+    {
+      $set: {
+        title: postData.title,
+        content: postData.content,
+        category: normalizeCategory(postData.category),
+        updatedAt: new Date(),
+      },
+    },
+  );
+}
 ~~~
 
 ### 설명과 확인
@@ -156,50 +240,135 @@ index bd655c9..2be817c 100644
 - 수정: `app/api/post/route.js`
 - 수정: [app/api/post/[id]/route.js](../../app/api/post/%5Bid%5D/route.js)
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/api/post/[id]/route.js b/app/api/post/[id]/route.js
-index 8a4a070..05ec45f 100644
---- a/app/api/post/[id]/route.js
-+++ b/app/api/post/[id]/route.js
-@@ -30,7 +30,11 @@ export async function PUT(request, { params }) {
-       return apiError("Title and content are required", 400);
-     }
+#### `app/api/post/[id]/route.js`
 
--    const result = await updatePost(id, { title, content });
-+    const result = await updatePost(id, {
-+      title,
-+      content,
-+      category: postData.category,
-+    });
+`app/api/post/[id]/route.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
 
-     if (!result || result.matchedCount === 0) {
-       return apiError("Post not found", 404);
-diff --git a/app/api/post/route.js b/app/api/post/route.js
-index 2c15606..2d8ac9d 100644
---- a/app/api/post/route.js
-+++ b/app/api/post/route.js
-@@ -8,7 +8,8 @@ export async function GET(request) {
-     const page = searchParams.get("page") || "1";
-     const limit = searchParams.get("limit") || "5";
-     const sort = searchParams.get("sort") || "created-desc";
--    const posts = await listPosts({ keyword, page, limit, sort });
-+    const category = searchParams.get("category") || "all";
-+    const posts = await listPosts({ keyword, page, limit, sort, category });
+~~~js
+import { apiError, apiSuccess } from "@/lib/apiResponse";
+import { deletePost, getPostById, updatePost } from "@/lib/posts";
 
-     return apiSuccess(posts, "Posts fetched successfully");
-   } catch (error) {
-@@ -33,6 +34,7 @@ export async function POST(request) {
-       title,
-       content,
-       image: postData.image,
-+      category: postData.category,
-     });
+export async function GET(_request, { params }) {
+  try {
+    const { id } = await params;
+    const post = await getPostById(id);
 
-     return apiSuccess(
+    if (!post) {
+      return apiError("Post not found", 404);
+    }
+
+    return apiSuccess(post, "Post fetched successfully");
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
+
+export async function PUT(request, { params }) {
+  try {
+    const { id } = await params;
+    const postData = await request.json();
+    const title =
+      typeof postData.title === "string" ? postData.title.trim() : "";
+    const content =
+      typeof postData.content === "string" ? postData.content.trim() : "";
+
+    if (!title || !content) {
+      return apiError("Title and content are required", 400);
+    }
+
+    const result = await updatePost(id, {
+      title,
+      content,
+      category: postData.category,
+    });
+
+    if (!result || result.matchedCount === 0) {
+      return apiError("Post not found", 404);
+    }
+
+    return apiSuccess({ postId: id }, "Post updated successfully");
+  } catch (error) {
+    console.error("Error updating post:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
+
+export async function DELETE(_request, { params }) {
+  try {
+    const { id } = await params;
+    const result = await deletePost(id);
+
+    if (!result || result.deletedCount === 0) {
+      return apiError("Post not found", 404);
+    }
+
+    return apiSuccess({ postId: id }, "Post deleted successfully");
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
+~~~
+
+#### `app/api/post/route.js`
+
+`app/api/post/route.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~js
+import { apiError, apiSuccess } from "@/lib/apiResponse";
+import { createPost, listPosts } from "@/lib/posts";
+
+export async function GET(request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const keyword = searchParams.get("keyword") || "";
+    const page = searchParams.get("page") || "1";
+    const limit = searchParams.get("limit") || "5";
+    const sort = searchParams.get("sort") || "created-desc";
+    const category = searchParams.get("category") || "all";
+    const posts = await listPosts({ keyword, page, limit, sort, category });
+
+    return apiSuccess(posts, "Posts fetched successfully");
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
+
+export async function POST(request) {
+  try {
+    const postData = await request.json();
+    const title =
+      typeof postData.title === "string" ? postData.title.trim() : "";
+    const content =
+      typeof postData.content === "string" ? postData.content.trim() : "";
+
+    if (!title || !content) {
+      return apiError("Title and content are required", 400);
+    }
+
+    const result = await createPost({
+      title,
+      content,
+      image: postData.image,
+      category: postData.category,
+    });
+
+    return apiSuccess(
+      { postId: result.insertedId },
+      "Post created successfully",
+      { status: 201 },
+    );
+  } catch (error) {
+    console.error("Error creating post:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
 ~~~
 
 ### 설명과 확인
@@ -215,153 +384,314 @@ index 2c15606..2d8ac9d 100644
 
 - 수정: `app/page.js`
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/page.js b/app/page.js
-index 07af3cf..75cfa57 100644
---- a/app/page.js
-+++ b/app/page.js
-@@ -6,6 +6,13 @@ import styles from "./page.module.css";
+#### `app/page.js`
 
- const PAGE_SIZE = 5;
- const DEFAULT_SORT = "created-desc";
-+const CATEGORY_FILTERS = [
-+  { value: "all", label: "All categories" },
-+  { value: "general", label: "General" },
-+  { value: "notice", label: "Notice" },
-+  { value: "daily", label: "Daily" },
-+  { value: "tech", label: "Tech" },
-+];
+`app/page.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
 
- function formatDate(dateValue) {
-   if (!dateValue) {
-@@ -37,7 +44,7 @@ async function fetchPosts(url) {
-   return result.data;
- }
+~~~js
+"use client";
 
--function buildPostsUrl({ keyword, page, sort }) {
-+function buildPostsUrl({ keyword, page, sort, category }) {
-   const params = new URLSearchParams({
-     page: String(page),
-     limit: String(PAGE_SIZE),
-@@ -48,6 +55,10 @@ function buildPostsUrl({ keyword, page, sort }) {
-     params.set("keyword", keyword);
-   }
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import styles from "./page.module.css";
 
-+  if (category && category !== "all") {
-+    params.set("category", category);
-+  }
-+
-   return `/api/post?${params.toString()}`;
- }
+const PAGE_SIZE = 5;
+const DEFAULT_SORT = "created-desc";
+const CATEGORY_FILTERS = [
+  { value: "all", label: "All categories" },
+  { value: "general", label: "General" },
+  { value: "notice", label: "Notice" },
+  { value: "daily", label: "Daily" },
+  { value: "tech", label: "Tech" },
+];
 
-@@ -61,18 +72,25 @@ export default function Home() {
-   const [searchMessage, setSearchMessage] = useState("");
-   const [serverKeyword, setServerKeyword] = useState("");
-   const [sortOrder, setSortOrder] = useState(DEFAULT_SORT);
-+  const [categoryFilter, setCategoryFilter] = useState("all");
+function formatDate(dateValue) {
+  if (!dateValue) {
+    return "";
+  }
 
-   async function loadPosts({
-     page = 1,
-     searchKeyword = serverKeyword,
-     sortValue = sortOrder,
-+    categoryValue = categoryFilter,
-   } = {}) {
-     setError("");
-     setIsLoading(true);
+  return new Date(dateValue).toLocaleString("ko-KR");
+}
 
-     try {
-       const data = await fetchPosts(
--        buildPostsUrl({ keyword: searchKeyword, page, sort: sortValue }),
-+        buildPostsUrl({
-+          keyword: searchKeyword,
-+          page,
-+          sort: sortValue,
-+          category: categoryValue,
-+        }),
-       );
-       setAllPosts(data.posts);
-       setPosts(data.posts);
-@@ -88,7 +106,12 @@ export default function Home() {
-     async function loadInitialPosts() {
-       try {
-         const data = await fetchPosts(
--          buildPostsUrl({ keyword: "", page: 1, sort: DEFAULT_SORT }),
-+          buildPostsUrl({
-+            keyword: "",
-+            page: 1,
-+            sort: DEFAULT_SORT,
-+            category: "all",
-+          }),
-         );
-         setAllPosts(data.posts);
-         setPosts(data.posts);
-@@ -141,8 +164,9 @@ export default function Home() {
-   async function handleShowAll() {
-     setKeyword("");
-     setServerKeyword("");
-+    setCategoryFilter("all");
-     setSearchMessage("");
--    await loadPosts({ page: 1, searchKeyword: "" });
-+    await loadPosts({ page: 1, searchKeyword: "", categoryValue: "all" });
-   }
+function postMatchesKeyword(post, keyword) {
+  const title = post.title || "";
+  const content = post.content || "";
+  const lowerKeyword = keyword.toLowerCase();
 
-   async function handlePageChange(nextPage) {
-@@ -161,6 +185,22 @@ export default function Home() {
-     });
-   }
+  return (
+    title.toLowerCase().includes(lowerKeyword) ||
+    content.toLowerCase().includes(lowerKeyword)
+  );
+}
 
-+  async function handleCategoryChange(event) {
-+    const nextCategory = event.target.value;
-+
-+    setCategoryFilter(nextCategory);
-+    setSearchMessage(
-+      nextCategory === "all"
-+        ? "Showing all categories."
-+        : `Showing ${nextCategory} posts.`,
-+    );
-+    await loadPosts({
-+      page: 1,
-+      searchKeyword: serverKeyword,
-+      categoryValue: nextCategory,
-+    });
-+  }
-+
-   return (
-     <main>
-       <form onSubmit={(event) => event.preventDefault()}>
-@@ -173,6 +213,20 @@ export default function Home() {
-           disabled={isLoading}
-         />
+async function fetchPosts(url) {
+  const response = await fetch(url, { cache: "no-store" });
+  const result = await response.json();
 
-+        <label htmlFor="categoryFilter">Category:</label>
-+        <select
-+          id="categoryFilter"
-+          value={categoryFilter}
-+          onChange={handleCategoryChange}
-+          disabled={isLoading}
-+        >
-+          {CATEGORY_FILTERS.map((option) => (
-+            <option key={option.value} value={option.value}>
-+              {option.label}
-+            </option>
-+          ))}
-+        </select>
-+
-         <label htmlFor="sortOrder">Sort posts:</label>
-         <select
-           id="sortOrder"
-@@ -207,6 +261,7 @@ export default function Home() {
-             {posts.map((post) => (
-               <article key={post._id} className={styles.article}>
-                 <Link href={`/detail/${post._id}`}>{post.title}</Link>
-+                <p>Category: {post.category || "general"}</p>
-                 <p>Created: {formatDate(post.createdAt)}</p>
-                 {post.updatedAt && (
-                   <p>Updated: {formatDate(post.updatedAt)}</p>
+  if (!response.ok) {
+    throw new Error(result.message || "Failed to fetch posts");
+  }
+
+  return result.data;
+}
+
+function buildPostsUrl({ keyword, page, sort, category }) {
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(PAGE_SIZE),
+    sort,
+  });
+
+  if (keyword) {
+    params.set("keyword", keyword);
+  }
+
+  if (category && category !== "all") {
+    params.set("category", category);
+  }
+
+  return `/api/post?${params.toString()}`;
+}
+
+export default function Home() {
+  const [allPosts, setAllPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [pagination, setPagination] = useState(null);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [keyword, setKeyword] = useState("");
+  const [searchMessage, setSearchMessage] = useState("");
+  const [serverKeyword, setServerKeyword] = useState("");
+  const [sortOrder, setSortOrder] = useState(DEFAULT_SORT);
+  const [categoryFilter, setCategoryFilter] = useState("all");
+
+  async function loadPosts({
+    page = 1,
+    searchKeyword = serverKeyword,
+    sortValue = sortOrder,
+    categoryValue = categoryFilter,
+  } = {}) {
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const data = await fetchPosts(
+        buildPostsUrl({
+          keyword: searchKeyword,
+          page,
+          sort: sortValue,
+          category: categoryValue,
+        }),
+      );
+      setAllPosts(data.posts);
+      setPosts(data.posts);
+      setPagination(data.pagination);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch posts");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    async function loadInitialPosts() {
+      try {
+        const data = await fetchPosts(
+          buildPostsUrl({
+            keyword: "",
+            page: 1,
+            sort: DEFAULT_SORT,
+            category: "all",
+          }),
+        );
+        setAllPosts(data.posts);
+        setPosts(data.posts);
+        setPagination(data.pagination);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to fetch posts");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadInitialPosts();
+  }, []);
+
+  function handleClientFilter() {
+    const searchKeyword = keyword.trim();
+
+    setError("");
+
+    if (!searchKeyword) {
+      setPosts(allPosts);
+      setSearchMessage(
+        "Showing current page posts because the search keyword is empty.",
+      );
+      return;
+    }
+
+    const filteredPosts = allPosts.filter((post) =>
+      postMatchesKeyword(post, searchKeyword),
+    );
+
+    setPosts(filteredPosts);
+    setSearchMessage(
+      `Client filter result on this page: ${filteredPosts.length} posts`,
+    );
+  }
+
+  async function handleServerSearch() {
+    const searchKeyword = keyword.trim();
+
+    setServerKeyword(searchKeyword);
+    setSearchMessage(
+      searchKeyword
+        ? `Server search result for "${searchKeyword}"`
+        : "Server search with empty keyword shows all posts.",
+    );
+    await loadPosts({ page: 1, searchKeyword });
+  }
+
+  async function handleShowAll() {
+    setKeyword("");
+    setServerKeyword("");
+    setCategoryFilter("all");
+    setSearchMessage("");
+    await loadPosts({ page: 1, searchKeyword: "", categoryValue: "all" });
+  }
+
+  async function handlePageChange(nextPage) {
+    await loadPosts({ page: nextPage, searchKeyword: serverKeyword });
+  }
+
+  async function handleSortChange(event) {
+    const nextSortOrder = event.target.value;
+
+    setSortOrder(nextSortOrder);
+    setSearchMessage("Sorted posts from the server.");
+    await loadPosts({
+      page: 1,
+      searchKeyword: serverKeyword,
+      sortValue: nextSortOrder,
+    });
+  }
+
+  async function handleCategoryChange(event) {
+    const nextCategory = event.target.value;
+
+    setCategoryFilter(nextCategory);
+    setSearchMessage(
+      nextCategory === "all"
+        ? "Showing all categories."
+        : `Showing ${nextCategory} posts.`,
+    );
+    await loadPosts({
+      page: 1,
+      searchKeyword: serverKeyword,
+      categoryValue: nextCategory,
+    });
+  }
+
+  return (
+    <main>
+      <form onSubmit={(event) => event.preventDefault()}>
+        <label htmlFor="keyword">Search posts:</label>
+        <input
+          type="search"
+          id="keyword"
+          value={keyword}
+          onChange={(event) => setKeyword(event.target.value)}
+          disabled={isLoading}
+        />
+
+        <label htmlFor="categoryFilter">Category:</label>
+        <select
+          id="categoryFilter"
+          value={categoryFilter}
+          onChange={handleCategoryChange}
+          disabled={isLoading}
+        >
+          {CATEGORY_FILTERS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
+        <label htmlFor="sortOrder">Sort posts:</label>
+        <select
+          id="sortOrder"
+          value={sortOrder}
+          onChange={handleSortChange}
+          disabled={isLoading}
+        >
+          <option value="created-desc">Newest first</option>
+          <option value="created-asc">Oldest first</option>
+          <option value="title-asc">Title A-Z</option>
+          <option value="title-desc">Title Z-A</option>
+        </select>
+
+        <button type="button" onClick={handleClientFilter} disabled={isLoading}>
+          Client Filter
+        </button>
+        <button type="button" onClick={handleServerSearch} disabled={isLoading}>
+          Server Search
+        </button>
+        <button type="button" onClick={handleShowAll} disabled={isLoading}>
+          Show All
+        </button>
+      </form>
+
+      {searchMessage && <p>{searchMessage}</p>}
+      {isLoading && <p>Loading posts...</p>}
+      {error && <p role="alert">{error}</p>}
+      {!isLoading && !error && posts.length === 0 && <p>No posts found.</p>}
+      {!isLoading && !error && (
+        <>
+          <section className={styles.articleList} aria-label="Blog posts">
+            {posts.map((post) => (
+              <article key={post._id} className={styles.article}>
+                <Link href={`/detail/${post._id}`}>{post.title}</Link>
+                <p>Category: {post.category || "general"}</p>
+                <p>Created: {formatDate(post.createdAt)}</p>
+                {post.updatedAt && (
+                  <p>Updated: {formatDate(post.updatedAt)}</p>
+                )}
+              </article>
+            ))}
+          </section>
+
+          {pagination && (
+            <nav aria-label="Pagination">
+              <button
+                type="button"
+                onClick={() => handlePageChange(pagination.page - 1)}
+                disabled={isLoading || !pagination.hasPreviousPage}
+              >
+                Previous
+              </button>
+              <span>
+                Page {pagination.page} of {pagination.totalPages} (
+                {pagination.totalPosts} posts)
+              </span>
+              <button
+                type="button"
+                onClick={() => handlePageChange(pagination.page + 1)}
+                disabled={isLoading || !pagination.hasNextPage}
+              >
+                Next
+              </button>
+            </nav>
+          )}
+        </>
+      )}
+    </main>
+  );
+}
 ~~~
 
 ### 설명과 확인
@@ -379,134 +709,283 @@ index 07af3cf..75cfa57 100644
 - 수정: [app/post/[id]/page.js](../../app/post/%5Bid%5D/page.js)
 - 수정: [app/detail/[id]/page.js](../../app/detail/%5Bid%5D/page.js)
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/detail/[id]/page.js b/app/detail/[id]/page.js
-index 3e7ae22..9018c18 100644
---- a/app/detail/[id]/page.js
-+++ b/app/detail/[id]/page.js
-@@ -24,6 +24,7 @@ export default async function BlogDetail({ params }) {
-     <main className={styles.container}>
-       <article>
-         <h1>{post.title}</h1>
-+        <p>Category: {post.category || "general"}</p>
-         <p>Created: {formatDate(post.createdAt)}</p>
-         {post.updatedAt && <p>Updated: {formatDate(post.updatedAt)}</p>}
-         <pre className={styles.content}>{post.content}</pre>
-diff --git a/app/post/[id]/page.js b/app/post/[id]/page.js
-index ca96d6a..9fa480c 100644
---- a/app/post/[id]/page.js
-+++ b/app/post/[id]/page.js
-@@ -4,9 +4,17 @@ import { useEffect, useState } from "react";
- import { useParams, useRouter } from "next/navigation";
- import styles from "../page.module.css";
+#### `app/detail/[id]/page.js`
 
-+const CATEGORY_OPTIONS = [
-+  { value: "general", label: "General" },
-+  { value: "notice", label: "Notice" },
-+  { value: "daily", label: "Daily" },
-+  { value: "tech", label: "Tech" },
-+];
-+
- export default function EditPost() {
-   const [title, setTitle] = useState("");
-   const [content, setContent] = useState("");
-+  const [category, setCategory] = useState("general");
-   const [error, setError] = useState("");
-   const [isSubmitting, setIsSubmitting] = useState(false);
-   const { id } = useParams();
-@@ -25,6 +33,7 @@ export default function EditPost() {
-         const post = result.data;
-         setTitle(post.title);
-         setContent(post.content);
-+        setCategory(post.category || "general");
-       } catch (err) {
-         setError(err instanceof Error ? err.message : "Failed to fetch post");
-       }
-@@ -46,7 +55,7 @@ export default function EditPost() {
-         headers: {
-           "Content-Type": "application/json",
-         },
--        body: JSON.stringify({ title, content }),
-+        body: JSON.stringify({ title, content, category }),
-       });
-       const result = await response.json();
+`app/detail/[id]/page.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
 
-@@ -87,6 +96,20 @@ export default function EditPost() {
-           required
-         />
+~~~js
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getPostById } from "@/lib/posts";
+import DeletePostButton from "./DeletePostButton";
+import styles from "./page.module.css";
 
-+        <label htmlFor="category">Category:</label>
-+        <select
-+          id="category"
-+          value={category}
-+          onChange={(event) => setCategory(event.target.value)}
-+          disabled={isSubmitting}
-+        >
-+          {CATEGORY_OPTIONS.map((option) => (
-+            <option key={option.value} value={option.value}>
-+              {option.label}
-+            </option>
-+          ))}
-+        </select>
-+
-         <button type="submit" disabled={isSubmitting}>
-           {isSubmitting ? "Updating..." : "Update Post"}
-         </button>
-diff --git a/app/post/page.js b/app/post/page.js
-index b6d7668..952f1b7 100644
---- a/app/post/page.js
-+++ b/app/post/page.js
-@@ -4,9 +4,17 @@ import { useState } from "react";
- import { useRouter } from "next/navigation";
- import styles from "./page.module.css";
+function formatDate(dateValue) {
+  if (!dateValue) {
+    return "";
+  }
 
-+const CATEGORY_OPTIONS = [
-+  { value: "general", label: "General" },
-+  { value: "notice", label: "Notice" },
-+  { value: "daily", label: "Daily" },
-+  { value: "tech", label: "Tech" },
-+];
-+
- export default function NewPost() {
-   const [title, setTitle] = useState("");
-   const [content, setContent] = useState("");
-+  const [category, setCategory] = useState("general");
-   const [error, setError] = useState("");
-   const [isSubmitting, setIsSubmitting] = useState(false);
-   const router = useRouter();
-@@ -25,6 +33,7 @@ export default function NewPost() {
-         body: JSON.stringify({
-           title,
-           content,
-+          category,
-           image: "https://picsum.photos/100",
-         }),
-       });
-@@ -67,6 +76,20 @@ export default function NewPost() {
-           required
-         />
+  return new Date(dateValue).toLocaleString("ko-KR");
+}
 
-+        <label htmlFor="category">Category:</label>
-+        <select
-+          id="category"
-+          value={category}
-+          onChange={(event) => setCategory(event.target.value)}
-+          disabled={isSubmitting}
-+        >
-+          {CATEGORY_OPTIONS.map((option) => (
-+            <option key={option.value} value={option.value}>
-+              {option.label}
-+            </option>
-+          ))}
-+        </select>
-+
-         <button type="submit" disabled={isSubmitting}>
-           {isSubmitting ? "Creating..." : "Create Post"}
-         </button>
+export default async function BlogDetail({ params }) {
+  const { id } = await params;
+  const post = await getPostById(id);
+
+  if (!post) {
+    notFound();
+  }
+
+  return (
+    <main className={styles.container}>
+      <article>
+        <h1>{post.title}</h1>
+        <p>Category: {post.category || "general"}</p>
+        <p>Created: {formatDate(post.createdAt)}</p>
+        {post.updatedAt && <p>Updated: {formatDate(post.updatedAt)}</p>}
+        <pre className={styles.content}>{post.content}</pre>
+      </article>
+      <Link href={`/post/${id}`}>Edit</Link>
+      <DeletePostButton id={id} />
+    </main>
+  );
+}
+~~~
+
+#### `app/post/[id]/page.js`
+
+`app/post/[id]/page.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~js
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import styles from "../page.module.css";
+
+const CATEGORY_OPTIONS = [
+  { value: "general", label: "General" },
+  { value: "notice", label: "Notice" },
+  { value: "daily", label: "Daily" },
+  { value: "tech", label: "Tech" },
+];
+
+export default function EditPost() {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [category, setCategory] = useState("general");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { id } = useParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    async function loadPost() {
+      try {
+        const response = await fetch(`/api/post/${id}`);
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || "Failed to fetch post data");
+        }
+
+        const post = result.data;
+        setTitle(post.title);
+        setContent(post.content);
+        setCategory(post.category || "general");
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to fetch post");
+      }
+    }
+
+    if (id) {
+      loadPost();
+    }
+  }, [id]);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setError("");
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(`/api/post/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, content, category }),
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to update post");
+      }
+
+      router.replace(`/detail/${result.data.postId}`);
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to update post");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  return (
+    <main className={styles.container}>
+      <h1>Edit Post</h1>
+      {error && <p role="alert">{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="title">Title:</label>
+        <input
+          type="text"
+          id="title"
+          value={title}
+          onChange={(event) => setTitle(event.target.value)}
+          disabled={isSubmitting}
+          required
+        />
+
+        <label htmlFor="content">Content:</label>
+        <textarea
+          id="content"
+          value={content}
+          onChange={(event) => setContent(event.target.value)}
+          disabled={isSubmitting}
+          required
+        />
+
+        <label htmlFor="category">Category:</label>
+        <select
+          id="category"
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+          disabled={isSubmitting}
+        >
+          {CATEGORY_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Updating..." : "Update Post"}
+        </button>
+      </form>
+    </main>
+  );
+}
+~~~
+
+#### `app/post/page.js`
+
+`app/post/page.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~js
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import styles from "./page.module.css";
+
+const CATEGORY_OPTIONS = [
+  { value: "general", label: "General" },
+  { value: "notice", label: "Notice" },
+  { value: "daily", label: "Daily" },
+  { value: "tech", label: "Tech" },
+];
+
+export default function NewPost() {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [category, setCategory] = useState("general");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setError("");
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          content,
+          category,
+          image: "https://picsum.photos/100",
+        }),
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to create post");
+      }
+
+      router.push(`/detail/${result.data.postId}`);
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to create post");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  return (
+    <main className={styles.container}>
+      <h1>Create New Post</h1>
+      {error && <p role="alert">{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="title">Title:</label>
+        <input
+          type="text"
+          id="title"
+          value={title}
+          onChange={(event) => setTitle(event.target.value)}
+          disabled={isSubmitting}
+          required
+        />
+
+        <label htmlFor="content">Content:</label>
+        <textarea
+          id="content"
+          value={content}
+          onChange={(event) => setContent(event.target.value)}
+          disabled={isSubmitting}
+          required
+        />
+
+        <label htmlFor="category">Category:</label>
+        <select
+          id="category"
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+          disabled={isSubmitting}
+        >
+          {CATEGORY_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Creating..." : "Create Post"}
+        </button>
+      </form>
+    </main>
+  );
+}
 ~~~
 
 ### 설명과 확인
@@ -541,12 +1020,12 @@ npm.cmd run dev
 
 ## 독립 확인
 
-허용되지 않은 category 입력이 저장되지 않는지 확인합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험을 위해 바꾼 값은 다음 단계 전에 복구합니다.
+허용되지 않은 category 입력이 저장되지 않는지 확인합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험값은 검사를 마치면 원래대로 복구합니다.
 
 ## 마무리 확인
 
-- 이 문서의 각 작업 단위에서 설명을 먼저 읽고, 바로 아래 diff를 기준으로 파일을 수정합니다.
-- 새 파일은 diff에 나온 전체 내용을 입력하고, 기존 파일은 diff의 `+`/`-` 줄만 비교하면서 수정합니다.
+- 각 작업 단위의 설명과 파일 경로를 먼저 확인합니다.
+- 코드 블록은 해당 파일의 일부가 아니라 현재 단계에서 사용할 전체 내용입니다.
 
 ## 저장소에 기록하기
 
@@ -555,13 +1034,11 @@ npm.cmd run dev
 ```powershell
 git branch --show-current
 git status --short
-git diff
 npm.cmd run lint
 npm.cmd run build
 git add .
-git diff --staged
 git commit -m "Complete Next.js step 19"
-git push origin main
+git push
 git status --short --branch
 ```
 
