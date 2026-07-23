@@ -25,8 +25,8 @@ App Router, Route Handler, MongoDB, form, 검색·정렬·페이지네이션, Ta
 ```powershell
 git branch --show-current
 git status
-npm.cmd run lint
-npm.cmd run build
+npm run lint
+npm run build
 git add .
 git commit -m "Complete Next.js step N"
 git push
