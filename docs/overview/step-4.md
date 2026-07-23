@@ -407,7 +407,7 @@ catch (error) {
 
 실제로 API를 호출하려면 MongoDB가 실행 중이어야 하고 `.env.local`이 있어야 합니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm.cmd` 형태를 그대로 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm` 형태를 그대로 사용합니다.
 
 ```powershell
 Copy-Item -LiteralPath .env.example -Destination .env.local
@@ -431,7 +431,7 @@ MONGODB_DB=next_blog_practice
 개발 서버를 실행합니다.
 
 ```powershell
-npm.cmd run dev
+npm run dev
 ```
 
 브라우저에서 다음 주소로 접속합니다.
@@ -472,8 +472,8 @@ Invoke-RestMethod -Method Post -Uri "http://localhost:3000/api/post" -ContentTyp
 코드 구조 자체는 다음 명령으로 검증합니다.
 
 ```powershell
-npm.cmd run lint
-npm.cmd run build
+npm run lint
+npm run build
 ```
 
 API 동작까지 확인하려면 개발 서버, MongoDB, `.env.local`이 모두 필요합니다.
