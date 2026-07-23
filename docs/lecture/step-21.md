@@ -1,6 +1,6 @@
 # Step 21. 홈 목록과 상세 읽기 화면 UI 정리
 
-## 이번 단계에서 할 일
+## 변경 내용
 
 홈 목록, 상세 읽기 화면, About 페이지를 Tailwind utility class로 정리해 카드형 읽기 UI를 만듭니다.
 
@@ -10,7 +10,7 @@
 
 ## 시작 전 확인
 
-권장 시간은 90분입니다. 개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
+개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
 
 수정 전에 `git status --short`의 출력이 없는지 확인합니다. 변경이 남아 있다면 원인을 확인하고 시작 상태를 정리합니다.
 
@@ -31,290 +31,413 @@ step-20에서 공통 shell을 바꿨으므로, 이제 사용자가 가장 먼저
 Remove-Item -LiteralPath 'app/page.module.css'
 ```
 
-PowerShell에서는 다음 명령을 사용합니다.
+### 입력할 코드
 
-```powershell
-Remove-Item app/page.module.css
-```
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-### 코드 변경
+#### `app/page.js`
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+`app/page.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
 
-~~~diff
-diff --git a/app/page.js b/app/page.js
-index 75cfa57..9a83e5d 100644
---- a/app/page.js
-+++ b/app/page.js
-@@ -2,10 +2,13 @@
+~~~js
+"use client";
 
- import Link from "next/link";
- import { useEffect, useState } from "react";
--import styles from "./page.module.css";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
- const PAGE_SIZE = 5;
- const DEFAULT_SORT = "created-desc";
-+const inputClassName =
-+  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 disabled:bg-zinc-100";
-+const secondaryButtonClassName =
-+  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50";
- const CATEGORY_FILTERS = [
-   { value: "all", label: "All categories" },
-   { value: "general", label: "General" },
-@@ -202,88 +205,179 @@ export default function Home() {
-   }
+const PAGE_SIZE = 5;
+const DEFAULT_SORT = "created-desc";
+const inputClassName =
+  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 disabled:bg-zinc-100";
+const secondaryButtonClassName =
+  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50";
+const CATEGORY_FILTERS = [
+  { value: "all", label: "All categories" },
+  { value: "general", label: "General" },
+  { value: "notice", label: "Notice" },
+  { value: "daily", label: "Daily" },
+  { value: "tech", label: "Tech" },
+];
 
-   return (
--    <main>
--      <form onSubmit={(event) => event.preventDefault()}>
--        <label htmlFor="keyword">Search posts:</label>
--        <input
--          type="search"
--          id="keyword"
--          value={keyword}
--          onChange={(event) => setKeyword(event.target.value)}
--          disabled={isLoading}
--        />
--
--        <label htmlFor="categoryFilter">Category:</label>
--        <select
--          id="categoryFilter"
--          value={categoryFilter}
--          onChange={handleCategoryChange}
--          disabled={isLoading}
--        >
--          {CATEGORY_FILTERS.map((option) => (
--            <option key={option.value} value={option.value}>
--              {option.label}
--            </option>
--          ))}
--        </select>
--
--        <label htmlFor="sortOrder">Sort posts:</label>
--        <select
--          id="sortOrder"
--          value={sortOrder}
--          onChange={handleSortChange}
--          disabled={isLoading}
--        >
--          <option value="created-desc">Newest first</option>
--          <option value="created-asc">Oldest first</option>
--          <option value="title-asc">Title A-Z</option>
--          <option value="title-desc">Title Z-A</option>
--        </select>
--
--        <button type="button" onClick={handleClientFilter} disabled={isLoading}>
--          Client Filter
--        </button>
--        <button type="button" onClick={handleServerSearch} disabled={isLoading}>
--          Server Search
--        </button>
--        <button type="button" onClick={handleShowAll} disabled={isLoading}>
--          Show All
--        </button>
-+    <main className="space-y-6">
-+      <section className="space-y-2">
-+        <p className="text-sm font-semibold uppercase text-zinc-500">
-+          Next.js Blog
-+        </p>
-+        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
-+          Blog Posts
-+        </h1>
-+        <p className="max-w-2xl text-sm leading-6 text-zinc-600">
-+          MongoDB에 저장된 게시글을 검색, 정렬, 카테고리 필터와 함께
-+          확인합니다.
-+        </p>
-+      </section>
-+
-+      <form
-+        className="grid gap-4 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-3"
-+        onSubmit={(event) => event.preventDefault()}
-+      >
-+        <div className="grid gap-1.5">
-+          <label
-+            className="text-sm font-medium text-zinc-700"
-+            htmlFor="keyword"
-+          >
-+            Search posts
-+          </label>
-+          <input
-+            className={inputClassName}
-+            type="search"
-+            id="keyword"
-+            value={keyword}
-+            onChange={(event) => setKeyword(event.target.value)}
-+            disabled={isLoading}
-+          />
-+        </div>
-+
-+        <div className="grid gap-1.5">
-+          <label
-+            className="text-sm font-medium text-zinc-700"
-+            htmlFor="categoryFilter"
-+          >
-+            Category
-+          </label>
-+          <select
-+            className={inputClassName}
-+            id="categoryFilter"
-+            value={categoryFilter}
-+            onChange={handleCategoryChange}
-+            disabled={isLoading}
-+          >
-+            {CATEGORY_FILTERS.map((option) => (
-+              <option key={option.value} value={option.value}>
-+                {option.label}
-+              </option>
-+            ))}
-+          </select>
-+        </div>
-+
-+        <div className="grid gap-1.5">
-+          <label
-+            className="text-sm font-medium text-zinc-700"
-+            htmlFor="sortOrder"
-+          >
-+            Sort posts
-+          </label>
-+          <select
-+            className={inputClassName}
-+            id="sortOrder"
-+            value={sortOrder}
-+            onChange={handleSortChange}
-+            disabled={isLoading}
-+          >
-+            <option value="created-desc">Newest first</option>
-+            <option value="created-asc">Oldest first</option>
-+            <option value="title-asc">Title A-Z</option>
-+            <option value="title-desc">Title Z-A</option>
-+          </select>
-+        </div>
-+
-+        <div className="flex flex-wrap gap-2 sm:col-span-2 lg:col-span-3">
-+          <button
-+            className={secondaryButtonClassName}
-+            type="button"
-+            onClick={handleClientFilter}
-+            disabled={isLoading}
-+          >
-+            Client Filter
-+          </button>
-+          <button
-+            className={secondaryButtonClassName}
-+            type="button"
-+            onClick={handleServerSearch}
-+            disabled={isLoading}
-+          >
-+            Server Search
-+          </button>
-+          <button
-+            className={secondaryButtonClassName}
-+            type="button"
-+            onClick={handleShowAll}
-+            disabled={isLoading}
-+          >
-+            Show All
-+          </button>
-+        </div>
-       </form>
+function formatDate(dateValue) {
+  if (!dateValue) {
+    return "";
+  }
 
--      {searchMessage && <p>{searchMessage}</p>}
--      {isLoading && <p>Loading posts...</p>}
--      {error && <p role="alert">{error}</p>}
--      {!isLoading && !error && posts.length === 0 && <p>No posts found.</p>}
-+      {searchMessage && (
-+        <p className="rounded-md bg-zinc-100 px-3 py-2 text-sm text-zinc-600">
-+          {searchMessage}
-+        </p>
-+      )}
-+      {isLoading && <p className="text-sm text-zinc-600">Loading posts...</p>}
-+      {error && (
-+        <p
-+          className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
-+          role="alert"
-+        >
-+          {error}
-+        </p>
-+      )}
-+      {!isLoading && !error && posts.length === 0 && (
-+        <p className="rounded-md border border-dashed border-zinc-300 bg-white px-4 py-8 text-center text-sm text-zinc-500">
-+          No posts found.
-+        </p>
-+      )}
-       {!isLoading && !error && (
-         <>
--          <section className={styles.articleList} aria-label="Blog posts">
-+          <section className="grid gap-4" aria-label="Blog posts">
-             {posts.map((post) => (
--              <article key={post._id} className={styles.article}>
--                <Link href={`/detail/${post._id}`}>{post.title}</Link>
--                <p>Category: {post.category || "general"}</p>
--                <p>Created: {formatDate(post.createdAt)}</p>
-+              <article
-+                key={post._id}
-+                className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm transition hover:border-zinc-300"
-+              >
-+                <Link
-+                  className="text-xl font-semibold text-zinc-950 hover:text-zinc-700"
-+                  href={`/detail/${post._id}`}
-+                >
-+                  {post.title}
-+                </Link>
-+                <div className="mt-3 flex flex-wrap gap-2 text-xs text-zinc-500">
-+                  <span className="rounded-full bg-zinc-100 px-2.5 py-1 font-medium text-zinc-700">
-+                    {post.category || "general"}
-+                  </span>
-+                  <span>Created: {formatDate(post.createdAt)}</span>
-+                </div>
-                 {post.updatedAt && (
--                  <p>Updated: {formatDate(post.updatedAt)}</p>
-+                  <p className="mt-2 text-xs text-zinc-500">
-+                    Updated: {formatDate(post.updatedAt)}
-+                  </p>
-                 )}
-               </article>
-             ))}
-           </section>
+  return new Date(dateValue).toLocaleString("ko-KR");
+}
 
-           {pagination && (
--            <nav aria-label="Pagination">
-+            <nav
-+              className="flex flex-wrap items-center gap-3 rounded-lg border border-zinc-200 bg-white p-4 text-sm text-zinc-600"
-+              aria-label="Pagination"
-+            >
-               <button
-+                className={secondaryButtonClassName}
-                 type="button"
-                 onClick={() => handlePageChange(pagination.page - 1)}
-                 disabled={isLoading || !pagination.hasPreviousPage}
-               >
-                 Previous
-               </button>
--              <span>
-+              <span className="font-medium text-zinc-700">
-                 Page {pagination.page} of {pagination.totalPages} (
-                 {pagination.totalPosts} posts)
-               </span>
-               <button
-+                className={secondaryButtonClassName}
-                 type="button"
-                 onClick={() => handlePageChange(pagination.page + 1)}
-                 disabled={isLoading || !pagination.hasNextPage}
-diff --git a/app/page.module.css b/app/page.module.css
-deleted file mode 100644
-index 4418093..0000000
---- a/app/page.module.css
-+++ /dev/null
-@@ -1,8 +0,0 @@
--.articleList {
--  display: grid;
--  gap: 1rem;
--}
--
--.article {
--  padding: 1rem 0;
--}
+function postMatchesKeyword(post, keyword) {
+  const title = post.title || "";
+  const content = post.content || "";
+  const lowerKeyword = keyword.toLowerCase();
+
+  return (
+    title.toLowerCase().includes(lowerKeyword) ||
+    content.toLowerCase().includes(lowerKeyword)
+  );
+}
+
+async function fetchPosts(url) {
+  const response = await fetch(url, { cache: "no-store" });
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Failed to fetch posts");
+  }
+
+  return result.data;
+}
+
+function buildPostsUrl({ keyword, page, sort, category }) {
+  const params = new URLSearchParams({
+    page: String(page),
+    limit: String(PAGE_SIZE),
+    sort,
+  });
+
+  if (keyword) {
+    params.set("keyword", keyword);
+  }
+
+  if (category && category !== "all") {
+    params.set("category", category);
+  }
+
+  return `/api/post?${params.toString()}`;
+}
+
+export default function Home() {
+  const [allPosts, setAllPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [pagination, setPagination] = useState(null);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [keyword, setKeyword] = useState("");
+  const [searchMessage, setSearchMessage] = useState("");
+  const [serverKeyword, setServerKeyword] = useState("");
+  const [sortOrder, setSortOrder] = useState(DEFAULT_SORT);
+  const [categoryFilter, setCategoryFilter] = useState("all");
+
+  async function loadPosts({
+    page = 1,
+    searchKeyword = serverKeyword,
+    sortValue = sortOrder,
+    categoryValue = categoryFilter,
+  } = {}) {
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const data = await fetchPosts(
+        buildPostsUrl({
+          keyword: searchKeyword,
+          page,
+          sort: sortValue,
+          category: categoryValue,
+        }),
+      );
+      setAllPosts(data.posts);
+      setPosts(data.posts);
+      setPagination(data.pagination);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch posts");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    async function loadInitialPosts() {
+      try {
+        const data = await fetchPosts(
+          buildPostsUrl({
+            keyword: "",
+            page: 1,
+            sort: DEFAULT_SORT,
+            category: "all",
+          }),
+        );
+        setAllPosts(data.posts);
+        setPosts(data.posts);
+        setPagination(data.pagination);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to fetch posts");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadInitialPosts();
+  }, []);
+
+  function handleClientFilter() {
+    const searchKeyword = keyword.trim();
+
+    setError("");
+
+    if (!searchKeyword) {
+      setPosts(allPosts);
+      setSearchMessage(
+        "Showing current page posts because the search keyword is empty.",
+      );
+      return;
+    }
+
+    const filteredPosts = allPosts.filter((post) =>
+      postMatchesKeyword(post, searchKeyword),
+    );
+
+    setPosts(filteredPosts);
+    setSearchMessage(
+      `Client filter result on this page: ${filteredPosts.length} posts`,
+    );
+  }
+
+  async function handleServerSearch() {
+    const searchKeyword = keyword.trim();
+
+    setServerKeyword(searchKeyword);
+    setSearchMessage(
+      searchKeyword
+        ? `Server search result for "${searchKeyword}"`
+        : "Server search with empty keyword shows all posts.",
+    );
+    await loadPosts({ page: 1, searchKeyword });
+  }
+
+  async function handleShowAll() {
+    setKeyword("");
+    setServerKeyword("");
+    setCategoryFilter("all");
+    setSearchMessage("");
+    await loadPosts({ page: 1, searchKeyword: "", categoryValue: "all" });
+  }
+
+  async function handlePageChange(nextPage) {
+    await loadPosts({ page: nextPage, searchKeyword: serverKeyword });
+  }
+
+  async function handleSortChange(event) {
+    const nextSortOrder = event.target.value;
+
+    setSortOrder(nextSortOrder);
+    setSearchMessage("Sorted posts from the server.");
+    await loadPosts({
+      page: 1,
+      searchKeyword: serverKeyword,
+      sortValue: nextSortOrder,
+    });
+  }
+
+  async function handleCategoryChange(event) {
+    const nextCategory = event.target.value;
+
+    setCategoryFilter(nextCategory);
+    setSearchMessage(
+      nextCategory === "all"
+        ? "Showing all categories."
+        : `Showing ${nextCategory} posts.`,
+    );
+    await loadPosts({
+      page: 1,
+      searchKeyword: serverKeyword,
+      categoryValue: nextCategory,
+    });
+  }
+
+  return (
+    <main className="space-y-6">
+      <section className="space-y-2">
+        <p className="text-sm font-semibold uppercase text-zinc-500">
+          Next.js Blog
+        </p>
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
+          Blog Posts
+        </h1>
+        <p className="max-w-2xl text-sm leading-6 text-zinc-600">
+          MongoDB에 저장된 게시글을 검색, 정렬, 카테고리 필터와 함께
+          확인합니다.
+        </p>
+      </section>
+
+      <form
+        className="grid gap-4 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-3"
+        onSubmit={(event) => event.preventDefault()}
+      >
+        <div className="grid gap-1.5">
+          <label
+            className="text-sm font-medium text-zinc-700"
+            htmlFor="keyword"
+          >
+            Search posts
+          </label>
+          <input
+            className={inputClassName}
+            type="search"
+            id="keyword"
+            value={keyword}
+            onChange={(event) => setKeyword(event.target.value)}
+            disabled={isLoading}
+          />
+        </div>
+
+        <div className="grid gap-1.5">
+          <label
+            className="text-sm font-medium text-zinc-700"
+            htmlFor="categoryFilter"
+          >
+            Category
+          </label>
+          <select
+            className={inputClassName}
+            id="categoryFilter"
+            value={categoryFilter}
+            onChange={handleCategoryChange}
+            disabled={isLoading}
+          >
+            {CATEGORY_FILTERS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="grid gap-1.5">
+          <label
+            className="text-sm font-medium text-zinc-700"
+            htmlFor="sortOrder"
+          >
+            Sort posts
+          </label>
+          <select
+            className={inputClassName}
+            id="sortOrder"
+            value={sortOrder}
+            onChange={handleSortChange}
+            disabled={isLoading}
+          >
+            <option value="created-desc">Newest first</option>
+            <option value="created-asc">Oldest first</option>
+            <option value="title-asc">Title A-Z</option>
+            <option value="title-desc">Title Z-A</option>
+          </select>
+        </div>
+
+        <div className="flex flex-wrap gap-2 sm:col-span-2 lg:col-span-3">
+          <button
+            className={secondaryButtonClassName}
+            type="button"
+            onClick={handleClientFilter}
+            disabled={isLoading}
+          >
+            Client Filter
+          </button>
+          <button
+            className={secondaryButtonClassName}
+            type="button"
+            onClick={handleServerSearch}
+            disabled={isLoading}
+          >
+            Server Search
+          </button>
+          <button
+            className={secondaryButtonClassName}
+            type="button"
+            onClick={handleShowAll}
+            disabled={isLoading}
+          >
+            Show All
+          </button>
+        </div>
+      </form>
+
+      {searchMessage && (
+        <p className="rounded-md bg-zinc-100 px-3 py-2 text-sm text-zinc-600">
+          {searchMessage}
+        </p>
+      )}
+      {isLoading && <p className="text-sm text-zinc-600">Loading posts...</p>}
+      {error && (
+        <p
+          className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+          role="alert"
+        >
+          {error}
+        </p>
+      )}
+      {!isLoading && !error && posts.length === 0 && (
+        <p className="rounded-md border border-dashed border-zinc-300 bg-white px-4 py-8 text-center text-sm text-zinc-500">
+          No posts found.
+        </p>
+      )}
+      {!isLoading && !error && (
+        <>
+          <section className="grid gap-4" aria-label="Blog posts">
+            {posts.map((post) => (
+              <article
+                key={post._id}
+                className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm transition hover:border-zinc-300"
+              >
+                <Link
+                  className="text-xl font-semibold text-zinc-950 hover:text-zinc-700"
+                  href={`/detail/${post._id}`}
+                >
+                  {post.title}
+                </Link>
+                <div className="mt-3 flex flex-wrap gap-2 text-xs text-zinc-500">
+                  <span className="rounded-full bg-zinc-100 px-2.5 py-1 font-medium text-zinc-700">
+                    {post.category || "general"}
+                  </span>
+                  <span>Created: {formatDate(post.createdAt)}</span>
+                </div>
+                {post.updatedAt && (
+                  <p className="mt-2 text-xs text-zinc-500">
+                    Updated: {formatDate(post.updatedAt)}
+                  </p>
+                )}
+              </article>
+            ))}
+          </section>
+
+          {pagination && (
+            <nav
+              className="flex flex-wrap items-center gap-3 rounded-lg border border-zinc-200 bg-white p-4 text-sm text-zinc-600"
+              aria-label="Pagination"
+            >
+              <button
+                className={secondaryButtonClassName}
+                type="button"
+                onClick={() => handlePageChange(pagination.page - 1)}
+                disabled={isLoading || !pagination.hasPreviousPage}
+              >
+                Previous
+              </button>
+              <span className="font-medium text-zinc-700">
+                Page {pagination.page} of {pagination.totalPages} (
+                {pagination.totalPosts} posts)
+              </span>
+              <button
+                className={secondaryButtonClassName}
+                type="button"
+                onClick={() => handlePageChange(pagination.page + 1)}
+                disabled={isLoading || !pagination.hasNextPage}
+              >
+                Next
+              </button>
+            </nav>
+          )}
+        </>
+      )}
+    </main>
+  );
+}
 ~~~
+
+#### `app/page.module.css` 삭제
+
+`app/page.module.css`는 더 이상 사용하지 않으므로 삭제합니다.
 
 ### 설명과 확인
 
@@ -336,87 +459,72 @@ index 4418093..0000000
 Remove-Item -LiteralPath 'app/detail/[id]/page.module.css'
 ```
 
-PowerShell에서는 다음 명령을 사용합니다.
+### 입력할 코드
 
-```powershell
-Remove-Item -LiteralPath 'app/detail/[id]/page.module.css'
-```
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-### 코드 변경
+#### `app/detail/[id]/page.js`
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+`app/detail/[id]/page.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
 
-~~~diff
-diff --git a/app/detail/[id]/page.js b/app/detail/[id]/page.js
-index 9018c18..576ea79 100644
---- a/app/detail/[id]/page.js
-+++ b/app/detail/[id]/page.js
-@@ -2,7 +2,6 @@ import Link from "next/link";
- import { notFound } from "next/navigation";
- import { getPostById } from "@/lib/posts";
- import DeletePostButton from "./DeletePostButton";
--import styles from "./page.module.css";
+~~~js
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getPostById } from "@/lib/posts";
+import DeletePostButton from "./DeletePostButton";
 
- function formatDate(dateValue) {
-   if (!dateValue) {
-@@ -21,16 +20,33 @@ export default async function BlogDetail({ params }) {
-   }
+function formatDate(dateValue) {
+  if (!dateValue) {
+    return "";
+  }
 
-   return (
--    <main className={styles.container}>
--      <article>
--        <h1>{post.title}</h1>
--        <p>Category: {post.category || "general"}</p>
--        <p>Created: {formatDate(post.createdAt)}</p>
--        {post.updatedAt && <p>Updated: {formatDate(post.updatedAt)}</p>}
--        <pre className={styles.content}>{post.content}</pre>
-+    <main className="space-y-6">
-+      <article className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
-+        <div className="space-y-3">
-+          <span className="inline-flex rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium uppercase text-zinc-600">
-+            {post.category || "general"}
-+          </span>
-+          <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
-+            {post.title}
-+          </h1>
-+          <div className="flex flex-wrap gap-3 text-sm text-zinc-500">
-+            <span>Created: {formatDate(post.createdAt)}</span>
-+            {post.updatedAt && <span>Updated: {formatDate(post.updatedAt)}</span>}
-+          </div>
-+        </div>
-+        <pre className="mt-6 whitespace-pre-wrap rounded-md bg-zinc-50 p-4 text-sm leading-7 text-zinc-700">
-+          {post.content}
-+        </pre>
-       </article>
--      <Link href={`/post/${id}`}>Edit</Link>
--      <DeletePostButton id={id} />
-+      <div className="flex flex-wrap items-center gap-2">
-+        <Link
-+          className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700"
-+          href={`/post/${id}`}
-+        >
-+          Edit
-+        </Link>
-+        <DeletePostButton id={id} />
-+      </div>
-     </main>
-   );
- }
-diff --git a/app/detail/[id]/page.module.css b/app/detail/[id]/page.module.css
-deleted file mode 100644
-index c52da0a..0000000
---- a/app/detail/[id]/page.module.css
-+++ /dev/null
-@@ -1,8 +0,0 @@
--.container {
--  display: grid;
--  gap: 1rem;
--}
--
--.content {
--  white-space: pre-wrap;
--}
+  return new Date(dateValue).toLocaleString("ko-KR");
+}
+
+export default async function BlogDetail({ params }) {
+  const { id } = await params;
+  const post = await getPostById(id);
+
+  if (!post) {
+    notFound();
+  }
+
+  return (
+    <main className="space-y-6">
+      <article className="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
+        <div className="space-y-3">
+          <span className="inline-flex rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium uppercase text-zinc-600">
+            {post.category || "general"}
+          </span>
+          <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
+            {post.title}
+          </h1>
+          <div className="flex flex-wrap gap-3 text-sm text-zinc-500">
+            <span>Created: {formatDate(post.createdAt)}</span>
+            {post.updatedAt && <span>Updated: {formatDate(post.updatedAt)}</span>}
+          </div>
+        </div>
+        <pre className="mt-6 whitespace-pre-wrap rounded-md bg-zinc-50 p-4 text-sm leading-7 text-zinc-700">
+          {post.content}
+        </pre>
+      </article>
+      <div className="flex flex-wrap items-center gap-2">
+        <Link
+          className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700"
+          href={`/post/${id}`}
+        >
+          Edit
+        </Link>
+        <DeletePostButton id={id} />
+      </div>
+    </main>
+  );
+}
 ~~~
+
+#### `app/detail/[id]/page.module.css` 삭제
+
+`app/detail/[id]/page.module.css`는 더 이상 사용하지 않으므로 삭제합니다.
 
 ### 설명과 확인
 
@@ -431,69 +539,54 @@ index c52da0a..0000000
 
 - 수정: `app/about/page.js`
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/about/page.js b/app/about/page.js
-index c6e3f14..c05557c 100644
---- a/app/about/page.js
-+++ b/app/about/page.js
-@@ -2,28 +2,38 @@ import Image from "next/image";
+#### `app/about/page.js`
 
- export default function AboutPage() {
-   return (
--    <main>
--      <h1>About Me</h1>
-+    <main className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
-+      <section className="space-y-4">
-+        <p className="text-sm font-semibold uppercase text-zinc-500">About</p>
-+        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
-+          About Me
-+        </h1>
-+        <div className="space-y-4 text-sm leading-7 text-zinc-600">
-+          <p>
-+            Hello! My name is [Your Name]. I&apos;m a professional working in
-+            [Your Industry] based in [Your Location].
-+          </p>
-+          <p>
-+            Here&apos;s a photo of our office building where I spend most of my
-+            working hours.
-+          </p>
-+          <p>
-+            I am passionate about [Your Passion], and I enjoy [Your Hobbies].
-+          </p>
-+          <p>
-+            If you wish to reach out, please contact me at [Your Contact
-+            Information].
-+          </p>
-+        </div>
-+      </section>
-       <Image
-+        className="rounded-lg border border-zinc-200 object-cover shadow-sm"
-         src="https://picsum.photos/id/1047/600/500"
-         alt="Office building"
-         width={600}
-         height={500}
-         priority
-       />
--      <p>
--        Hello! My name is [Your Name]. I&apos;m a professional working in [Your
--        Industry] based in [Your Location].
--      </p>
--      <p>
--        Here&apos;s a photo of our office building where I spend most of my
--        working hours.
--      </p>
--      <p>I am passionate about [Your Passion], and I enjoy [Your Hobbies].</p>
--      <p>
--        If you wish to reach out, please contact me at [Your Contact
--        Information].
--      </p>
-     </main>
-   );
- }
+`app/about/page.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~js
+import Image from "next/image";
+
+export default function AboutPage() {
+  return (
+    <main className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
+      <section className="space-y-4">
+        <p className="text-sm font-semibold uppercase text-zinc-500">About</p>
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
+          About Me
+        </h1>
+        <div className="space-y-4 text-sm leading-7 text-zinc-600">
+          <p>
+            Hello! My name is [Your Name]. I&apos;m a professional working in
+            [Your Industry] based in [Your Location].
+          </p>
+          <p>
+            Here&apos;s a photo of our office building where I spend most of my
+            working hours.
+          </p>
+          <p>
+            I am passionate about [Your Passion], and I enjoy [Your Hobbies].
+          </p>
+          <p>
+            If you wish to reach out, please contact me at [Your Contact
+            Information].
+          </p>
+        </div>
+      </section>
+      <Image
+        className="rounded-lg border border-zinc-200 object-cover shadow-sm"
+        src="https://picsum.photos/id/1047/600/500"
+        alt="Office building"
+        width={600}
+        height={500}
+        priority
+      />
+    </main>
+  );
+}
 ~~~
 
 ### 설명과 확인
@@ -524,12 +617,12 @@ npm.cmd run dev
 
 ## 독립 확인
 
-좁은 화면에서 카드와 본문이 가로로 넘치지 않는지 확인합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험을 위해 바꾼 값은 다음 단계 전에 복구합니다.
+좁은 화면에서 카드와 본문이 가로로 넘치지 않는지 확인합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험값은 검사를 마치면 원래대로 복구합니다.
 
 ## 마무리 확인
 
-- 이 문서의 각 작업 단위에서 설명을 먼저 읽고, 바로 아래 diff를 기준으로 파일을 수정합니다.
-- 새 파일은 diff에 나온 전체 내용을 입력하고, 기존 파일은 diff의 `+`/`-` 줄만 비교하면서 수정합니다.
+- 각 작업 단위의 설명과 파일 경로를 먼저 확인합니다.
+- 코드 블록은 해당 파일의 일부가 아니라 현재 단계에서 사용할 전체 내용입니다.
 
 ## 저장소에 기록하기
 
@@ -538,13 +631,11 @@ npm.cmd run dev
 ```powershell
 git branch --show-current
 git status --short
-git diff
 npm.cmd run lint
 npm.cmd run build
 git add .
-git diff --staged
 git commit -m "Complete Next.js step 21"
-git push origin main
+git push
 git status --short --branch
 ```
 

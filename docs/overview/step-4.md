@@ -1,10 +1,10 @@
 # Step 4. API Route와 통일된 JSON 응답 만들기
 
-## 배울 내용
+## 변경 내용
 
-Step 4에서는 Step 3에서 만든 데이터 함수를 HTTP API로 연결합니다.
+데이터 함수를 HTTP API로 연결합니다.
 
-완료 후에는 다음 API가 생깁니다.
+다음 API를 확인합니다.
 
 | Method | URL | 요청 데이터 | 응답 데이터 |
 | --- | --- | --- | --- |
@@ -13,7 +13,7 @@ Step 4에서는 Step 3에서 만든 데이터 함수를 HTTP API로 연결합니
 | `GET` | `/api/post/[id]` | URL의 `id` | 게시글 하나 |
 | `PUT` | `/api/post/[id]` | URL의 `id`, `{ title, content }` | 수정된 게시글 id |
 
-아직 홈 화면이나 작성 화면은 이 API를 호출하지 않습니다. 먼저 API 자체를 만들고, 다음 단계부터 화면과 연결합니다.
+홈 화면이나 작성 화면은 아직 이 API를 호출하지 않습니다. 여기서는 API 요청과 JSON 응답만 확인합니다.
 
 ## API Route란 무엇인가
 
@@ -31,7 +31,7 @@ app/api/post/route.js -> /api/post JSON 응답
 
 App Router에서는 API Route 파일 이름이 `route.js`입니다. `page.js`가 화면을 담당하고, `route.js`가 HTTP 요청/응답을 담당한다고 생각하면 됩니다.
 
-## 이번 단계의 파일 구조
+## 파일 구조
 
 ```txt
 lib/apiResponse.js
@@ -512,9 +512,3 @@ return apiError("Post not found", 404);
 ### MongoDB 환경 변수를 준비하지 않는 경우
 
 API는 데이터 함수를 호출하고, 데이터 함수는 MongoDB에 연결합니다. `.env.local`이 없으면 `Please define MONGODB_URI in .env.local` 오류가 서버 로그에 나타납니다.
-
-## 이 단계에서 아직 하지 않는 것
-
-아직 홈 화면은 API를 호출하지 않습니다. `/api/post`는 준비됐지만 `/` 화면은 여전히 정적 안내 문구를 보여줍니다.
-
-다음 단계에서 홈 화면을 클라이언트 컴포넌트로 바꾸고, `fetch("/api/post")`로 게시글 목록을 불러옵니다.
