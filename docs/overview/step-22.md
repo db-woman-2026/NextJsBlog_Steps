@@ -1,8 +1,8 @@
 # Step 22. 작성, 수정, Contact form UI 정리
 
-이전 단계에서는 홈 목록과 상세 읽기 화면을 카드형 UI로 바꿨습니다. 사용자가 직접 입력하는 form 화면을 정리합니다.
+홈 목록과 상세 화면의 카드 규칙을 작성, 수정, Contact form에 확장합니다.
 
-## 이번 단계에서 하는 일
+## 변경 내용
 
 - 게시글 작성 페이지에 제목 영역과 form 카드 UI를 적용한다.
 - 게시글 수정 페이지에 같은 form UI 패턴을 적용한다.
@@ -21,7 +21,7 @@ form은 단순한 텍스트 화면보다 고려할 요소가 많습니다.
 - 오류 메시지
 - textarea 높이
 
-그래서 읽기 화면과 같은 단계에서 한꺼번에 바꾸기보다, form만 따로 다루는 편이 학습하기 쉽습니다.
+읽기 화면과 분리하면 focus, disabled, 오류 상태의 변화만 확인할 수 있습니다.
 
 ## 반복되는 class를 상수로 두기
 
@@ -109,13 +109,13 @@ const textareaClassName = `${inputClassName} min-h-48 resize-y`;
 
 Contact form은 실제 메일을 보내지는 않지만 controlled input과 submit 이벤트를 연습하기 좋은 예제입니다. 게시글 form과 같은 카드, label, input, button 패턴을 적용해 화면 전체의 일관성을 맞춥니다.
 
-## 이번 단계의 기준
+## 완료 확인
 
-이번 단계의 완성 기준은 "사용자가 입력하는 화면들이 같은 form 패턴을 가진다"입니다.
+사용자가 입력하는 화면들이 같은 form 패턴을 사용하는지 확인합니다.
 
-아직 삭제 버튼, not-found, error 화면은 따로 정리하지 않습니다. 다음 단계에서 남은 작은 UI 조각들을 정리해 Tailwind 전환을 마무리합니다.
+삭제 버튼, not-found, error 화면은 현재 변경 범위에 포함하지 않습니다.
 
-## 확인 방법
+## 결과 확인
 
 > Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
@@ -142,5 +142,3 @@ npm.cmd run build
 4. 작성/수정 중 disabled 상태가 눈에 보인다.
 5. 오류 메시지는 `role="alert"`를 유지하면서 alert 스타일로 보인다.
 6. `app/post/page.module.css`를 import하는 코드가 남아 있지 않다.
-
-다음 단계에서는 삭제 버튼, Not Found, Error 화면과 문서 인덱스를 정리해 Tailwind 기본 UI 전환을 마무리합니다.

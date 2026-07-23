@@ -1,19 +1,15 @@
 # Step 8. Contact mockup form 만들기
 
-## 배울 내용
+## 변경 내용
 
-Step 8에서는 Contact 페이지를 실제 form 구조로 바꿉니다.
-
-`step-7`까지 게시글 읽기, 작성, 수정 흐름을 완성했습니다. 핵심 CRUD와 별개인 Contact 페이지를 mockup form으로 구현합니다.
-
-이 단계에서 배우는 내용은 다음과 같습니다.
+Contact 페이지를 mockup form으로 구현합니다.
 
 - 페이지 컴포넌트와 form 컴포넌트를 분리한다.
 - 클라이언트 상호작용이 필요한 컴포넌트에만 `"use client"`를 붙인다.
 - `useState`로 여러 input 값을 관리한다.
 - `event.preventDefault()`로 기본 form 제출을 막는다.
 - 실제 메일 전송 대신 `alert()`로 mockup 동작을 만든다.
-- 작성 form에서 배운 controlled input 패턴을 다른 form에 다시 적용한다.
+- 작성 form의 controlled input 패턴을 Contact form에도 적용한다.
 
 ## 왜 Contact는 mockup인가
 
@@ -25,15 +21,13 @@ Step 8에서는 Contact 페이지를 실제 form 구조로 바꿉니다.
 - 서버 검증은 어떻게 할 것인가
 - 성공/실패 메일 로그는 어디에 남길 것인가
 
-이 프로젝트의 목표는 Next.js 기본 라우팅, API Route, MongoDB CRUD 흐름을 배우는 것입니다. Contact 메일 전송까지 실제로 구현하면 학습 범위가 커집니다.
-
-그래서 Contact는 mockup으로 둡니다.
+메일 전송을 구현하려면 외부 서비스와 비밀 정보 관리가 추가로 필요합니다. 여기서는 form 상태와 submit 동작만 검증하므로 Contact를 mockup으로 둡니다.
 
 mockup은 실제 기능을 완성하지 않고, 사용자가 보게 될 화면과 기본 상호작용만 흉내 내는 구현입니다.
 
 ## 파일 구조
 
-이 단계에서 Contact 관련 파일은 다음과 같습니다.
+Contact 관련 파일은 다음과 같습니다.
 
 ```txt
 app/contact/page.js
@@ -218,7 +212,3 @@ http://localhost:3000/contact
 npm.cmd run lint
 npm.cmd run build
 ```
-
-## 이 단계에서 아직 하지 않는 것
-
-실제 메일을 보내지 않습니다. 다음 단계에서는 새 기능을 추가하기보다 README와 불필요한 기본 파일을 정리해 step 커리큘럼을 마무리합니다.
