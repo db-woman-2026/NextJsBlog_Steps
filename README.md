@@ -1,60 +1,35 @@
-# NextJsBlog_Steps
+# Next.js 블로그 실습
 
-초급 개발자 교육용 Next.js 블로그를 `main` starter에서 시작해 `step-N` 브랜치로 단계별 누적 학습하는 저장소입니다.
+App Router, Route Handler, MongoDB, form, 검색·정렬·페이지네이션, Tailwind CSS를 하나의 블로그에 순서대로 구현합니다. 개인 저장소의 `main`에서 코드를 직접 입력하고 매 단계 검사·commit·push까지 마칩니다.
 
-## Learning Order
+## 시작 순서
 
-프로젝트 실습 전에 [Basic Course](./docs/basic/index.md)에서 JavaScript, React, Next.js, HTTP, MongoDB의 필수 구조와 문법을 쉬운 예제로 먼저 익힙니다. 그다음 [Lecture](./docs/lecture/index.md)를 `step-1`부터 순서대로 따라 하며 블로그를 직접 완성합니다.
+1. [Windows 11 환경 준비](docs/windows-11.md)를 끝냅니다.
+2. [기초 읽기 자료](docs/basic/00-learning-map.md)에서 필요한 JavaScript·React·Next.js 개념을 확인합니다.
+3. [단계별 실습](docs/lecture/index.md)을 Step 1부터 진행합니다.
+4. 오류가 나면 [문제 해결](docs/troubleshooting.md)의 진단 순서를 따릅니다.
 
-```txt
-docs/basic/   코드 구조와 문법을 눈으로 익히는 선수 학습
-      ↓
-docs/lecture/ 단계별 diff를 직접 입력하는 프로젝트 실습
-```
+## 과정 구성
 
-## Branch Hierarchy
+- Step 1~2: App Router 화면, 공통 컴포넌트, 기본 스타일
+- Step 3~4: MongoDB 연결, 데이터 함수, JSON API
+- Step 5~8: 목록·상세·작성·수정·Contact form
+- Step 9~13: 통합 점검, 검증, 제출 상태, 날짜, 삭제
+- Step 14~19: 검색, 페이지네이션, 정렬, 오류 UI, 카테고리
+- Step 20~23: Tailwind CSS 설치와 전체 UI 정리
 
-이 저장소의 브랜치는 독립적인 예제 복사본이 아니라 부모-자식 관계를 가진 학습 이력입니다. 기본 흐름은 `main -> step-1 -> step-2 -> ... -> step-N`이며, 각 `step-N`은 바로 이전 단계 위에 기능과 문서를 누적합니다.
-
-향후 작업 시 이 계층을 기준으로 수정해야 합니다. 특정 단계부터 필요한 변경은 가장 이른 affected step에서 먼저 커밋하고, 그 다음 step으로 순서대로 merge해서 전파합니다. 같은 변경을 여러 step 브랜치에 각각 따로 커밋하면 교육용 브랜치의 ancestry가 깨져 수강생과 강의자가 서로 다른 기준을 보게 됩니다.
-
-브랜치 관계는 아래 명령이 성공하는 상태를 목표로 유지합니다.
-
-```powershell
-git merge-base --is-ancestor step-N step-(N+1)
-```
-
-## create-next-app README
-
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-Windows 11에서는 먼저 [Windows 11 환경 준비](./docs/windows-11.md)를 확인합니다.
-
-Windows Terminal의 PowerShell에서 개발 서버를 실행합니다.
+## 매 단계 공통 확인
 
 ```powershell
-npm.cmd run dev
+git branch --show-current
+git status --short
+npm.cmd run lint
+npm.cmd run build
+git diff
+git add .
+git diff --staged
+git commit -m "Complete Next.js step N"
+git push origin main
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`.env.local`은 commit하지 않습니다. MongoDB는 `next_blog_`로 시작하는 실습 전용 데이터베이스만 사용합니다. 개발 서버는 확인 뒤 `Ctrl+C`로 종료합니다.

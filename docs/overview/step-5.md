@@ -2,7 +2,7 @@
 
 ## 배울 내용
 
-`step-5` 브랜치는 사용자가 게시글을 읽을 수 있는 첫 번째 완성 흐름을 만드는 단계입니다.
+Step 5에서는 게시글 목록과 상세 화면을 연결해 첫 읽기 흐름을 만듭니다.
 
 이전 단계인 `step-4`에서는 API Route만 만들었습니다. 그 API를 화면과 연결합니다.
 
@@ -33,7 +33,7 @@
 
 홈 목록에서 게시글 제목을 클릭할 수 있다면, 그 링크가 실제로 열려야 합니다.
 
-깨진 링크를 남겨둔 채 다음 단계로 넘어가면 학습자는 다음 두 가지를 헷갈리기 쉽습니다.
+깨진 링크를 남겨두면 다음 두 원인을 구분하기 어렵습니다.
 
 - API가 잘못된 것인지
 - 라우팅이 아직 구현되지 않은 것인지
@@ -332,7 +332,7 @@ CSS Module을 사용하면 클래스 이름이 해당 컴포넌트 범위 안에
 - `.env.local` 생성
 - 개발 서버 실행
 
-> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
 ```powershell
 Copy-Item -LiteralPath .env.example -Destination .env.local
@@ -408,7 +408,7 @@ useEffect(() => {
 
 ### Link만 만들고 상세 페이지를 만들지 않는 경우
 
-`/detail/${post._id}` 링크를 만들었다면 `app/detail/[id]/page.js`도 같은 단계에서 만들어야 합니다. 그래야 학습자가 목록을 클릭했을 때 404를 만나지 않습니다.
+`/detail/${post._id}` 링크를 만들었다면 `app/detail/[id]/page.js`도 같은 단계에서 만들어야 합니다. 그래야 목록을 클릭했을 때 404가 나지 않습니다.
 
 ### params를 await하지 않는 경우
 
