@@ -1,6 +1,6 @@
 # Step 15. 서버 검색
 
-## 배울 내용
+## 변경 내용
 
 `step-15`는 MongoDB에서 직접 검색하는 서버 검색을 추가하는 단계입니다.
 
@@ -102,7 +102,7 @@ function escapeRegex(value) {
 
 ## $regex와 $options
 
-MongoDB의 `$regex`는 정규식 검색 조건입니다. 이 강의에서는 이 기능을 부분 문자열 검색에만 쓰므로 사용자 입력을 먼저 이스케이프합니다.
+MongoDB의 `$regex`는 정규식 검색 조건입니다. 이 예제에서는 부분 문자열 검색에만 쓰므로 사용자 입력을 먼저 이스케이프합니다.
 
 ```js
 { title: { $regex: searchKeyword, $options: "i" } }
@@ -177,7 +177,7 @@ setSearchMessage("");
 8. `Server Search` 버튼을 추가한다.
 9. `Show All`은 서버에서 전체 목록을 다시 불러오도록 바꾼다.
 
-## 확인 방법
+## 결과 확인
 
 홈 화면에서 검색어를 입력합니다.
 
