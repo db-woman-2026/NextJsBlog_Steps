@@ -10,7 +10,7 @@
 
 ## 시작 전 확인
 
-권장 시간은 70분입니다. 이 문서의 diff는 `step-5` 완료 코드에 적용합니다. `step-6` branch는 아래 변경이 이미 반영된 완성본입니다.
+권장 시간은 70분입니다. 개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
 
 수정 전에 `git status --short`의 출력이 없는지 확인합니다. 변경이 남아 있다면 원인을 확인하고 시작 상태를 정리합니다.
 
@@ -20,7 +20,7 @@
 
 ### 수정할 파일
 
-- 수정: [app/post/page.js](../../app/post/page.js)
+- 수정: `app/post/page.js`
 
 ### 코드 변경
 
@@ -116,8 +116,8 @@ index 99c31e0..54ca12e 100644
 
 ### 수정할 파일
 
-- 수정: [app/globals.css](../../app/globals.css)
-- 생성: [app/post/page.module.css](../../app/post/page.module.css)
+- 수정: `app/globals.css`
+- 생성: `app/post/page.module.css`
 
 ### 코드 변경
 
@@ -187,4 +187,22 @@ npm.cmd run dev
 
 - 이 문서의 각 작업 단위에서 설명을 먼저 읽고, 바로 아래 diff를 기준으로 파일을 수정합니다.
 - 새 파일은 diff에 나온 전체 내용을 입력하고, 기존 파일은 diff의 `+`/`-` 줄만 비교하면서 수정합니다.
-- 링크된 프로젝트 내부 파일을 열어 현재 단계의 완성본과 직접 비교할 수 있습니다.
+
+## 저장소에 기록하기
+
+실험용 변경을 모두 복구한 뒤 검사 결과와 코드 변경을 함께 확인합니다.
+
+```powershell
+git branch --show-current
+git status --short
+git diff
+npm.cmd run lint
+npm.cmd run build
+git add .
+git diff --staged
+git commit -m "Complete Next.js step 6"
+git push origin main
+git status --short --branch
+```
+
+현재 브랜치는 `main`이어야 합니다. 마지막 상태에서 `main...origin/main` 뒤에 `ahead`가 없고 작업 파일 목록도 비어 있어야 합니다.
