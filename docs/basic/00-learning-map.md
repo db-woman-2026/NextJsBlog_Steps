@@ -25,7 +25,7 @@ nextjs-blog/
 
 터미널의 현재 위치가 프로젝트 폴더인지 먼저 확인해야 합니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm.cmd` 형태를 그대로 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm` 형태를 그대로 사용합니다.
 
 ```powershell
 Get-Location
@@ -57,7 +57,7 @@ Next.js 프로젝트는 다른 사람이 만든 패키지를 조합해 사용합
 다음 명령은 `package.json`을 읽고 의존성을 설치하며 `package-lock.json`을 갱신합니다.
 
 ```powershell
-npm.cmd install
+npm install
 ```
 
 설치 결과는 `node_modules/` 폴더에 만들어집니다. 이 폴더는 크기가 크고 다시 만들 수 있으므로 Git에 보통 저장하지 않습니다.
@@ -65,29 +65,29 @@ npm.cmd install
 ```txt
 package.json + package-lock.json
               │
-              │ npm.cmd install
+              │ npm install
               ▼
          node_modules/
 ```
 
-`Cannot find module ...` 오류가 나거나 `node_modules`가 없다면 먼저 `npm.cmd install`을 실행합니다. 패키지가 `package.json`에 적혀 있어도 설치 폴더가 자동으로 생기는 것은 아닙니다.
+`Cannot find module ...` 오류가 나거나 `node_modules`가 없다면 먼저 `npm install`을 실행합니다. 패키지가 `package.json`에 적혀 있어도 설치 폴더가 자동으로 생기는 것은 아닙니다.
 
 ## 4. 자주 쓰는 npm 명령
 
 ```powershell
-npm.cmd run dev
+npm run dev
 ```
 
 개발 서버를 실행합니다. 서버가 켜져 있는 동안 터미널은 계속 로그를 출력합니다. 종료할 때는 터미널에서 `Control + C`를 누릅니다.
 
 ```powershell
-npm.cmd run lint
+npm run lint
 ```
 
 오타, 잘못된 React 사용법, 프로젝트 코드 규칙 등을 검사합니다.
 
 ```powershell
-npm.cmd run build
+npm run build
 ```
 
 배포용 결과물을 만들 수 있는지 검사합니다. 개발 화면이 열리더라도 build에서만 발견되는 오류가 있을 수 있습니다.
@@ -97,7 +97,7 @@ npm.cmd run build
 터미널 명령은 터미널에 입력합니다.
 
 ```powershell
-npm.cmd run dev
+npm run dev
 ```
 
 JavaScript 코드는 `.js` 파일 안에 입력합니다.
@@ -117,7 +117,7 @@ MONGODB_DB=next_blog_practice
 
 ## 프로젝트 예시
 
-- 환경 준비: `create-next-app`으로 프로젝트를 만들고 `npm.cmd run dev`, `npm.cmd run lint`를 처음 사용합니다.
+- 환경 준비: `create-next-app`으로 프로젝트를 만들고 `npm run dev`, `npm run lint`를 처음 사용합니다.
 - `step-3`: MongoDB 패키지를 추가하고 환경 파일을 만듭니다.
 - `step-20`: Tailwind 패키지가 추가되므로 설치 명령으로 의존성을 갱신합니다.
 
