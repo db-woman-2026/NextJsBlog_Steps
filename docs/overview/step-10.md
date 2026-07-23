@@ -30,7 +30,7 @@
 
 또한 API는 브라우저 form 없이도 직접 호출될 수 있습니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. Windows Terminal의 PowerShell에서 `git`, `node`, `npm.cmd` 명령을 실행합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. Windows Terminal의 PowerShell에서 `git`, `node`, `npm.cmd` 명령을 실행합니다.
 
 새 PowerShell 탭에서 다음 요청을 보냅니다.
 

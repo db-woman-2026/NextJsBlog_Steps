@@ -2,9 +2,9 @@
 
 `docs/lecture/` 실습 전에 읽을 기초 자료입니다. 프로젝트에서 반복해서 사용할 구조와 문법을 짧은 예제로 확인합니다.
 
-Windows 11에서 실습한다면 먼저 [Windows 11 환경 준비](../windows-11.md)를 확인합니다.
+Windows 11에서 실습한다면 먼저 [Windows 11 환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 확인합니다.
 
-단계별 확인 결과는 [실습 구성](../course-plan.md), 실행 오류는 [문제 해결](../troubleshooting.md)에서 확인합니다.
+단계별 확인 결과는 [실습 구성](../course-plan.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Next.js 블로그 실습 구성」 · 절 「시작 조건」)</span>, 실행 오류는 [문제 해결](../troubleshooting.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Next.js 실습 문제 해결」 · 절 「문서 코드와 현재 파일이 다릅니다」)</span>에서 확인합니다.
 
 여기의 예제 코드는 프로젝트 파일에 그대로 입력하는 diff가 아닙니다. 각 코드 블록은 특별한 안내가 없다면 서로 독립된 읽기 예제입니다. 코드를 한 줄씩 읽고 값이 어떻게 바뀌는지 말로 설명할 수 있으면 충분합니다.
 
@@ -25,23 +25,23 @@ Windows 11에서 실습한다면 먼저 [Windows 11 환경 준비](../windows-11
 
 | 부 | 문서 | 내용 | 연결되는 실습 |
 | --- | --- | --- | --- |
-| 1. 준비 | [00. 기초 개념과 개발 환경](./00-learning-map.md) | 터미널, npm, `node_modules`, 실행 확인 | 모든 단계 |
-| 1. 준비 | [01. 웹과 프로젝트 용어](./01-web-and-project-terms.md) | 브라우저, 서버, 요청, 응답, 경로 | `step-1` 이후 |
-| 1. 언어 | [02. 값, 변수, 자료형, 연산자](./02-values-variables-types.md) | `const`, `let`, 문자열, 숫자, boolean | 모든 단계 |
-| 1. 언어 | [03. 조건, 반복, 함수](./03-control-flow-functions.md) | `if`, 삼항 연산자, 함수, scope | 모든 단계 |
-| 1. 언어 | [04. 배열과 객체](./04-arrays-and-objects.md) | `map`, `filter`, 구조 분해, spread | `step-1`, `step-3` 이후 |
-| 1. 언어 | [05. 모듈, 문자열, 날짜](./05-modules-strings-dates.md) | `import`, `export`, template literal, `Date` | `step-1`, `step-12` 이후 |
-| 1. 언어 | [06. 비동기와 오류 처리](./06-async-fetch-errors.md) | Promise, `async/await`, `fetch`, `try/catch` | `step-3` 이후 |
-| 2. 화면 | [07. HTML, form, CSS](./07-html-forms-css.md) | 시맨틱 태그, 입력 요소, selector | `step-1`, `step-2` |
-| 2. 화면 | [08. JSX와 컴포넌트](./08-jsx-components-props.md) | JSX, props, children, 조건/목록 렌더링 | `step-1` 이후 |
-| 2. 화면 | [09. state, 이벤트, controlled form](./09-state-events-forms.md) | `useState`, 이벤트 객체, 입력 상태 | `step-6` 이후 |
-| 2. 화면 | [10. effect와 데이터 로딩](./10-effects-data-loading.md) | `useEffect`, 의존성 배열, 로딩/오류 상태 | `step-5` 이후 |
-| 3. Next.js | [11. App Router와 컴포넌트 경계](./11-nextjs-app-router.md) | `app`, `page.js`, `layout.js`, 서버/클라이언트 | `step-1` 이후 |
-| 3. Next.js | [12. 경로, params, 이동, 특수 화면](./12-routes-navigation-errors.md) | 동적 경로, query string, `Link`, 404/Error | `step-4` 이후 |
-| 3. 서버 | [13. HTTP, API, JSON, 검증](./13-http-api-json.md) | GET/POST/PUT/DELETE, 상태 코드, 응답 구조 | `step-4` 이후 |
-| 3. 데이터 | [14. Node.js, 환경 변수, MongoDB](./14-node-env-mongodb.md) | 런타임, 비밀값, DB/collection/document, CRUD | `step-3` 이후 |
-| 4. 스타일 | [15. Tailwind CSS 읽기](./15-tailwind-basics.md) | utility class, 상태/반응형 prefix | `step-20` 이후 |
-| 4. 연결 | [16. 블로그 코드 흐름 읽기](./16-project-walkthrough.md) | 목록, 상세, 작성, 수정, 삭제 흐름 종합 | 실습 시작 전 |
+| 1. 준비 | [00. 기초 개념과 개발 환경](./00-learning-map.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「00. 기초 개념과 개발 환경」 · 절 「확인할 내용」)</span> | 터미널, npm, `node_modules`, 실행 확인 | 모든 단계 |
+| 1. 준비 | [01. 웹과 프로젝트 용어](./01-web-and-project-terms.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「01. 웹과 프로젝트 용어」 · 절 「확인할 내용」)</span> | 브라우저, 서버, 요청, 응답, 경로 | `step-1` 이후 |
+| 1. 언어 | [02. 값, 변수, 자료형, 연산자](./02-values-variables-types.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「02. 값, 변수, 자료형, 연산자」 · 절 「확인할 내용」)</span> | `const`, `let`, 문자열, 숫자, boolean | 모든 단계 |
+| 1. 언어 | [03. 조건, 반복, 함수](./03-control-flow-functions.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「03. 조건, 반복, 함수」 · 절 「확인할 내용」)</span> | `if`, 삼항 연산자, 함수, scope | 모든 단계 |
+| 1. 언어 | [04. 배열과 객체](./04-arrays-and-objects.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「04. 배열과 객체」 · 절 「확인할 내용」)</span> | `map`, `filter`, 구조 분해, spread | `step-1`, `step-3` 이후 |
+| 1. 언어 | [05. 모듈, 문자열, 날짜](./05-modules-strings-dates.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「05. 모듈, 문자열, 날짜」 · 절 「확인할 내용」)</span> | `import`, `export`, template literal, `Date` | `step-1`, `step-12` 이후 |
+| 1. 언어 | [06. 비동기와 오류 처리](./06-async-fetch-errors.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「06. 비동기와 오류 처리」 · 절 「확인할 내용」)</span> | Promise, `async/await`, `fetch`, `try/catch` | `step-3` 이후 |
+| 2. 화면 | [07. HTML, form, CSS](./07-html-forms-css.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「07. HTML, form, CSS」 · 절 「확인할 내용」)</span> | 시맨틱 태그, 입력 요소, selector | `step-1`, `step-2` |
+| 2. 화면 | [08. JSX와 컴포넌트](./08-jsx-components-props.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「08. JSX와 컴포넌트」 · 절 「확인할 내용」)</span> | JSX, props, children, 조건/목록 렌더링 | `step-1` 이후 |
+| 2. 화면 | [09. state, 이벤트, controlled form](./09-state-events-forms.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「09. state, 이벤트, controlled form」 · 절 「확인할 내용」)</span> | `useState`, 이벤트 객체, 입력 상태 | `step-6` 이후 |
+| 2. 화면 | [10. effect와 데이터 로딩](./10-effects-data-loading.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「10. effect와 데이터 로딩」 · 절 「확인할 내용」)</span> | `useEffect`, 의존성 배열, 로딩/오류 상태 | `step-5` 이후 |
+| 3. Next.js | [11. App Router와 컴포넌트 경계](./11-nextjs-app-router.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「11. App Router와 컴포넌트 경계」 · 절 「확인할 내용」)</span> | `app`, `page.js`, `layout.js`, 서버/클라이언트 | `step-1` 이후 |
+| 3. Next.js | [12. 경로, params, 이동, 특수 화면](./12-routes-navigation-errors.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「12. 경로, params, 이동, 특수 화면」 · 절 「확인할 내용」)</span> | 동적 경로, query string, `Link`, 404/Error | `step-4` 이후 |
+| 3. 서버 | [13. HTTP, API, JSON, 검증](./13-http-api-json.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「13. HTTP, API, JSON, 검증」 · 절 「확인할 내용」)</span> | GET/POST/PUT/DELETE, 상태 코드, 응답 구조 | `step-4` 이후 |
+| 3. 데이터 | [14. Node.js, 환경 변수, MongoDB](./14-node-env-mongodb.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「14. Node.js, 환경 변수, MongoDB」 · 절 「확인할 내용」)</span> | 런타임, 비밀값, DB/collection/document, CRUD | `step-3` 이후 |
+| 4. 스타일 | [15. Tailwind CSS 읽기](./15-tailwind-basics.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「15. Tailwind CSS 읽기」 · 절 「확인할 내용」)</span> | utility class, 상태/반응형 prefix | `step-20` 이후 |
+| 4. 연결 | [16. 블로그 코드 흐름 읽기](./16-project-walkthrough.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「16. 블로그 코드 흐름 읽기」 · 절 「확인할 내용」)</span> | 목록, 상세, 작성, 수정, 삭제 흐름 종합 | 실습 시작 전 |
 
 ## 예제 확인 방법
 
