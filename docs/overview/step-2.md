@@ -2,7 +2,7 @@
 
 ## 배울 내용
 
-`step-2` 브랜치는 `step-1`에서 만든 라우팅 껍데기에 기본 스타일과 이미지를 더합니다.
+Step 2에서는 Step 1에서 만든 라우팅 껍데기에 기본 스타일과 이미지를 더합니다.
 
 이 단계에서 배우는 내용은 다음과 같습니다.
 
@@ -29,7 +29,7 @@
 
 다음 명령으로 패키지를 설치합니다.
 
-> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md)를 먼저 확인합니다. `git`, `node`, `npm.cmd` 명령은 PowerShell에서도 같습니다. `npm.ps1` 오류가 나면 `npm.cmd`를 사용합니다.
 
 ```powershell
 npm.cmd install simpledotcss@^2.3.7
