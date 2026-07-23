@@ -1,6 +1,6 @@
 # Step 10. 입력값 검증 강화와 서버 오류 메시지 표시
 
-## 이번 단계에서 할 일
+## 변경 내용
 
 작성/수정 API에 서버 검증을 추가하고 공백 입력 오류 메시지를 화면에 표시합니다.
 
@@ -10,7 +10,7 @@
 
 ## 시작 전 확인
 
-권장 시간은 45분입니다. 개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
+개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
 
 수정 전에 `git status --short`의 출력이 없는지 확인합니다. 변경이 남아 있다면 원인을 확인하고 시작 상태를 정리합니다.
 
@@ -22,38 +22,56 @@
 
 - 수정: `app/api/post/route.js`
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/api/post/route.js b/app/api/post/route.js
-index 98fabfd..346044d 100644
---- a/app/api/post/route.js
-+++ b/app/api/post/route.js
-@@ -14,12 +14,20 @@ export async function GET() {
- export async function POST(request) {
-   try {
-     const postData = await request.json();
-+    const title =
-+      typeof postData.title === "string" ? postData.title.trim() : "";
-+    const content =
-+      typeof postData.content === "string" ? postData.content.trim() : "";
+#### `app/api/post/route.js`
 
--    if (!postData.title || !postData.content) {
-+    if (!title || !content) {
-       return apiError("Title and content are required", 400);
-     }
+`app/api/post/route.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
 
--    const result = await createPost(postData);
-+    const result = await createPost({
-+      title,
-+      content,
-+      image: postData.image,
-+    });
+~~~js
+import { apiError, apiSuccess } from "@/lib/apiResponse";
+import { createPost, listPosts } from "@/lib/posts";
 
-     return apiSuccess(
-       { postId: result.insertedId },
+export async function GET() {
+  try {
+    const posts = await listPosts();
+    return apiSuccess(posts, "Posts fetched successfully");
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
+
+export async function POST(request) {
+  try {
+    const postData = await request.json();
+    const title =
+      typeof postData.title === "string" ? postData.title.trim() : "";
+    const content =
+      typeof postData.content === "string" ? postData.content.trim() : "";
+
+    if (!title || !content) {
+      return apiError("Title and content are required", 400);
+    }
+
+    const result = await createPost({
+      title,
+      content,
+      image: postData.image,
+    });
+
+    return apiSuccess(
+      { postId: result.insertedId },
+      "Post created successfully",
+      { status: 201 },
+    );
+  } catch (error) {
+    console.error("Error creating post:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
 ~~~
 
 ### 설명과 확인
@@ -69,34 +87,59 @@ index 98fabfd..346044d 100644
 
 - 수정: [app/api/post/[id]/route.js](../../app/api/post/%5Bid%5D/route.js)
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/api/post/[id]/route.js b/app/api/post/[id]/route.js
-index 0525348..f5f3b68 100644
---- a/app/api/post/[id]/route.js
-+++ b/app/api/post/[id]/route.js
-@@ -21,12 +21,16 @@ export async function PUT(request, { params }) {
-   try {
-     const { id } = await params;
-     const postData = await request.json();
-+    const title =
-+      typeof postData.title === "string" ? postData.title.trim() : "";
-+    const content =
-+      typeof postData.content === "string" ? postData.content.trim() : "";
+#### `app/api/post/[id]/route.js`
 
--    if (!postData.title || !postData.content) {
-+    if (!title || !content) {
-       return apiError("Title and content are required", 400);
-     }
+`app/api/post/[id]/route.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
 
--    const result = await updatePost(id, postData);
-+    const result = await updatePost(id, { title, content });
+~~~js
+import { apiError, apiSuccess } from "@/lib/apiResponse";
+import { getPostById, updatePost } from "@/lib/posts";
 
-     if (!result || result.matchedCount === 0) {
-       return apiError("Post not found", 404);
+export async function GET(_request, { params }) {
+  try {
+    const { id } = await params;
+    const post = await getPostById(id);
+
+    if (!post) {
+      return apiError("Post not found", 404);
+    }
+
+    return apiSuccess(post, "Post fetched successfully");
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
+
+export async function PUT(request, { params }) {
+  try {
+    const { id } = await params;
+    const postData = await request.json();
+    const title =
+      typeof postData.title === "string" ? postData.title.trim() : "";
+    const content =
+      typeof postData.content === "string" ? postData.content.trim() : "";
+
+    if (!title || !content) {
+      return apiError("Title and content are required", 400);
+    }
+
+    const result = await updatePost(id, { title, content });
+
+    if (!result || result.matchedCount === 0) {
+      return apiError("Post not found", 404);
+    }
+
+    return apiSuccess({ postId: id }, "Post updated successfully");
+  } catch (error) {
+    console.error("Error updating post:", error);
+    return apiError("Internal Server Error", 500);
+  }
+}
 ~~~
 
 ### 설명과 확인
@@ -128,12 +171,12 @@ npm.cmd run dev
 
 ## 독립 확인
 
-공백 문자열과 정상 문자열의 POST 응답을 비교합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험을 위해 바꾼 값은 다음 단계 전에 복구합니다.
+공백 문자열과 정상 문자열의 POST 응답을 비교합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험값은 검사를 마치면 원래대로 복구합니다.
 
 ## 마무리 확인
 
-- 이 문서의 각 작업 단위에서 설명을 먼저 읽고, 바로 아래 diff를 기준으로 파일을 수정합니다.
-- 새 파일은 diff에 나온 전체 내용을 입력하고, 기존 파일은 diff의 `+`/`-` 줄만 비교하면서 수정합니다.
+- 각 작업 단위의 설명과 파일 경로를 먼저 확인합니다.
+- 코드 블록은 해당 파일의 일부가 아니라 현재 단계에서 사용할 전체 내용입니다.
 
 ## 저장소에 기록하기
 
@@ -142,13 +185,11 @@ npm.cmd run dev
 ```powershell
 git branch --show-current
 git status --short
-git diff
 npm.cmd run lint
 npm.cmd run build
 git add .
-git diff --staged
 git commit -m "Complete Next.js step 10"
-git push origin main
+git push
 git status --short --branch
 ```
 
