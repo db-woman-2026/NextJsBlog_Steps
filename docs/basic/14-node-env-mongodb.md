@@ -1,10 +1,10 @@
 # 14. Node.js, 환경 변수, MongoDB
 
-## 배울 내용
+## 확인할 내용
 
 - 브라우저 JavaScript와 Node.js 서버 실행 환경을 구분합니다.
 - 환경 변수에 둘 값과 공개 코드에 둘 값을 구분합니다.
-- MongoDB의 database, collection, document와 CRUD method를 알아봅니다.
+- MongoDB의 database, collection, document와 CRUD method를 구분합니다.
 - `ObjectId`를 사용하는 이유를 이해합니다.
 
 ## 1. JavaScript 실행 환경
