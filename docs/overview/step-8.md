@@ -2,7 +2,7 @@
 
 ## 배울 내용
 
-`step-8` 브랜치는 Contact 페이지를 실제 form 구조로 바꾸는 단계입니다.
+Step 8에서는 Contact 페이지를 실제 form 구조로 바꿉니다.
 
 `step-7`까지 게시글 읽기, 작성, 수정 흐름을 완성했습니다. 핵심 CRUD와 별개인 Contact 페이지를 mockup form으로 구현합니다.
 
