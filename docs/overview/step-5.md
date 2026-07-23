@@ -332,18 +332,18 @@ CSS Module을 사용하면 클래스 이름이 해당 컴포넌트 범위 안에
 - `.env.local` 생성
 - 개발 서버 실행
 
-> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm.cmd` 형태를 그대로 사용합니다.
+> Windows 11에서는 [환경 준비](../windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>를 먼저 확인합니다. 명령은 이 교재의 PowerShell 코드 블록에 적힌 `git`, `node`, `npm` 형태를 그대로 사용합니다.
 
 ```powershell
 Copy-Item -LiteralPath .env.example -Destination .env.local
-npm.cmd run dev
+npm run dev
 ```
 
 PowerShell에서는 다음 명령을 사용합니다.
 
 ```powershell
 Copy-Item .env.example .env.local
-npm.cmd run dev
+npm run dev
 ```
 
 브라우저에서 다음 주소를 엽니다.
@@ -359,8 +359,8 @@ http://localhost:3000/
 ## 검증 명령
 
 ```powershell
-npm.cmd run lint
-npm.cmd run build
+npm run lint
+npm run build
 ```
 
 빌드 출력에 다음 route가 보이면 목록과 상세 라우트가 함께 준비된 것입니다.
