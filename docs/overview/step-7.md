@@ -1,10 +1,10 @@
 # Step 7. 게시글 수정 화면 만들기
 
-## 배울 내용
+## 변경 내용
 
-Step 7에서는 게시글 수정 화면을 추가합니다.
+게시글 수정 화면을 추가합니다.
 
-이 단계에서 만드는 주소는 다음과 같습니다.
+추가하는 주소는 다음과 같습니다.
 
 ```txt
 /post/[id]
@@ -16,7 +16,7 @@ Step 7에서는 게시글 수정 화면을 추가합니다.
 /post/64f...
 ```
 
-이 단계에서 배우는 내용은 다음과 같습니다.
+다음 내용을 확인합니다.
 
 - 동적 라우트 `[id]` 폴더를 만든다.
 - `useParams`로 URL의 id를 읽는다.
@@ -226,7 +226,6 @@ router.refresh();
 ```js
 import styles from "../page.module.css";
 ```
-
 수정 페이지 파일은 `app/post/[id]/page.js`에 있으므로, 한 단계 위 폴더의 CSS 파일을 가져오기 위해 `../page.module.css`를 사용합니다.
 
 ## 실습 순서
@@ -306,7 +305,3 @@ effect에서 id를 사용하므로 dependency 배열에도 넣습니다.
 ```js
 import styles from "../page.module.css";
 ```
-
-## 이 단계에서 아직 하지 않는 것
-
-게시글 읽기, 작성, 수정 흐름은 이제 연결됐습니다. 다음 단계에서는 핵심 CRUD 흐름과 별개인 Contact 페이지를 mockup form으로 바꿉니다.

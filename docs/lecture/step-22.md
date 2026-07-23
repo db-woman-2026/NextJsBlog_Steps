@@ -1,6 +1,6 @@
 # Step 22. 작성, 수정, Contact form UI 정리
 
-## 이번 단계에서 할 일
+## 변경 내용
 
 게시글 작성/수정 form과 Contact form에 같은 Tailwind 입력/버튼 패턴을 적용합니다.
 
@@ -10,7 +10,7 @@
 
 ## 시작 전 확인
 
-권장 시간은 100분입니다. 개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
+개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
 
 수정 전에 `git status --short`의 출력이 없는지 확인합니다. 변경이 남아 있다면 원인을 확인하고 시작 상태를 정리합니다.
 
@@ -31,169 +31,161 @@
 Remove-Item -LiteralPath 'app/post/page.module.css'
 ```
 
-PowerShell에서는 다음 명령을 사용합니다.
+### 입력할 코드
 
-```powershell
-Remove-Item app/post/page.module.css
-```
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-### 코드 변경
+#### `app/post/page.js`
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+`app/post/page.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
 
-~~~diff
-diff --git a/app/post/page.js b/app/post/page.js
-index 952f1b7..9863577 100644
---- a/app/post/page.js
-+++ b/app/post/page.js
-@@ -2,7 +2,6 @@
+~~~js
+"use client";
 
- import { useState } from "react";
- import { useRouter } from "next/navigation";
--import styles from "./page.module.css";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
- const CATEGORY_OPTIONS = [
-   { value: "general", label: "General" },
-@@ -10,6 +9,15 @@ const CATEGORY_OPTIONS = [
-   { value: "daily", label: "Daily" },
-   { value: "tech", label: "Tech" },
- ];
-+const fieldClassName = "grid gap-1.5";
-+const labelClassName = "text-sm font-medium text-zinc-700";
-+const inputClassName =
-+  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 disabled:bg-zinc-100";
-+const textareaClassName = `${inputClassName} min-h-48 resize-y`;
-+const primaryButtonClassName =
-+  "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50";
-+const errorClassName =
-+  "rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700";
+const CATEGORY_OPTIONS = [
+  { value: "general", label: "General" },
+  { value: "notice", label: "Notice" },
+  { value: "daily", label: "Daily" },
+  { value: "tech", label: "Tech" },
+];
+const fieldClassName = "grid gap-1.5";
+const labelClassName = "text-sm font-medium text-zinc-700";
+const inputClassName =
+  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 disabled:bg-zinc-100";
+const textareaClassName = `${inputClassName} min-h-48 resize-y`;
+const primaryButtonClassName =
+  "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50";
+const errorClassName =
+  "rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700";
 
- export default function NewPost() {
-   const [title, setTitle] = useState("");
-@@ -53,44 +61,78 @@ export default function NewPost() {
-   }
+export default function NewPost() {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [category, setCategory] = useState("general");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
-   return (
--    <main className={styles.container}>
--      <h1>Create New Post</h1>
--      {error && <p role="alert">{error}</p>}
--      <form onSubmit={handleSubmit}>
--        <label htmlFor="title">Title:</label>
--        <input
--          type="text"
--          id="title"
--          value={title}
--          onChange={(event) => setTitle(event.target.value)}
--          disabled={isSubmitting}
--          required
--        />
-+    <main className="space-y-6">
-+      <section className="space-y-2">
-+        <p className="text-sm font-semibold uppercase text-zinc-500">Write</p>
-+        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
-+          Create New Post
-+        </h1>
-+        <p className="max-w-2xl text-sm leading-6 text-zinc-600">
-+          제목, 본문, 카테고리를 입력해 새 게시글을 작성합니다.
-+        </p>
-+      </section>
-+      {error && (
-+        <p className={errorClassName} role="alert">
-+          {error}
-+        </p>
-+      )}
-+      <form
-+        className="grid max-w-2xl gap-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
-+        onSubmit={handleSubmit}
-+      >
-+        <div className={fieldClassName}>
-+          <label className={labelClassName} htmlFor="title">
-+            Title
-+          </label>
-+          <input
-+            className={inputClassName}
-+            type="text"
-+            id="title"
-+            value={title}
-+            onChange={(event) => setTitle(event.target.value)}
-+            disabled={isSubmitting}
-+            required
-+          />
-+        </div>
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setError("");
+    setIsSubmitting(true);
 
--        <label htmlFor="content">Content:</label>
--        <textarea
--          id="content"
--          value={content}
--          onChange={(event) => setContent(event.target.value)}
--          disabled={isSubmitting}
--          required
--        />
-+        <div className={fieldClassName}>
-+          <label className={labelClassName} htmlFor="content">
-+            Content
-+          </label>
-+          <textarea
-+            className={textareaClassName}
-+            id="content"
-+            value={content}
-+            onChange={(event) => setContent(event.target.value)}
-+            disabled={isSubmitting}
-+            required
-+          />
-+        </div>
+    try {
+      const response = await fetch("/api/post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          content,
+          category,
+          image: "https://picsum.photos/100",
+        }),
+      });
+      const result = await response.json();
 
--        <label htmlFor="category">Category:</label>
--        <select
--          id="category"
--          value={category}
--          onChange={(event) => setCategory(event.target.value)}
-+        <div className={fieldClassName}>
-+          <label className={labelClassName} htmlFor="category">
-+            Category
-+          </label>
-+          <select
-+            className={inputClassName}
-+            id="category"
-+            value={category}
-+            onChange={(event) => setCategory(event.target.value)}
-+            disabled={isSubmitting}
-+          >
-+            {CATEGORY_OPTIONS.map((option) => (
-+              <option key={option.value} value={option.value}>
-+                {option.label}
-+              </option>
-+            ))}
-+          </select>
-+        </div>
-+
-+        <button
-+          className={primaryButtonClassName}
-+          type="submit"
-           disabled={isSubmitting}
-         >
--          {CATEGORY_OPTIONS.map((option) => (
--            <option key={option.value} value={option.value}>
--              {option.label}
--            </option>
--          ))}
--        </select>
--
--        <button type="submit" disabled={isSubmitting}>
-           {isSubmitting ? "Creating..." : "Create Post"}
-         </button>
-       </form>
-diff --git a/app/post/page.module.css b/app/post/page.module.css
-deleted file mode 100644
-index 8a6b6ea..0000000
---- a/app/post/page.module.css
-+++ /dev/null
-@@ -1,4 +0,0 @@
--.container {
--  display: grid;
--  gap: 1rem;
--}
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to create post");
+      }
+
+      router.push(`/detail/${result.data.postId}`);
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to create post");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  return (
+    <main className="space-y-6">
+      <section className="space-y-2">
+        <p className="text-sm font-semibold uppercase text-zinc-500">Write</p>
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
+          Create New Post
+        </h1>
+        <p className="max-w-2xl text-sm leading-6 text-zinc-600">
+          제목, 본문, 카테고리를 입력해 새 게시글을 작성합니다.
+        </p>
+      </section>
+      {error && (
+        <p className={errorClassName} role="alert">
+          {error}
+        </p>
+      )}
+      <form
+        className="grid max-w-2xl gap-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
+        onSubmit={handleSubmit}
+      >
+        <div className={fieldClassName}>
+          <label className={labelClassName} htmlFor="title">
+            Title
+          </label>
+          <input
+            className={inputClassName}
+            type="text"
+            id="title"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+            disabled={isSubmitting}
+            required
+          />
+        </div>
+
+        <div className={fieldClassName}>
+          <label className={labelClassName} htmlFor="content">
+            Content
+          </label>
+          <textarea
+            className={textareaClassName}
+            id="content"
+            value={content}
+            onChange={(event) => setContent(event.target.value)}
+            disabled={isSubmitting}
+            required
+          />
+        </div>
+
+        <div className={fieldClassName}>
+          <label className={labelClassName} htmlFor="category">
+            Category
+          </label>
+          <select
+            className={inputClassName}
+            id="category"
+            value={category}
+            onChange={(event) => setCategory(event.target.value)}
+            disabled={isSubmitting}
+          >
+            {CATEGORY_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button
+          className={primaryButtonClassName}
+          type="submit"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Creating..." : "Create Post"}
+        </button>
+      </form>
+    </main>
+  );
+}
 ~~~
+
+#### `app/post/page.module.css` 삭제
+
+`app/post/page.module.css`는 더 이상 사용하지 않으므로 삭제합니다.
 
 ### 설명과 확인
 
@@ -208,157 +200,181 @@ index 8a6b6ea..0000000
 
 - 수정: [app/post/[id]/page.js](../../app/post/%5Bid%5D/page.js)
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/post/[id]/page.js b/app/post/[id]/page.js
-index 9fa480c..79589b4 100644
---- a/app/post/[id]/page.js
-+++ b/app/post/[id]/page.js
-@@ -2,7 +2,6 @@
+#### `app/post/[id]/page.js`
 
- import { useEffect, useState } from "react";
- import { useParams, useRouter } from "next/navigation";
--import styles from "../page.module.css";
+`app/post/[id]/page.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
 
- const CATEGORY_OPTIONS = [
-   { value: "general", label: "General" },
-@@ -10,6 +9,15 @@ const CATEGORY_OPTIONS = [
-   { value: "daily", label: "Daily" },
-   { value: "tech", label: "Tech" },
- ];
-+const fieldClassName = "grid gap-1.5";
-+const labelClassName = "text-sm font-medium text-zinc-700";
-+const inputClassName =
-+  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 disabled:bg-zinc-100";
-+const textareaClassName = `${inputClassName} min-h-48 resize-y`;
-+const primaryButtonClassName =
-+  "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50";
-+const errorClassName =
-+  "rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700";
+~~~js
+"use client";
 
- export default function EditPost() {
-   const [title, setTitle] = useState("");
-@@ -73,44 +81,78 @@ export default function EditPost() {
-   }
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 
-   return (
--    <main className={styles.container}>
--      <h1>Edit Post</h1>
--      {error && <p role="alert">{error}</p>}
--      <form onSubmit={handleSubmit}>
--        <label htmlFor="title">Title:</label>
--        <input
--          type="text"
--          id="title"
--          value={title}
--          onChange={(event) => setTitle(event.target.value)}
--          disabled={isSubmitting}
--          required
--        />
-+    <main className="space-y-6">
-+      <section className="space-y-2">
-+        <p className="text-sm font-semibold uppercase text-zinc-500">Edit</p>
-+        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
-+          Edit Post
-+        </h1>
-+        <p className="max-w-2xl text-sm leading-6 text-zinc-600">
-+          기존 게시글을 불러온 뒤 제목, 본문, 카테고리를 수정합니다.
-+        </p>
-+      </section>
-+      {error && (
-+        <p className={errorClassName} role="alert">
-+          {error}
-+        </p>
-+      )}
-+      <form
-+        className="grid max-w-2xl gap-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
-+        onSubmit={handleSubmit}
-+      >
-+        <div className={fieldClassName}>
-+          <label className={labelClassName} htmlFor="title">
-+            Title
-+          </label>
-+          <input
-+            className={inputClassName}
-+            type="text"
-+            id="title"
-+            value={title}
-+            onChange={(event) => setTitle(event.target.value)}
-+            disabled={isSubmitting}
-+            required
-+          />
-+        </div>
+const CATEGORY_OPTIONS = [
+  { value: "general", label: "General" },
+  { value: "notice", label: "Notice" },
+  { value: "daily", label: "Daily" },
+  { value: "tech", label: "Tech" },
+];
+const fieldClassName = "grid gap-1.5";
+const labelClassName = "text-sm font-medium text-zinc-700";
+const inputClassName =
+  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 disabled:bg-zinc-100";
+const textareaClassName = `${inputClassName} min-h-48 resize-y`;
+const primaryButtonClassName =
+  "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50";
+const errorClassName =
+  "rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700";
 
--        <label htmlFor="content">Content:</label>
--        <textarea
--          id="content"
--          value={content}
--          onChange={(event) => setContent(event.target.value)}
--          disabled={isSubmitting}
--          required
--        />
-+        <div className={fieldClassName}>
-+          <label className={labelClassName} htmlFor="content">
-+            Content
-+          </label>
-+          <textarea
-+            className={textareaClassName}
-+            id="content"
-+            value={content}
-+            onChange={(event) => setContent(event.target.value)}
-+            disabled={isSubmitting}
-+            required
-+          />
-+        </div>
+export default function EditPost() {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [category, setCategory] = useState("general");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { id } = useParams();
+  const router = useRouter();
 
--        <label htmlFor="category">Category:</label>
--        <select
--          id="category"
--          value={category}
--          onChange={(event) => setCategory(event.target.value)}
-+        <div className={fieldClassName}>
-+          <label className={labelClassName} htmlFor="category">
-+            Category
-+          </label>
-+          <select
-+            className={inputClassName}
-+            id="category"
-+            value={category}
-+            onChange={(event) => setCategory(event.target.value)}
-+            disabled={isSubmitting}
-+          >
-+            {CATEGORY_OPTIONS.map((option) => (
-+              <option key={option.value} value={option.value}>
-+                {option.label}
-+              </option>
-+            ))}
-+          </select>
-+        </div>
-+
-+        <button
-+          className={primaryButtonClassName}
-+          type="submit"
-           disabled={isSubmitting}
-         >
--          {CATEGORY_OPTIONS.map((option) => (
--            <option key={option.value} value={option.value}>
--              {option.label}
--            </option>
--          ))}
--        </select>
--
--        <button type="submit" disabled={isSubmitting}>
-           {isSubmitting ? "Updating..." : "Update Post"}
-         </button>
-       </form>
+  useEffect(() => {
+    async function loadPost() {
+      try {
+        const response = await fetch(`/api/post/${id}`);
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || "Failed to fetch post data");
+        }
+
+        const post = result.data;
+        setTitle(post.title);
+        setContent(post.content);
+        setCategory(post.category || "general");
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to fetch post");
+      }
+    }
+
+    if (id) {
+      loadPost();
+    }
+  }, [id]);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setError("");
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(`/api/post/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, content, category }),
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to update post");
+      }
+
+      router.replace(`/detail/${result.data.postId}`);
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to update post");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  return (
+    <main className="space-y-6">
+      <section className="space-y-2">
+        <p className="text-sm font-semibold uppercase text-zinc-500">Edit</p>
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
+          Edit Post
+        </h1>
+        <p className="max-w-2xl text-sm leading-6 text-zinc-600">
+          기존 게시글을 불러온 뒤 제목, 본문, 카테고리를 수정합니다.
+        </p>
+      </section>
+      {error && (
+        <p className={errorClassName} role="alert">
+          {error}
+        </p>
+      )}
+      <form
+        className="grid max-w-2xl gap-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
+        onSubmit={handleSubmit}
+      >
+        <div className={fieldClassName}>
+          <label className={labelClassName} htmlFor="title">
+            Title
+          </label>
+          <input
+            className={inputClassName}
+            type="text"
+            id="title"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+            disabled={isSubmitting}
+            required
+          />
+        </div>
+
+        <div className={fieldClassName}>
+          <label className={labelClassName} htmlFor="content">
+            Content
+          </label>
+          <textarea
+            className={textareaClassName}
+            id="content"
+            value={content}
+            onChange={(event) => setContent(event.target.value)}
+            disabled={isSubmitting}
+            required
+          />
+        </div>
+
+        <div className={fieldClassName}>
+          <label className={labelClassName} htmlFor="category">
+            Category
+          </label>
+          <select
+            className={inputClassName}
+            id="category"
+            value={category}
+            onChange={(event) => setCategory(event.target.value)}
+            disabled={isSubmitting}
+          >
+            {CATEGORY_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button
+          className={primaryButtonClassName}
+          type="submit"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Updating..." : "Update Post"}
+        </button>
+      </form>
+    </main>
+  );
+}
 ~~~
 
 ### 설명과 확인
 
-- 작성 화면과 수정 화면의 class 상수 이름과 구조를 맞추면 비교 학습이 쉽습니다.
+- 작성 화면과 수정 화면의 class 상수 이름과 구조를 맞추면 두 구현을 비교하기 쉽습니다.
 - disabled 상태는 입력칸과 버튼 모두에서 시각적으로 드러나야 합니다.
 
 ## 작업 3. Contact form Tailwind UI 적용
@@ -370,138 +386,123 @@ Contact form도 실제 기능은 mockup이지만 사용자가 입력하는 화�
 - 수정: `app/contact/page.js`
 - 수정: `app/contact/ContactForm.js`
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/contact/ContactForm.js b/app/contact/ContactForm.js
-index c746234..47a1805 100644
---- a/app/contact/ContactForm.js
-+++ b/app/contact/ContactForm.js
-@@ -2,6 +2,14 @@
+#### `app/contact/ContactForm.js`
 
- import { useState } from "react";
+`app/contact/ContactForm.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
 
-+const fieldClassName = "grid gap-1.5";
-+const labelClassName = "text-sm font-medium text-zinc-700";
-+const inputClassName =
-+  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200";
-+const textareaClassName = `${inputClassName} min-h-40 resize-y`;
-+const primaryButtonClassName =
-+  "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700";
-+
- export default function ContactForm() {
-   const [name, setName] = useState("");
-   const [email, setEmail] = useState("");
-@@ -20,34 +28,54 @@ export default function ContactForm() {
-   }
+~~~js
+"use client";
 
-   return (
--    <form onSubmit={handleSubmit}>
--      <label htmlFor="name">Name:</label>
--      <input
--        type="text"
--        id="name"
--        value={name}
--        onChange={(event) => setName(event.target.value)}
--        required
--      />
--
--      <label htmlFor="email">Email:</label>
--      <input
--        type="email"
--        id="email"
--        value={email}
--        onChange={(event) => setEmail(event.target.value)}
--        required
--      />
--
--      <label htmlFor="message">Message:</label>
--      <textarea
--        id="message"
--        value={message}
--        onChange={(event) => setMessage(event.target.value)}
--        required
--      />
--
--      <button type="submit">Submit</button>
-+    <form
-+      className="grid max-w-2xl gap-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
-+      onSubmit={handleSubmit}
-+    >
-+      <div className={fieldClassName}>
-+        <label className={labelClassName} htmlFor="name">
-+          Name
-+        </label>
-+        <input
-+          className={inputClassName}
-+          type="text"
-+          id="name"
-+          value={name}
-+          onChange={(event) => setName(event.target.value)}
-+          required
-+        />
-+      </div>
-+
-+      <div className={fieldClassName}>
-+        <label className={labelClassName} htmlFor="email">
-+          Email
-+        </label>
-+        <input
-+          className={inputClassName}
-+          type="email"
-+          id="email"
-+          value={email}
-+          onChange={(event) => setEmail(event.target.value)}
-+          required
-+        />
-+      </div>
-+
-+      <div className={fieldClassName}>
-+        <label className={labelClassName} htmlFor="message">
-+          Message
-+        </label>
-+        <textarea
-+          className={textareaClassName}
-+          id="message"
-+          value={message}
-+          onChange={(event) => setMessage(event.target.value)}
-+          required
-+        />
-+      </div>
-+
-+      <button className={primaryButtonClassName} type="submit">
-+        Submit
-+      </button>
-     </form>
-   );
- }
-diff --git a/app/contact/page.js b/app/contact/page.js
-index c14ed86..549c4e7 100644
---- a/app/contact/page.js
-+++ b/app/contact/page.js
-@@ -2,8 +2,18 @@ import ContactForm from "./ContactForm";
+import { useState } from "react";
 
- export default function ContactPage() {
-   return (
--    <main>
--      <h1>Contact Us</h1>
-+    <main className="space-y-6">
-+      <section className="space-y-2">
-+        <p className="text-sm font-semibold uppercase text-zinc-500">
-+          Contact
-+        </p>
-+        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
-+          Contact Us
-+        </h1>
-+        <p className="max-w-2xl text-sm leading-6 text-zinc-600">
-+          controlled input과 submit 이벤트를 연습하는 mockup form입니다.
-+        </p>
-+      </section>
-       <ContactForm />
-     </main>
-   );
+const fieldClassName = "grid gap-1.5";
+const labelClassName = "text-sm font-medium text-zinc-700";
+const inputClassName =
+  "rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200";
+const textareaClassName = `${inputClassName} min-h-40 resize-y`;
+const primaryButtonClassName =
+  "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700";
+
+export default function ContactForm() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    alert(
+      `메일 전송 mockup입니다.\n\n이름: ${name}\n이메일: ${email}\n내용: ${message}`,
+    );
+
+    setName("");
+    setEmail("");
+    setMessage("");
+  }
+
+  return (
+    <form
+      className="grid max-w-2xl gap-4 rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
+      onSubmit={handleSubmit}
+    >
+      <div className={fieldClassName}>
+        <label className={labelClassName} htmlFor="name">
+          Name
+        </label>
+        <input
+          className={inputClassName}
+          type="text"
+          id="name"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+          required
+        />
+      </div>
+
+      <div className={fieldClassName}>
+        <label className={labelClassName} htmlFor="email">
+          Email
+        </label>
+        <input
+          className={inputClassName}
+          type="email"
+          id="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          required
+        />
+      </div>
+
+      <div className={fieldClassName}>
+        <label className={labelClassName} htmlFor="message">
+          Message
+        </label>
+        <textarea
+          className={textareaClassName}
+          id="message"
+          value={message}
+          onChange={(event) => setMessage(event.target.value)}
+          required
+        />
+      </div>
+
+      <button className={primaryButtonClassName} type="submit">
+        Submit
+      </button>
+    </form>
+  );
+}
+~~~
+
+#### `app/contact/page.js`
+
+`app/contact/page.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~js
+import ContactForm from "./ContactForm";
+
+export default function ContactPage() {
+  return (
+    <main className="space-y-6">
+      <section className="space-y-2">
+        <p className="text-sm font-semibold uppercase text-zinc-500">
+          Contact
+        </p>
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-950">
+          Contact Us
+        </h1>
+        <p className="max-w-2xl text-sm leading-6 text-zinc-600">
+          controlled input과 submit 이벤트를 연습하는 mockup form입니다.
+        </p>
+      </section>
+      <ContactForm />
+    </main>
+  );
+}
 ~~~
 
 ### 설명과 확인
@@ -531,12 +532,12 @@ npm.cmd run dev
 
 ## 독립 확인
 
-keyboard만으로 label, input, button 순서로 이동합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험을 위해 바꾼 값은 다음 단계 전에 복구합니다.
+keyboard만으로 label, input, button 순서로 이동합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험값은 검사를 마치면 원래대로 복구합니다.
 
 ## 마무리 확인
 
-- 이 문서의 각 작업 단위에서 설명을 먼저 읽고, 바로 아래 diff를 기준으로 파일을 수정합니다.
-- 새 파일은 diff에 나온 전체 내용을 입력하고, 기존 파일은 diff의 `+`/`-` 줄만 비교하면서 수정합니다.
+- 각 작업 단위의 설명과 파일 경로를 먼저 확인합니다.
+- 코드 블록은 해당 파일의 일부가 아니라 현재 단계에서 사용할 전체 내용입니다.
 
 ## 저장소에 기록하기
 
@@ -545,13 +546,11 @@ keyboard만으로 label, input, button 순서로 이동합니다. 결과와 확�
 ```powershell
 git branch --show-current
 git status --short
-git diff
 npm.cmd run lint
 npm.cmd run build
 git add .
-git diff --staged
 git commit -m "Complete Next.js step 22"
-git push origin main
+git push
 git status --short --branch
 ```
 
