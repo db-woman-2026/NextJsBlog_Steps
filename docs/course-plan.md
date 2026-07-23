@@ -1,39 +1,36 @@
-# Next.js 블로그 과정 계획
+# Next.js 블로그 실습 구성
 
-Next.js App Router, MongoDB CRUD, 검색과 페이지네이션, 오류 화면, Tailwind CSS를 9회 수업으로 진행합니다. 기본 문법이 낯설다면 첫 수업 전에 [Next.js 기초](./basic/index.md)를 읽습니다.
+Next.js App Router, MongoDB CRUD, 검색과 페이지네이션, 오류 화면, Tailwind CSS를 구현합니다. 기본 문법이 낯설다면 [Next.js 기초](./basic/index.md)에서 필요한 개념을 확인합니다.
 
-## 대상과 선수 지식
+## 시작 조건
 
 - JavaScript 함수, 배열, 객체, `async`와 `await`의 모양을 읽을 수 있습니다.
 - React의 component, props, state, event를 한 번 이상 사용했습니다.
-- 터미널에서 `npm.cmd ci`와 `npm.cmd run dev`를 실행할 수 있습니다.
+- [Windows 11 환경 준비](./windows-11.md)에 따라 `create-next-app` 프로젝트와 개인 GitHub 저장소를 만들었습니다.
+- 터미널에서 `npm.cmd install`과 `npm.cmd run dev`를 실행할 수 있습니다.
 - HTTP method와 JSON의 기본 의미를 알고 있습니다.
 
-## 권장 운영
+## 단계별 결과
 
-| 회차 | 단계 | 권장 시간 | 확인 결과 |
-| --- | --- | ---: | --- |
-| 1 | `step-1~2` | 180분 | App Router 화면과 공통 layout을 만들고 이미지·기본 스타일을 확인합니다. |
-| 2 | `step-3~4` | 180분 | 강의 전용 MongoDB에 연결하고 CRUD API의 상태 코드와 JSON을 확인합니다. |
-| 3 | `step-5~7` | 210분 | 목록, 상세, 작성, 수정 흐름을 브라우저와 데이터베이스에서 검증합니다. |
-| 4 | `step-8~11` | 180분 | controlled form, 프로젝트 정리, 서버 검증, 제출 상태와 이동을 확인합니다. |
-| 5 | `step-12~14` | 165분 | 날짜, 삭제, 클라이언트 검색을 추가하고 빈 결과를 확인합니다. |
-| 6 | `step-15~17` | 210분 | 서버 검색, 페이지 경계, 정렬 query string을 검증합니다. |
-| 7 | `step-18~19` | 180분 | 404·Error 화면과 카테고리 데이터 이전을 확인합니다. |
-| 8 | `step-20~21` | 180분 | Tailwind CSS를 설치하고 공통·읽기 화면을 전환합니다. |
-| 9 | `step-22~23` | 180분 | form, 삭제, 404, Error 화면의 스타일과 접근성을 점검합니다. |
+| 단계 | 확인 결과 |
+| --- | --- |
+| `step-1~2` | App Router 화면과 공통 layout을 만들고 이미지·기본 스타일을 확인합니다. |
+| `step-3~4` | 전용 MongoDB에 연결하고 CRUD API의 상태 코드와 JSON을 확인합니다. |
+| `step-5~7` | 목록, 상세, 작성, 수정 흐름을 브라우저와 데이터베이스에서 검증합니다. |
+| `step-8~11` | controlled form, 프로젝트 정리, 서버 검증, 제출 상태와 이동을 확인합니다. |
+| `step-12~14` | 날짜, 삭제, 클라이언트 검색을 추가하고 빈 결과를 확인합니다. |
+| `step-15~17` | 서버 검색, 페이지 경계, 정렬 query string을 검증합니다. |
+| `step-18~19` | 404·Error 화면과 카테고리 데이터 이전을 확인합니다. |
+| `step-20~21` | Tailwind CSS를 설치하고 공통·읽기 화면을 전환합니다. |
+| `step-22~23` | form, 삭제, 404, Error 화면의 스타일과 접근성을 점검합니다. |
 
-각 단계 문서의 권장 시간은 안내된 diff를 적용하고 기본 동작을 확인하는 시간입니다. 위 회차 시간에는 선수 개념 복습, 독립 확인 과제, 오류 복구, 휴식 시간을 함께 포함합니다.
-
-네트워크와 MongoDB 설정 시간은 별도로 확보합니다. 수업을 줄일 때도 API 상태 코드, 저장 결과, 오류 복구 확인은 생략하지 않습니다.
-
-## 단계별 독립 확인 과제
+## 단계별 독립 확인
 
 | 단계 | diff 없이 확인할 일 |
 | --- | --- |
-| 1 | `/about` 설명 한 문장을 본인 학습 목표로 바꾸고 복구합니다. |
+| 1 | `/about` 설명 한 문장을 본인 확인 문장으로 바꾸고 복구합니다. |
 | 2 | 이미지 URL을 허용되지 않은 host로 바꿨을 때 오류를 읽고 원래 설정으로 복구합니다. |
-| 3 | 강의 전용 DB 이름을 바꿔 빈 collection에서 seed가 생기는지 확인합니다. |
+| 3 | 전용 DB 이름을 바꿔 빈 collection에서 seed가 생기는지 확인합니다. |
 | 4 | 존재하지 않는 ID와 빈 제목 요청의 상태 코드·JSON을 기록합니다. |
 | 5 | 목록이 비어 있을 때 표시할 문장을 정하고 렌더링 위치를 찾습니다. |
 | 6 | 작성 성공 후 상세 주소와 MongoDB 문서의 `_id`를 비교합니다. |
@@ -59,7 +56,7 @@ Next.js App Router, MongoDB CRUD, 검색과 페이지네이션, 오류 화면, T
 
 - Server Component와 Client Component를 사용한 이유를 설명합니다.
 - API 요청의 method, URL, body, 상태 코드, 응답 JSON을 추적합니다.
-- 강의 전용 MongoDB에서 생성·조회·수정·삭제 결과를 확인합니다.
+- 전용 MongoDB에서 생성·조회·수정·삭제 결과를 확인합니다.
 - 검색어, page, limit, sort, category의 경계값을 처리합니다.
 - loading, empty, error 상태 중 필요한 화면을 구분합니다.
 - `npm.cmd run lint`와 `npm.cmd run build`를 통과한 뒤 브라우저 동작을 확인합니다.
