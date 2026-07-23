@@ -1,6 +1,6 @@
 # Step 6. 새 게시글 작성 form 만들기
 
-## 이번 단계에서 할 일
+## 변경 내용
 
 새 게시글 작성 form을 만들고 POST /api/post 요청으로 MongoDB에 글을 저장합니다.
 
@@ -10,7 +10,7 @@
 
 ## 시작 전 확인
 
-권장 시간은 70분입니다. 개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
+개인 실습 저장소의 `main`에서 직전 단계까지 마친 상태로 시작합니다. 코드 블록은 복사해 붙이지 않고 직접 입력합니다.
 
 수정 전에 `git status --short`의 출력이 없는지 확인합니다. 변경이 남아 있다면 원인을 확인하고 시작 상태를 정리합니다.
 
@@ -22,87 +22,83 @@
 
 - 수정: `app/post/page.js`
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/post/page.js b/app/post/page.js
-index 99c31e0..54ca12e 100644
---- a/app/post/page.js
-+++ b/app/post/page.js
-@@ -1,8 +1,68 @@
--export default function NewPostPage() {
-+"use client";
-+
-+import { useState } from "react";
-+import { useRouter } from "next/navigation";
-+import styles from "./page.module.css";
-+
-+export default function NewPost() {
-+  const [title, setTitle] = useState("");
-+  const [content, setContent] = useState("");
-+  const [error, setError] = useState("");
-+  const router = useRouter();
-+
-+  async function handleSubmit(event) {
-+    event.preventDefault();
-+    setError("");
-+
-+    try {
-+      const response = await fetch("/api/post", {
-+        method: "POST",
-+        headers: {
-+          "Content-Type": "application/json",
-+        },
-+        body: JSON.stringify({
-+          title,
-+          content,
-+          image: "https://picsum.photos/100",
-+        }),
-+      });
-+      const result = await response.json();
-+
-+      if (!response.ok) {
-+        throw new Error(result.message || "Failed to create post");
-+      }
-+
-+      router.push("/");
-+      router.refresh();
-+    } catch (err) {
-+      setError(err instanceof Error ? err.message : "Failed to create post");
-+    }
-+  }
-+
-   return (
--    <main>
-+    <main className={styles.container}>
-       <h1>Create New Post</h1>
--      <p>The post form will be added after the data and API layers are ready.</p>
-+      {error && <p role="alert">{error}</p>}
-+      <form onSubmit={handleSubmit}>
-+        <label htmlFor="title">Title:</label>
-+        <input
-+          type="text"
-+          id="title"
-+          value={title}
-+          onChange={(event) => setTitle(event.target.value)}
-+          required
-+        />
-+
-+        <label htmlFor="content">Content:</label>
-+        <textarea
-+          id="content"
-+          value={content}
-+          onChange={(event) => setContent(event.target.value)}
-+          required
-+        />
-+
-+        <button type="submit">Create Post</button>
-+      </form>
-     </main>
-   );
- }
+#### `app/post/page.js`
+
+`app/post/page.js`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~js
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import styles from "./page.module.css";
+
+export default function NewPost() {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setError("");
+
+    try {
+      const response = await fetch("/api/post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          content,
+          image: "https://picsum.photos/100",
+        }),
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to create post");
+      }
+
+      router.push("/");
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to create post");
+    }
+  }
+
+  return (
+    <main className={styles.container}>
+      <h1>Create New Post</h1>
+      {error && <p role="alert">{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="title">Title:</label>
+        <input
+          type="text"
+          id="title"
+          value={title}
+          onChange={(event) => setTitle(event.target.value)}
+          required
+        />
+
+        <label htmlFor="content">Content:</label>
+        <textarea
+          id="content"
+          value={content}
+          onChange={(event) => setContent(event.target.value)}
+          required
+        />
+
+        <button type="submit">Create Post</button>
+      </form>
+    </main>
+  );
+}
 ~~~
 
 ### 설명과 확인
@@ -119,43 +115,63 @@ index 99c31e0..54ca12e 100644
 - 수정: `app/globals.css`
 - 생성: `app/post/page.module.css`
 
-### 코드 변경
+### 입력할 코드
 
-아래 diff에서 `+`로 시작하는 줄을 추가하고, `-`로 시작하는 줄을 제거합니다. 새 파일은 diff에 보이는 전체 내용을 새로 입력합니다.
+아래 파일 경로를 확인하고 각 파일의 전체 내용을 입력합니다. 삭제로 표시된 파일은 PowerShell에서 제거합니다.
 
-~~~diff
-diff --git a/app/globals.css b/app/globals.css
-index a6f7b7a..9582211 100644
---- a/app/globals.css
-+++ b/app/globals.css
-@@ -22,3 +22,11 @@ header nav a,
- header nav a:visited {
-   margin-bottom: 0;
- }
-+
-+form {
-+  max-width: 42rem;
-+}
-+
-+textarea {
-+  min-height: 12rem;
-+}
-diff --git a/app/post/page.module.css b/app/post/page.module.css
-new file mode 100644
-index 0000000..8a6b6ea
---- /dev/null
-+++ b/app/post/page.module.css
-@@ -0,0 +1,4 @@
-+.container {
-+  display: grid;
-+  gap: 1rem;
-+}
+#### `app/globals.css`
+
+`app/globals.css`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~css
+@import "simpledotcss/simple.min.css";
+
+body {
+  min-height: 100vh;
+}
+
+body > header {
+  align-self: start;
+  padding: 1rem;
+}
+
+body > header > nav:only-child {
+  margin-block-start: 0;
+}
+
+header nav {
+  padding: 0;
+  line-height: 1;
+}
+
+header nav a,
+header nav a:visited {
+  margin-bottom: 0;
+}
+
+form {
+  max-width: 42rem;
+}
+
+textarea {
+  min-height: 12rem;
+}
+~~~
+
+#### `app/post/page.module.css`
+
+`app/post/page.module.css`를 열고 파일 전체를 다음 내용으로 맞춥니다.
+
+~~~css
+.container {
+  display: grid;
+  gap: 1rem;
+}
 ~~~
 
 ### 설명과 확인
 
 - 이 시점의 스타일은 simpledotcss 위에 최소한만 얹습니다.
-- Tailwind 전환은 step-20 이후에 진행합니다.
 
 ## 실행 확인
 
@@ -181,12 +197,12 @@ npm.cmd run dev
 
 ## 독립 확인
 
-작성 성공 후 상세 주소와 MongoDB 문서의 `_id`를 비교합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험을 위해 바꾼 값은 다음 단계 전에 복구합니다.
+작성 성공 후 상세 주소와 MongoDB 문서의 `_id`를 비교합니다. 결과와 확인 방법을 한 문장으로 기록합니다. 실험값은 검사를 마치면 원래대로 복구합니다.
 
 ## 마무리 확인
 
-- 이 문서의 각 작업 단위에서 설명을 먼저 읽고, 바로 아래 diff를 기준으로 파일을 수정합니다.
-- 새 파일은 diff에 나온 전체 내용을 입력하고, 기존 파일은 diff의 `+`/`-` 줄만 비교하면서 수정합니다.
+- 각 작업 단위의 설명과 파일 경로를 먼저 확인합니다.
+- 코드 블록은 해당 파일의 일부가 아니라 현재 단계에서 사용할 전체 내용입니다.
 
 ## 저장소에 기록하기
 
@@ -195,13 +211,11 @@ npm.cmd run dev
 ```powershell
 git branch --show-current
 git status --short
-git diff
 npm.cmd run lint
 npm.cmd run build
 git add .
-git diff --staged
 git commit -m "Complete Next.js step 6"
-git push origin main
+git push
 git status --short --branch
 ```
 
