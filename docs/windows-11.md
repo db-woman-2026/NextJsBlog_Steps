@@ -11,7 +11,7 @@ winget --version
 winget install --id Microsoft.WindowsTerminal -e --source winget --accept-source-agreements --accept-package-agreements
 ```
 
-`winget`을 찾지 못하면 [App Installer 공식 안내](https://learn.microsoft.com/windows/msix/app-installer/install-update-app-installer) <span class="print-url" data-print-url="true">(웹 주소: https://learn.microsoft.com/windows/msix/app-installer/install-update-app-installer)</span>에 따라 App Installer를 설치하거나 업데이트합니다. 설치 후 처음 열었던 창을 닫고 시작 메뉴에서 `Windows Terminal`을 엽니다.
+`winget`을 찾지 못하면 [App Installer 공식 안내](https://learn.microsoft.com/windows/msix/app-installer/install-update-app-installer) <span class="print-url" data-print-url="true">(https://learn.microsoft.com/windows/msix/app-installer/install-update-app-installer)</span>에 따라 App Installer를 설치하거나 업데이트합니다. 설치 후 처음 열었던 창을 닫고 시작 메뉴에서 `Windows Terminal`을 엽니다.
 
 탭 오른쪽의 화살표에서 `Windows PowerShell` 프로필을 선택합니다. 이후 모든 명령은 이 탭에서 실행합니다.
 
@@ -217,11 +217,11 @@ VS Code 오른쪽 아래에서 인코딩이 `UTF-8`인지 확인합니다. 저�
 
 ## 공식 안내
 
-- [Windows Terminal 설치](https://learn.microsoft.com/windows/terminal/install) <span class="print-url" data-print-url="true">(웹 주소: https://learn.microsoft.com/windows/terminal/install)</span>
-- [winget install 명령](https://learn.microsoft.com/windows/package-manager/winget/install) <span class="print-url" data-print-url="true">(웹 주소: https://learn.microsoft.com/windows/package-manager/winget/install)</span>
-- [Node.js 다운로드](https://nodejs.org/en/download) <span class="print-url" data-print-url="true">(웹 주소: https://nodejs.org/en/download)</span>
-- [Git for Windows](https://git-scm.com/install/windows) <span class="print-url" data-print-url="true">(웹 주소: https://git-scm.com/install/windows)</span>
-- [GitHub CLI 설치](https://github.com/cli/cli/blob/trunk/docs/install_windows.md) <span class="print-url" data-print-url="true">(웹 주소: https://github.com/cli/cli/blob/trunk/docs/install_windows.md)</span>
-- [VS Code Windows 설치](https://code.visualstudio.com/docs/setup/windows) <span class="print-url" data-print-url="true">(웹 주소: https://code.visualstudio.com/docs/setup/windows)</span>
-- [Next.js 설치](https://nextjs.org/docs/app/getting-started/installation) <span class="print-url" data-print-url="true">(웹 주소: https://nextjs.org/docs/app/getting-started/installation)</span>
-- [MongoDB Community Server Windows 설치](https://www.mongodb.com/docs/v8.0/tutorial/install-mongodb-on-windows/) <span class="print-url" data-print-url="true">(웹 주소: https://www.mongodb.com/docs/v8.0/tutorial/install-mongodb-on-windows/)</span>
+- [Windows Terminal 설치](https://learn.microsoft.com/windows/terminal/install) <span class="print-url" data-print-url="true">(https://learn.microsoft.com/windows/terminal/install)</span>
+- [winget install 명령](https://learn.microsoft.com/windows/package-manager/winget/install) <span class="print-url" data-print-url="true">(https://learn.microsoft.com/windows/package-manager/winget/install)</span>
+- [Node.js 다운로드](https://nodejs.org/en/download) <span class="print-url" data-print-url="true">(https://nodejs.org/en/download)</span>
+- [Git for Windows](https://git-scm.com/install/windows) <span class="print-url" data-print-url="true">(https://git-scm.com/install/windows)</span>
+- [GitHub CLI 설치](https://github.com/cli/cli/blob/trunk/docs/install_windows.md) <span class="print-url" data-print-url="true">(https://github.com/cli/cli/blob/trunk/docs/install_windows.md)</span>
+- [VS Code Windows 설치](https://code.visualstudio.com/docs/setup/windows) <span class="print-url" data-print-url="true">(https://code.visualstudio.com/docs/setup/windows)</span>
+- [Next.js 설치](https://nextjs.org/docs/app/getting-started/installation) <span class="print-url" data-print-url="true">(https://nextjs.org/docs/app/getting-started/installation)</span>
+- [MongoDB Community Server Windows 설치](https://www.mongodb.com/docs/v8.0/tutorial/install-mongodb-on-windows/) <span class="print-url" data-print-url="true">(https://www.mongodb.com/docs/v8.0/tutorial/install-mongodb-on-windows/)</span>

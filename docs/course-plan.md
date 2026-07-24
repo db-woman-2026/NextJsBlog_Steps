@@ -1,12 +1,12 @@
 # Next.js 블로그 실습 구성
 
-Next.js App Router, MongoDB CRUD, 검색과 페이지네이션, 오류 화면, Tailwind CSS를 구현합니다. 기본 문법이 낯설다면 [Next.js 기초](./basic/index.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Next.js 기초」 · 절 「확인할 내용」)</span>에서 필요한 개념을 확인합니다.
+Next.js App Router, MongoDB CRUD, 검색과 페이지네이션, 오류 화면, Tailwind CSS를 구현합니다. 기본 문법이 낯설다면 [Next.js 기초](./basic/index.md) <span class="print-reference" data-print-reference="true">(Next.js · Next.js 기초 · 확인할 내용)</span>에서 필요한 개념을 확인합니다.
 
 ## 시작 조건
 
 - JavaScript 함수, 배열, 객체, `async`와 `await`의 모양을 읽을 수 있습니다.
 - React의 component, props, state, event를 한 번 이상 사용했습니다.
-- [Windows 11 환경 준비](./windows-11.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Windows 11 x64 실습 환경 준비」 · 절 「1. Windows Terminal 설치」)</span>에 따라 `create-next-app` 프로젝트와 개인 GitHub 저장소를 만들었습니다.
+- [Windows 11 환경 준비](./windows-11.md) <span class="print-reference" data-print-reference="true">(Next.js · Windows 11 x64 실습 환경 준비 · 1. Windows Terminal 설치)</span>에 따라 `create-next-app` 프로젝트와 개인 GitHub 저장소를 만들었습니다.
 - 터미널에서 `npm install`과 `npm run dev`를 실행할 수 있습니다.
 - HTTP method와 JSON의 기본 의미를 알고 있습니다.
 

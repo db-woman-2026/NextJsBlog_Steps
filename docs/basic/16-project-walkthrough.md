@@ -238,8 +238,8 @@ MongoDB 또는 데이터 함수 오류
 - 클라이언트 form 검증이 있어도 서버에서 다시 검증합니다.
 - 클라이언트 컴포넌트는 MongoDB에 직접 연결하지 않습니다.
 
-모두 외울 필요는 없습니다. 설명이 막히는 항목의 링크를 [기초 문서](./index.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Next.js 기초」 · 절 「확인할 내용」)</span>에서 찾아 다시 확인합니다.
+모두 외울 필요는 없습니다. 설명이 막히는 항목의 링크를 [기초 문서](./index.md) <span class="print-reference" data-print-reference="true">(Next.js · Next.js 기초 · 확인할 내용)</span>에서 찾아 다시 확인합니다.
 
 ## 관련 실습
 
-[실습 목록](../lecture/index.md) <span class="print-reference" data-print-reference="true">(인쇄본 위치: Next.js · 장 「Next.js 블로그 단계별 실습」 · 절 「실습 원칙」)</span>에는 프로젝트 파일을 직접 작성하고 검증하는 절차가 있습니다. 문법이 낯설면 해당 basic 장의 예제를 다시 확인합니다.
+[실습 목록](../lecture/index.md) <span class="print-reference" data-print-reference="true">(Next.js · Next.js 블로그 단계별 실습 · 실습 원칙)</span>에는 프로젝트 파일을 직접 작성하고 검증하는 절차가 있습니다. 문법이 낯설면 해당 basic 장의 예제를 다시 확인합니다.
